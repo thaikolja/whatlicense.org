@@ -1,19 +1,17 @@
 <template>
   <Teleport to="body">
+    <!-- Backdrop Transition (Slower Blur) -->
     <Transition
-      enter-active-class="transition duration-300 ease-out"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition duration-200 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div v-if="localIsOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-espresso/40 backdrop-blur-sm" @click="closeModal"></div>
-        
+        enter-active-class="transition duration-1000 ease-in-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-500 ease-in-out" leave-from-class="opacity-100" leave-to-class="opacity-0">
+      <div v-if="localIsOpen" class="fixed inset-0 z-[100] bg-espresso/40 backdrop-blur-sm transition-[backdrop-filter,opacity] duration-1000" @click="closeModal"></div>
+    </Transition>
+
+    <!-- Modal Content Transition (Faster Fade) -->
+    <Transition
+        enter-active-class="transition duration-400 ease-out delay-100" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
+      <div v-if="localIsOpen" class="fixed inset-0 z-[110] flex items-center justify-center p-4 pointer-events-none">
         <!-- Modal content -->
-        <div class="relative w-full max-w-xl bg-cream rounded-3xl shadow-2xl border border-border overflow-hidden animate-fade-up">
+        <div class="relative w-full max-w-xl bg-cream rounded-3xl shadow-2xl border border-border overflow-hidden pointer-events-auto">
           <div class="px-6 py-5 border-b border-border flex items-center justify-between bg-white">
             <div>
               <h3 class="serif text-2xl font-bold text-charcoal">Custom Properties</h3>

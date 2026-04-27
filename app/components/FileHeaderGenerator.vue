@@ -48,11 +48,28 @@
               </svg>
               Add Custom Properties
             </button>
-            <div class="text-center mt-2">
+            <div class="text-center mt-2 mb-6">
               <span class="text-[10px] uppercase tracking-widest text-muted font-bold opacity-70">
                 <svg class="w-3 h-3 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                 Processed locally. Never saved.
               </span>
+            </div>
+
+            <!-- Monetization: Subtle Affiliate Link -->
+            <div class="bg-white border border-border rounded-xl p-4 transition-colors hover:border-tan group">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-tan">Sponsored</span>
+              </div>
+              <p class="text-sm font-bold text-charcoal mb-1">Need a Privacy Policy?</p>
+              <p class="text-xs text-muted mb-3 leading-relaxed">Most modern websites and apps require a compliant
+                privacy policy by law.
+              </p>
+              <a :href="config.public.links.termsFeed" target="_blank" class="text-xs font-bold text-charcoal group-hover:text-tan transition-colors flex items-center gap-1">
+                Generate one with TermsFeed
+                <svg class="w-3 h-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
@@ -120,6 +137,8 @@
   const updateProperties = (props: CustomProperty[]) => {
     formState.value.customProperties = props
   }
+
+  const config = useRuntimeConfig()
 
   const validatedHighlightedCode = computed(() => {
     const code = generatedHeaderCode.value

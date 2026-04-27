@@ -30,7 +30,3 @@
     copy(props.text)
   }
 </script>
-
-<style lang="postcss" scoped>
-
-</style>

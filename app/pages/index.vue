@@ -48,7 +48,7 @@
         const path = (matchedLicense as any).path || matchedLicense.id || ''
         const slug = path.split('/').pop() || matchedLicense.spdx.toLowerCase()
 
-        await navigateTo(`/licenses/${slug}`)
+        await navigateTo(`/licenses/${slug}?calc=1`)
       } else {
         // No match found
         currentScreen.value = 'result' // Stay on result screen but show "no match"

@@ -82,7 +82,12 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true'
+      debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true',
+      links:           {
+        paypal:    'https://paypal.me/yourusername',
+        termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
+        github:    'https://github.com/thaikolja/whatlicense.io'
+      }
     }
   },
 

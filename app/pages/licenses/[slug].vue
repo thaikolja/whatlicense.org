@@ -24,12 +24,19 @@
   const route = useRoute()
   const slug  = route.params.slug as string
 
-  // Minimum loading time for "effect"
-  const minLoadingFinished = ref(false)
+  // Minimum loading time for "effect" only if coming from the wizard (calc=1)
+  const isCalc             = route.query.calc==='1'
+  const minLoadingFinished = ref(!isCalc)
+  
   onMounted(() => {
-    setTimeout(() => {
-      minLoadingFinished.value = true
-    }, 2000)
+    if (isCalc) {
+      setTimeout(() => {
+        minLoadingFinished.value = true
+        // Clean up the URL so reloads don't show the animation again
+        const router             = useRouter()
+        router.replace({ query: { ...route.query, calc: undefined } })
+      }, 2000)
+    }
   })
 
   // We fetch the data as fast as possible, but 'lazy' ensures we navigate immediately
