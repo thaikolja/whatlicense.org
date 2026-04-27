@@ -1,0 +1,91 @@
+<template>
+  <div class="min-h-screen flex flex-col bg-pattern selection:bg-tan selection:text-white relative">
+
+    <!-- Top Header -->
+    <header class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="relative w-10 h-10 flex items-center justify-center">
+          <div class="absolute inset-0 bg-charcoal rounded-xl rotate-3 group-hover:rotate-6 transition-transform duration-300"></div>
+          <div class="absolute inset-0 bg-tan rounded-xl -rotate-3 group-hover:-rotate-6 transition-transform duration-300 opacity-50"></div>
+          <svg class="w-5 h-5 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <span class="text-xl font-bold tracking-tight text-charcoal">
+          whatlicense<span class="text-tan">.io</span>
+        </span> </a>
+
+      <!-- Socials -->
+      <div class="flex items-center gap-5">
+        <a href="#" class="text-muted hover:text-charcoal transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+          </svg>
+        </a> <a href="#" class="text-muted hover:text-charcoal transition-colors">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path
+              fill-rule="evenodd" d="M11.996 0a12 12 0 0 0-3.784 23.393c.099.014.195.03.295.04l.012-.061c.01-.061.02-.132.028-.211l.016-.145c.013-.135.025-.296.035-.48a27.674 27.674 0 0 0 .015-.716c.004-.325.003-.699-.003-1.116-.01-.643-.03-1.363-.066-2.126a100.835 100.835 0 0 0-.147-2.378c-.015-.224-.03-.452-.047-.685-.021-.295-.045-.595-.072-.9-.057-.648-.124-1.32-.204-1.996a40.093 40.093 0 0 0-.327-2.19c-.06-.347-.123-.698-.189-1.048a19.92 19.92 0 0 0-.276-1.28c-.053-.217-.107-.432-.164-.644a14.71 14.71 0 0 0-.256-.856c-.053-.16-.107-.318-.162-.472-.112-.303-.228-.593-.346-.867-.116-.264-.236-.51-.358-.737l-.183-.327c-.062-.107-.125-.21-.188-.31-.122-.19-.247-.362-.373-.518-.124-.15-.248-.282-.372-.397-.118-.106-.237-.197-.355-.27-.111-.066-.22-.115-.327-.145a1.737 1.737 0 0 0-.294-.061l-.145-.013c-.092-.005-.18-.002-.262.008a1.644 1.644 0 0 0-.244.045c-.076.022-.149.052-.218.087l-.2.115c-.126.082-.246.182-.36.297-.105.105-.205.221-.3.348l-.271.365c-.085.127-.166.26-.242.399l-.216.417c-.068.143-.131.29-.191.442-.054.14-.105.286-.153.436-.09.284-.173.578-.249.882-.07.282-.136.572-.196.868-.057.283-.11.573-.158.87a17.653 17.653 0 0 0-.173 1.258c-.024.218-.045.438-.063.66-.035.432-.06.877-.076 1.332-.016.442-.022.894-.017 1.353.004.444.019.897.043 1.358.024.444.06.894.104 1.348.046.438.102.88.169 1.325.064.426.14.854.226 1.282.083.414.177.828.28 1.242.102.402.215.8.337 1.196.12.385.249.766.386 1.144.135.366.279.728.43 1.085.148.347.305.69.467 1.026.16.326.326.647.498.962.167.305.34.603.518.895.176.284.356.56.541.828.181.261.366.513.555.756.184.237.371.464.561.681.185.21.373.41.564.6.185.185.373.36.562.525.184.16.37.31.558.452.181.135.363.26.547.376.18.11.36.21.543.3.178.087.357.164.536.23.176.064.352.118.528.161.173.041.345.072.518.093.17.02.338.03.506.03h.001A12 12 0 0 0 11.996 0z" clip-rule="evenodd" />
+        </svg>
+      </a> <a href="#" class="text-muted hover:text-charcoal transition-colors">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zM15.424 2.87c-.63-.35-1.553-.5-2.83-.5H6.55l-1.54 9.775h2.95c3.27 0 5.61-1.322 6.32-4.975.034-.176.067-.354.098-.535.15-1.025.04-1.99-.44-2.83-.48-.84-1.4-1.196-2.03-1.385l3.52 4.65zM22.012 8.64c-.11-.53-.32-1.02-.63-1.46-.3-.42-.68-.81-1.16-1.15-.47-.33-1.03-.6-1.68-.82-.64-.2-1.35-.34-2.14-.42l-.29.62c.73.13 1.38.35 1.94.66.55.3 1.02.68 1.39 1.14.36.45.64.98.8 1.57.17.6.24 1.25.18 1.95-.14 1.54-.7 2.92-1.63 4.09-.92 1.16-2.18 2.05-3.69 2.61-1.49.55-3.18.79-4.99.71H8.78l-1.3 8.24h4.15c4.08 0 7.23-1.65 8.79-4.57.77-1.45 1.21-3.1 1.29-4.88.08-1.76-.11-3.51-.5-5.11z" />
+        </svg>
+      </a>
+      </div>
+    </header>
+
+    <main class="flex-1 flex flex-col px-6">
+      <IntroScreen v-if="currentScreen === 'intro'" @start="startWizard" />
+
+      <QuizWizard
+          v-if="currentScreen === 'quiz' && currentQuestion" :question="currentQuestion" :current-step="currentStep" :total-steps="totalSteps" :answers="answers" :can-advance="canAdvance" @select="selectOption" @next="handleNext" @prev="prevStep" />
+
+      <ResultDashboard
+          v-if="currentScreen === 'result' && matchedLicense" :license="matchedLicense" />
+
+      <div v-if="currentScreen === 'result' && !matchedLicense" class="text-center pt-24 pb-16">
+        <h1 class="text-4xl text-espresso mb-4">No exact match found</h1>
+        <p class="text-muted mb-8">Try adjusting your answers to fit standard open source licenses.</p>
+        <button @click="resetWizard" class="btn px-8 py-3 rounded-full">Start Over</button>
+      </div>
+    </main>
+
+  </div>
+</template>
+
+<script setup lang="ts">
+  import { ref }               from 'vue'
+  import { useWizard }         from '~/composables/useWizard'
+  import { useLicenseMatcher } from '~/composables/useLicenseMatcher'
+  import type { License }      from '~/types'
+
+  const {
+          currentScreen,
+          currentStep,
+          answers,
+          startWizard,
+          selectOption,
+          nextStep,
+          prevStep,
+          resetWizard,
+          totalSteps,
+          currentQuestion,
+          canAdvance,
+          collectedTags
+        } = useWizard()
+
+  const { fetchLicenses, matchLicense } = useLicenseMatcher()
+
+  // Fetch all licenses on mount
+  await fetchLicenses()
+
+  const matchedLicense = ref<License | null>(null)
+
+  const handleNext = () => {
+    nextStep()
+    if (currentScreen.value==='result') {
+      matchedLicense.value = matchLicense(collectedTags.value)
+    }
+  }
+</script>

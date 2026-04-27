@@ -1,0 +1,84 @@
+<template>
+  <div class="w-full pt-8 md:pt-16 pb-20">
+    <div class="max-w-4xl mx-auto text-center relative">
+      <!-- Abstract glowing elements -->
+      <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 border border-sand rounded-full opacity-50 -z-10"></div>
+      <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 border border-tan rounded-full opacity-20 -z-10"></div>
+
+      <div class="animate-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-border text-xs font-bold tracking-widest uppercase text-tan mb-8 shadow-sm">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        Smart License Wizard
+      </div>
+
+      <h1 class="animate-fade-up delay-100 text-6xl md:text-8xl mb-8 text-espresso leading-[1.1] tracking-tight">
+        License your code.<br> <span class="italic text-muted">The easy way.</span>
+      </h1>
+
+      <p class="animate-fade-up delay-200 text-xl md:text-2xl text-muted max-w-2xl mx-auto mb-12 leading-relaxed">
+        Stop getting bogged down by legal jargon. Answer simple questions about your project's goals, and we'll
+        instantly generate the perfect license and file headers for you.
+      </p>
+
+      <div class="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-6 mb-20">
+        <button @click="$emit('start')" class="btn px-10 py-5 rounded-full text-lg font-bold tracking-wide uppercase flex items-center gap-3 w-full sm:w-auto justify-center">
+          Start Wizard
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </button>
+        <div class="flex items-center gap-4 text-sm text-muted font-medium">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-tan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            ~45 seconds
+          </div>
+          <span class="w-1 h-1 rounded-full bg-border"></span>
+          <div class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-tan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            100% Free
+          </div>
+        </div>
+      </div>
+
+      <div class="animate-fade-up delay-400 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto border-t border-border pt-16">
+        <div class="text-left bg-white p-6 rounded-2xl border border-border shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 serif text-xl">
+            1
+          </div>
+          <h3 class="text-xl font-bold mb-2 text-espresso">Answer Basics</h3>
+          <p class="text-muted text-sm leading-relaxed">Tell us how you want others to share and use your code.</p>
+        </div>
+        <div class="text-left bg-white p-6 rounded-2xl border border-border shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 serif text-xl">
+            2
+          </div>
+          <h3 class="text-xl font-bold mb-2 text-espresso">Get Matched</h3>
+          <p class="text-muted text-sm leading-relaxed">We match your answers against OSI-approved open-source
+            licenses.
+          </p>
+        </div>
+        <div class="text-left bg-white p-6 rounded-2xl border border-border shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 serif text-xl">
+            3
+          </div>
+          <h3 class="text-xl font-bold mb-2 text-espresso">Generate Headers</h3>
+          <p class="text-muted text-sm leading-relaxed">Copy the full license text and beautifully formatted file
+            headers instantly.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  defineEmits<{
+    (e: 'start'): void
+  }>()
+</script>
