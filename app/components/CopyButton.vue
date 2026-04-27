@@ -18,7 +18,7 @@
 
   const props = withDefaults(defineProps<{
     text: string
-    label?: string
+    label: string
     variant?: 'light' | 'dark'
   }>(), {
     variant: 'dark'

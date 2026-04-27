@@ -1,3 +1,5 @@
+//noinspection JSUnusedGlobalSymbols
+
 /**
  * Nuxt 4 configuration for whatlicense.io.
  *
@@ -71,7 +73,6 @@ export default defineNuxtConfig({
     }
   },
 
-
   /* ------------------------------------------------------------------ */
   /*  TypeScript                                                         */
   /* ------------------------------------------------------------------ */
@@ -84,7 +85,7 @@ export default defineNuxtConfig({
     public: {
       debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true',
       links:           {
-        paypal:    'https://paypal.me/yourusername',
+        paypal: 'https://paypal.me/thaikolja',
         termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
         github:    'https://github.com/thaikolja/whatlicense.io'
       }

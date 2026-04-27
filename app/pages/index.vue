@@ -15,7 +15,6 @@
 <script setup lang="ts">
   import { useWizard }         from '~/composables/useWizard'
   import { useLicenseMatcher } from '~/composables/useLicenseMatcher'
-  import { useRouter }         from 'vue-router'
 
   const {
           currentScreen,
@@ -25,7 +24,6 @@
           selectOption,
           nextStep,
           prevStep,
-          resetWizard,
           totalSteps,
           currentQuestion,
           canAdvance,
@@ -33,7 +31,6 @@
         } = useWizard()
 
   const { fetchLicenses, matchLicense } = useLicenseMatcher()
-  const router                          = useRouter()
 
   // Fetch all licenses on mount
   await fetchLicenses()
