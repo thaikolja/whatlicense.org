@@ -36,56 +36,8 @@
     </header>
 
     <main class="flex-1 flex flex-col px-6">
-      <IntroScreen v-if="currentScreen === 'intro'" @start="startWizard" />
-
-      <QuizWizard
-          v-if="currentScreen === 'quiz' && currentQuestion" :question="currentQuestion" :current-step="currentStep" :total-steps="totalSteps" :answers="answers" :can-advance="canAdvance" @select="selectOption" @next="handleNext" @prev="prevStep" />
-
-      <ResultDashboard
-          v-if="currentScreen === 'result' && matchedLicense" :license="matchedLicense" />
-
-      <div v-if="currentScreen === 'result' && !matchedLicense" class="text-center pt-24 pb-16">
-        <h1 class="text-4xl text-espresso mb-4">No exact match found</h1>
-        <p class="text-muted mb-8">Try adjusting your answers to fit standard open source licenses.</p>
-        <button @click="resetWizard" class="btn px-8 py-3 rounded-full">Start Over</button>
-      </div>
+      <NuxtPage />
     </main>
 
   </div>
 </template>
-
-<script setup lang="ts">
-  import { ref }               from 'vue'
-  import { useWizard }         from '~/composables/useWizard'
-  import { useLicenseMatcher } from '~/composables/useLicenseMatcher'
-  import type { License }      from '~/types'
-
-  const {
-          currentScreen,
-          currentStep,
-          answers,
-          startWizard,
-          selectOption,
-          nextStep,
-          prevStep,
-          resetWizard,
-          totalSteps,
-          currentQuestion,
-          canAdvance,
-          collectedTags
-        } = useWizard()
-
-  const { fetchLicenses, matchLicense } = useLicenseMatcher()
-
-  // Fetch all licenses on mount
-  await fetchLicenses()
-
-  const matchedLicense = ref<License | null>(null)
-
-  const handleNext = () => {
-    nextStep()
-    if (currentScreen.value==='result') {
-      matchedLicense.value = matchLicense(collectedTags.value)
-    }
-  }
-</script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-6xl mx-auto flex-1 flex flex-col z-10 pb-12">
+  <div class="w-full max-w-6xl mx-auto flex-1 flex flex-col z-10 pb-12 animate-fade-up">
     <!-- Top Title -->
     <div class="text-center pt-16 pb-16 max-w-3xl mx-auto">
       <p class="text-sm tracking-widest uppercase font-bold text-tan mb-4">Your Perfect Match</p>

@@ -14,20 +14,12 @@
           <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
           <div class="w-3 h-3 rounded-full bg-green-400"></div>
         </div>
-        <CopyButton :text="license.fullText || ''" />
+        <CopyButton :text="plainText" />
       </div>
       <div class="p-8 overflow-auto flex-1 custom-scrollbar">
         <!-- Render the markdown body of the license -->
-        <ContentDoc :path="`/licenses/${license.spdx}`">
-          <template #default="{ doc }">
-            <div class="font-mono text-sm leading-relaxed text-charcoal whitespace-pre-wrap">
-              <ContentRenderer :value="doc" />
-            </div>
-          </template>
-          <template #not-found>
-            <p>License text not found.</p>
-          </template>
-        </ContentDoc>
+        <ContentRenderer v-if="(license as any).body" :value="(license as any).body" class="font-mono text-sm leading-relaxed text-charcoal whitespace-pre-wrap" />
+        <p v-else>License text not found.</p>
       </div>
     </div>
   </section>
@@ -36,9 +28,47 @@
 <script setup lang="ts">
   import type { License } from '~/types'
 
-  defineProps<{
+  const props = defineProps<{
     license: License
   }>()
+
+  // Helper to extract text from Nuxt Content body AST
+  const extractText = (node: any): string => {
+    if (!node) return ''
+    if (typeof node==='string') return node
+
+    let text = ''
+
+    // Handle arrays of nodes
+    if (Array.isArray(node)) {
+      return node.map(extractText).join('')
+    }
+
+    // Handle text nodes
+    if (node.type==='text') {
+      return node.value || ''
+    }
+
+    // Handle element nodes (p, h1, etc.)
+    if (node.children) {
+      text = node.children.map(extractText).join('')
+      // Add double newlines after paragraphs and headers for better formatting
+      if ([ 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li' ].includes(node.tag)) {
+        text += '\n\n'
+      }
+    }
+
+    return text
+  }
+
+  const plainText = computed(() => {
+    const body = (props.license as any).body
+    if (!body) return ''
+    // If it's already a string (unlikely in v3)
+    if (typeof body==='string') return body
+    // Otherwise walk the AST
+    return extractText(body.children || body).trim()
+  })
 </script>
 <style scoped>
   .custom-scrollbar::-webkit-scrollbar {

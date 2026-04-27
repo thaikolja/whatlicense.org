@@ -7,10 +7,18 @@ export function useWizard() {
   const currentStep   = ref(0)
   const answers       = ref<number[]>([])
 
+  const config = useRuntimeConfig()
+
   const startWizard = () => {
     currentScreen.value = 'quiz'
     currentStep.value   = 0
-    answers.value       = []
+
+    if (config.public.debugAutoSelect) {
+      // Pre-select the first option for all questions
+      answers.value = new Array(QUIZ_QUESTIONS.length).fill(0)
+    } else {
+      answers.value = []
+    }
   }
 
   const selectOption = (optionIndex: number) => {

@@ -101,8 +101,10 @@ export interface ConditionItem {
  * recommended, and a file-header boilerplate statement.
  */
 export interface License {
-  /** SPDX identifier (e.g. "MIT", "GPL-3.0-only"). */
+  /** File ID or path. */
   readonly id: string
+  /** SPDX identifier (e.g. "MIT", "GPL-3.0-only"). */
+  readonly spdx: string
   /** Human-readable name (e.g. "MIT License"). */
   readonly name: string
   /** One-line tagline shown under the license name. */
@@ -121,8 +123,6 @@ export interface License {
   readonly limitations: readonly ConditionItem[]
   /** Multi-line boilerplate for file-header comments. */
   readonly headerStatement: string
-  /** Full legal text of the license. */
-  readonly fullText: string
 }
 
 /* ------------------------------------------------------------------ */

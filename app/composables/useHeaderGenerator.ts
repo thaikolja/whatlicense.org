@@ -2,7 +2,7 @@ import { ref, computed }                                  from 'vue'
 import type { HeaderFormState, CommentLanguage, License } from '~/types'
 import { formatComment }                                  from '~/utils/commentStyles'
 
-export function useHeaderGenerator() {
+export function useHeaderGenerator(license: MaybeRefOrGetter<License | null>) {
   const formState = ref<HeaderFormState>({
     projectName:      '',
     description:      '',
@@ -13,7 +13,7 @@ export function useHeaderGenerator() {
     customProperties: []
   })
 
-  const generateRawLines = (license: License | null): string[] => {
+  const generateRawLines = (lic: License | null): string[] => {
     const lines: string[] = []
 
     if (formState.value.projectName) {
@@ -33,23 +33,25 @@ export function useHeaderGenerator() {
       lines.push(`@see             ${formState.value.website}`)
     }
 
-    if (license && license.headerStatement) {
+    if (lic && lic.headerStatement) {
       lines.push('')
-      lines.push(...license.headerStatement.split('\n'))
+      lines.push(...lic.headerStatement.split('\n'))
     }
 
     formState.value.customProperties.forEach(p => {
       const key = p.key.trim()
       if (key!=='') {
-        lines.push(`@${key} ${p.value}`)
+        const val = p.value ? ` ${p.value}`: ''
+        lines.push(`@${key}${val}`)
       }
     })
 
     return lines
   }
 
-  const generatedHeaderCode = computed((license: License | null) => {
-    const rawLines = generateRawLines(license)
+  const generatedHeaderCode = computed(() => {
+    const lic      = toValue(license)
+    const rawLines = generateRawLines(lic)
     return formatComment(formState.value.language, rawLines)
   })
 

@@ -52,7 +52,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title:     'whatlicense.io — Find the Perfect License for Your Code',
+      title: 'Find the Perfect License for Your Code',
       htmlAttrs: { lang: 'en' },
       meta:      [
         { name: 'theme-color', content: '#fdfaf6' }
@@ -78,5 +78,20 @@ export default defineNuxtConfig({
   typescript: {
     strict:    true,
     typeCheck: false
+  },
+
+  runtimeConfig: {
+    public: {
+      debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true'
+    }
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: [
+        'highlight.js',
+        '@unhead/schema-org/vue'
+      ]
+    }
   }
 })

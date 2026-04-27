@@ -17,36 +17,67 @@ export function useLicenseMatcher() {
   }
 
   const matchLicense = (userTags: LicenseTrait[]): License | null => {
-    if (!allLicenses.value.length) return null
+    if (!allLicenses.value.length) {
+      console.warn('Matcher: No licenses loaded to match against.')
+      return null
+    }
+
+    console.log('Matcher: User selected tags:', userTags)
 
     let bestMatch: License | null = null
     let highestScore              = -1
 
+    // Define trait weights if needed, or just count
+    // Essential traits that should be prioritized
+    const weights: Record<string, number> = {
+      'copyleft':         2,
+      'permissive':       2,
+      'network-copyleft': 2,
+      'non-commercial':   3 // Very important differentiator
+    }
+
     for (const license of allLicenses.value) {
       const traits = license.traits || []
-
-      // Calculate score based on matching tags
       let score = 0
+
+      // We'll use a more advanced scoring:
+      // +Weight for matches
+      // -Weight for direct contradictions (e.g. user wants copyleft, license is permissive)
+
+      // Calculate score
       for (const tag of userTags) {
         if (traits.includes(tag)) {
-          score++
+          score += weights[tag] || 1
         }
       }
 
-      // Exact or best match ranking. Tie-breaker is popularity.
+      // Penalize for fundamental mismatches
+      const mismatches = [
+        [ 'copyleft', 'permissive' ],
+        [ 'commercial-ok', 'non-commercial' ],
+        [ 'patent-grant', 'no-patent' ],
+        [ 'network-copyleft', 'no-network' ]
+      ]
+
+      for (const [ t1, t2 ] of mismatches) {
+        if (userTags.includes(t1 as any) && traits.includes(t2 as any)) score -= 2
+        if (userTags.includes(t2 as any) && traits.includes(t1 as any)) score -= 2
+      }
+
+      console.log(`Matcher: Checking ${license.spdx}, Score: ${score}`)
+
       if (score > highestScore) {
         highestScore = score
         bestMatch    = license
       } else if (score===highestScore && bestMatch) {
-        // Tie breaker: popularity (assuming popularity is stored, higher is better)
-        const currentPop = (license as any).popularity || 0
-        const bestPop    = (bestMatch as any).popularity || 0
-        if (currentPop > bestPop) {
+        // Tie breaker: popularity
+        if ((license.popularity || 0) > (bestMatch.popularity || 0)) {
           bestMatch = license
         }
       }
     }
 
+    console.log('Matcher: Best match found:', bestMatch?.spdx)
     return bestMatch
   }
 
