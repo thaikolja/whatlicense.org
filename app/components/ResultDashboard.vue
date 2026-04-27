@@ -15,8 +15,8 @@
             <span class="text-xl">☕</span>
           </div>
           <div class="text-left">
-            <p class="text-sm font-bold text-charcoal">Did this tool save you time?</p>
-            <p class="text-xs text-muted">Consider buying me a coffee to keep it running.</p>
+            <p class="text-sm font-bold text-charcoal">Did this tool save time?</p>
+            <p class="text-xs text-muted">Support the project with a coffee to keep it running.</p>
           </div>
         </div>
         <a :href="config.public.links.paypal" target="_blank" class="shrink-0 bg-tan hover:bg-tan/90 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors shadow-sm">

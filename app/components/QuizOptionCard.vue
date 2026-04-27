@@ -13,23 +13,14 @@
       {{ option.desc }}
     </div>
 
-    <button
-        @click.stop="isExampleOpen = !isExampleOpen" class="text-sm font-bold uppercase tracking-widest text-tan hover:text-charcoal transition-colors flex items-center gap-2 mt-auto self-start">
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      View real life example
-    </button>
-
-    <div
-        class="example-panel mt-4 text-walnut text-sm leading-relaxed bg-cream-dark p-4 rounded-xl border border-border" :class="{ 'open': isExampleOpen }">
+    <div class="example-panel mt-4 text-walnut text-sm leading-relaxed bg-cream-dark/50 p-4 rounded-xl border border-border">
+      <span class="text-[10px] font-bold uppercase tracking-widest text-tan block mb-1">Real Life Example:</span>
       {{ option.example }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref }             from 'vue'
   import type { QuizOption } from '~/types'
 
   defineProps<{
@@ -40,6 +31,4 @@
   defineEmits<{
     (e: 'select'): void
   }>()
-
-  const isExampleOpen = ref(false)
 </script>

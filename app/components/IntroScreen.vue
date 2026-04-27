@@ -13,18 +13,21 @@
       </div>
 
       <h1 class="animate-fade-up delay-100 text-6xl md:text-8xl mb-8 text-espresso leading-[1.1] tracking-tight">
-        License your code.<br> <span class="italic text-muted">The easy way.</span>
+        What license <span class="italic text-muted">do I need?</span>
       </h1>
 
       <p class="animate-fade-up delay-200 text-xl md:text-2xl text-muted max-w-2xl mx-auto mb-12 leading-relaxed">
-        Stop getting bogged down by legal jargon. Answer simple questions about your project's goals, and we'll
-        instantly generate the perfect license and file headers for you.
+        Stop getting bogged down by legal jargon. Answer simple questions about the project goals and get the perfect
+        license recommendation with ready-to-use file headers instantly.
       </p>
 
       <div class="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-6 mb-20">
-        <button @click="$emit('start')" class="btn px-10 py-5 rounded-full text-lg font-bold tracking-wide uppercase flex items-center gap-3 w-full sm:w-auto justify-center">
+        <button @click="$emit('start')" class="btn px-10 py-5 rounded-full text-lg font-bold tracking-wide uppercase flex items-center gap-3 w-full sm:w-auto justify-center group">
+          <svg class="w-5 h-5 text-tan group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
           Start Wizard
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-5 h-5 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </button>
@@ -51,14 +54,16 @@
             1
           </div>
           <h3 class="text-xl font-bold mb-2 text-espresso">Answer Basics</h3>
-          <p class="text-muted text-sm leading-relaxed">Tell us how you want others to share and use your code.</p>
+          <p class="text-muted text-sm leading-relaxed">Define how others should share and use the project source
+            code.
+          </p>
         </div>
         <div class="text-left bg-white p-6 rounded-2xl border border-border shadow-sm">
           <div class="w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 serif text-xl">
             2
           </div>
           <h3 class="text-xl font-bold mb-2 text-espresso">Get Matched</h3>
-          <p class="text-muted text-sm leading-relaxed">We match your answers against OSI-approved open-source
+          <p class="text-muted text-sm leading-relaxed">The engine matches answers against 25+ OSI-approved open-source
             licenses.
           </p>
         </div>

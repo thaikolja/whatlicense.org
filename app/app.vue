@@ -20,13 +20,35 @@
           whatlicense<span class="text-tan">.io</span>
         </span> </a>
 
-      <!-- Socials -->
-      <div class="flex items-center gap-5">
-        <a :href="config.public.links.github" target="_blank" class="text-muted hover:text-charcoal transition-colors">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+      <!-- Navigation & Socials -->
+      <div class="flex items-center gap-4 sm:gap-6">
+        <div class="hidden md:flex items-center gap-6 mr-4 border-r border-border pr-6">
+          <a :href="config.public.links.termsFeed" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors">Privacy
+            Generator</a>
+          <a href="/#wizard" class="text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors">How
+            it works</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a :href="config.public.links.paypal" target="_blank" class="text-muted hover:text-tan transition-colors" title="Support the project">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.712 4.33a.75.75 0 01.711.89l-.128.51a2 2 0 01-1.077 1.388l-3.999 2.002a2 2 0 01-1.788 0l-3.999-2.002a2 2 0 01-1.077-1.388l-.128-.51a.75.75 0 011.059-.838l1.45.69a2 2 0 001.788 0l1.45-.69a.75.75 0 011.059.838l-.128.51a2 2 0 01-1.077 1.388l-3.999 2.002a2 2 0 01-1.788 0l-3.999-2.002a2 2 0 01-1.077-1.388l-.128-.51a.75.75 0 01.711-.89z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.003 9.003 0 008.367-5.657M12 21a9.003 9.003 0 01-8.367-5.657m16.734 0A16.37 16.37 0 0112 16.736a16.37 16.37 0 01-8.367-1.393m16.734 0c.163-.513.266-1.051.3-1.607a4.5 4.5 0 10-9 0c0 .556.137 1.094.3 1.607m-7.434 0a4.494 4.494 0 01-.3-1.607 4.5 4.5 0 119 0c0 .556-.137 1.094-.3 1.607" />
+            </svg>
+          </a> <a href="https://x.com" target="_blank" class="text-muted hover:text-charcoal transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z" />
           </svg>
         </a>
+          <a :href="config.public.links.github" target="_blank" class="text-muted hover:text-charcoal transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+            <div class="hidden sm:flex items-center px-2 py-0.5 rounded-md bg-cream-dark border border-border text-[10px] font-bold text-muted group-hover:text-charcoal transition-colors">
+              Star
+            </div>
+          </a>
+        </div>
       </div>
     </header>
 

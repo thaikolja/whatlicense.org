@@ -10,7 +10,7 @@
   <div v-else class="flex-1 flex flex-col items-center justify-center py-32">
     <div class="text-center max-w-md mx-auto">
       <h1 class="text-4xl font-bold text-espresso mb-4">License not found</h1>
-      <p class="text-muted mb-8 text-lg">We couldn't find the specific license details. It may have been moved or
+      <p class="text-muted mb-8 text-lg">The specific license details could not be found. It may have been moved or
         renamed.
       </p>
       <NuxtLink to="/" class="btn px-10 py-4 rounded-full font-bold">Go Back Home</NuxtLink>

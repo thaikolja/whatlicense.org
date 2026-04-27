@@ -129,7 +129,7 @@ h1, h2, h3, .serif {
 /* ------------------------------------------------------------------ */
 .opt-card {
   border:     1px solid var(--color-sand);
-  background: #ffffff;
+  background: var(--color-cream-dark);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   cursor:     pointer;
 }
@@ -142,7 +142,7 @@ h1, h2, h3, .serif {
 
 .opt-card.selected {
   border-color:     var(--color-charcoal);
-  background-color: var(--color-cream-dark);
+  background-color: #ffffff;
   box-shadow:       0 12px 40px -12px rgba(67, 58, 49, 0.2);
   transform:        translateY(-4px);
 }
@@ -151,15 +151,7 @@ h1, h2, h3, .serif {
 /*  Accordion example panel (quiz cards)                               */
 /* ------------------------------------------------------------------ */
 .example-panel {
-  max-height: 0;
-  overflow:   hidden;
-  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
-  opacity:    0;
-}
-
-.example-panel.open {
-  max-height: 300px;
-  opacity:    1;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ------------------------------------------------------------------ */
