@@ -132,7 +132,7 @@ export interface License {
 /**
  * Supported programming languages for file-header comment formatting.
  */
-export type CommentLanguage = 'php' | 'javascript' | 'python' | 'ruby' | 'html' | 'css' | 'shell'
+export type CommentLanguage = 'php' | 'javascript' | 'typescript' | 'python' | 'ruby' | 'html' | 'css' | 'shell'
 
 /**
  * A user-defined custom `@property` injected into the file header.
@@ -162,6 +162,8 @@ export interface HeaderFormState {
   language: CommentLanguage
   /** User-added custom `@property` entries. */
   customProperties: CustomProperty[]
+  /** Whether to strip comment syntax from the generated code. */
+  excludeComments: boolean
 }
 
 /* ------------------------------------------------------------------ */

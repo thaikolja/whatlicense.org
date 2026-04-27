@@ -1,9 +1,10 @@
 <template>
-  <ResultDashboard v-if="license" :license="license" />
-  <div v-else-if="status === 'pending'" class="flex-1 flex flex-col items-center justify-center py-32">
-    <div class="text-center">
+  <ResultDashboard v-if="showResult" :license="license!" />
+  <div v-else-if="isPending" class="flex-1 flex flex-col items-center justify-center py-32">
+    <div class="text-center animate-fade-up">
       <div class="inline-block w-12 h-12 border-4 border-tan border-t-transparent rounded-full animate-spin mb-6"></div>
-      <p class="text-xl text-muted font-medium">Matching your perfect license...</p>
+      <p class="text-xl text-muted font-medium italic serif tracking-wide">Matching your perfect license...</p>
+      <p class="text-xs text-muted/60 mt-2 uppercase tracking-widest font-bold">Scanning 25+ open source licenses</p>
     </div>
   </div>
   <div v-else class="flex-1 flex flex-col items-center justify-center py-32">
@@ -23,10 +24,28 @@
   const route = useRoute()
   const slug  = route.params.slug as string
 
-  const { data: license, status } = await useAsyncData(`license-${slug}`, async () => {
+  // Minimum loading time for "effect"
+  const minLoadingFinished = ref(false)
+  onMounted(() => {
+    setTimeout(() => {
+      minLoadingFinished.value = true
+    }, 2000)
+  })
+
+  // We fetch the data as fast as possible, but 'lazy' ensures we navigate immediately
+  const { data: license, status } = useAsyncData(`license-${slug}`, async () => {
     const result = await queryCollection('licenses').path(`/licenses/${slug}`).first()
     if (!result) return null
     return result as unknown as License
+  }, { lazy: true })
+
+  // Show result only when data is loaded AND the minimum 2s have passed
+  const showResult = computed(() => {
+    return status.value==='success' && minLoadingFinished.value && !!license.value
+  })
+
+  const isPending = computed(() => {
+    return status.value==='pending' || !minLoadingFinished.value
   })
 
   // SEO

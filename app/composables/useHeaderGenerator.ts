@@ -10,7 +10,8 @@ export function useHeaderGenerator(license: MaybeRefOrGetter<License | null>) {
     email:            '',
     website:          '',
     language:         'php',
-    customProperties: []
+    customProperties: [],
+    excludeComments:  false
   })
 
   const generateRawLines = (lic: License | null): string[] => {
@@ -52,6 +53,11 @@ export function useHeaderGenerator(license: MaybeRefOrGetter<License | null>) {
   const generatedHeaderCode = computed(() => {
     const lic      = toValue(license)
     const rawLines = generateRawLines(lic)
+
+    if (formState.value.excludeComments) {
+      return rawLines.join('\n')
+    }
+    
     return formatComment(formState.value.language, rawLines)
   })
 

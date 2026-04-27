@@ -7,7 +7,7 @@
       </h3>
     </div>
 
-    <div class="bg-white rounded-3xl border border-border shadow-sm overflow-hidden flex flex-col min-h-0 min-h-[500px]">
+    <div class="bg-white rounded-3xl border border-border shadow-sm overflow-hidden flex flex-col max-h-[600px]">
       <div class="bg-cream-dark p-4 border-b border-border flex items-center justify-between shrink-0">
         <div class="flex gap-2">
           <div class="w-3 h-3 rounded-full bg-red-400"></div>

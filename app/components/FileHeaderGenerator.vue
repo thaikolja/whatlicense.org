@@ -15,25 +15,27 @@
 
           <div class="space-y-4">
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1">Project Name</label>
-              <input v-model="formState.projectName" placeholder="e.g. My Awesome Library" class="input-field" />
+              <label for="projectName" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Project
+                Name</label>
+              <input id="projectName" v-model="formState.projectName" placeholder="e.g. My Awesome Library" class="input-field" />
             </div>
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1">Description</label>
-              <input v-model="formState.description" placeholder="A short description" class="input-field" />
+              <label for="projectDesc" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Description</label>
+              <input id="projectDesc" v-model="formState.description" placeholder="A short description" class="input-field" />
             </div>
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1">Author Name</label>
-              <input v-model="formState.authorName" placeholder="Your Name or Company" class="input-field" />
+              <label for="authorName" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Author
+                Name</label>
+              <input id="authorName" v-model="formState.authorName" placeholder="Your Name or Company" class="input-field" />
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1">Email</label>
-                <input v-model="formState.email" type="email" placeholder="hello@example.com" class="input-field" />
+                <label for="email" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Email</label>
+                <input id="email" v-model="formState.email" type="email" placeholder="hello@example.com" class="input-field" />
               </div>
               <div>
-                <label class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1">Website</label>
-                <input v-model="formState.website" placeholder="https://..." class="input-field" />
+                <label for="website" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Website</label>
+                <input id="website" v-model="formState.website" placeholder="https://..." class="input-field" />
               </div>
             </div>
           </div>
@@ -60,15 +62,29 @@
           <div class="flex items-center justify-between mb-6 shrink-0 relative z-10">
             <div class="flex items-center gap-4">
               <select
-                  v-model="formState.language" class="bg-charcoal text-cream text-xs font-bold rounded-lg px-3 py-1.5 border border-bark outline-none focus:ring-1 focus:ring-tan">
+                  v-model="formState.language" class="bg-charcoal text-cream text-xs font-bold rounded-lg px-3 py-1.5 border border-bark outline-none focus:ring-1 focus:ring-tan cursor-pointer">
                 <option v-for="[value, label] in Object.entries(LANGUAGE_LABELS)" :key="value" :value="value">{{
                     label
                   }}
                 </option>
               </select>
-              <div class="text-sm tracking-widest uppercase font-bold text-tan/70">Live Preview</div>
+              <div class="text-sm tracking-widest uppercase font-bold text-tan/70 hidden sm:block">Preview</div>
             </div>
-            <CopyButton :text="generatedHeaderCode" />
+
+            <div class="flex items-center gap-6">
+              <!-- No Comments Toggle -->
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer group flex items-center gap-2">
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-tan hover:text-white transition-colors">No Comments</span>
+                  <div class="relative inline-flex items-center">
+                    <input type="checkbox" v-model="formState.excludeComments" class="sr-only peer">
+                    <div class="w-8 h-4 bg-bark rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-tan"></div>
+                  </div>
+                </label>
+              </div>
+
+              <CopyButton :text="generatedHeaderCode" label="Copy" variant="light" />
+            </div>
           </div>
 
           <div class="flex-1 overflow-auto relative z-10 custom-scrollbar pb-4 min-h-0">
@@ -106,8 +122,19 @@
   }
 
   const validatedHighlightedCode = computed(() => {
-    const code        = generatedHeaderCode.value
-    const highlighted = hljs.highlight(code, { language: formState.value.language==='javascript' ? 'javascript': formState.value.language==='php' ? 'php': 'plaintext' }).value
+    const code = generatedHeaderCode.value
+    const lang = formState.value.language
+
+    // Determine hljs language
+    let hljsLang = 'plaintext'
+    if (lang==='javascript' || lang==='typescript') hljsLang = 'javascript'
+    else if (lang==='php') hljsLang = 'php'
+    else if (lang==='python') hljsLang = 'python'
+    else if (lang==='ruby') hljsLang = 'ruby'
+    else if (lang==='html') hljsLang = 'xml'
+    else if (lang==='css') hljsLang = 'css'
+
+    const highlighted = hljs.highlight(code, { language: hljsLang }).value
 
     // Custom validation for @tags
     const customKeys = formState.value.customProperties.map(p => p.key)

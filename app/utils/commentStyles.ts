@@ -77,6 +77,7 @@ const shellLine: CommentFormatter = (lines) => {
 const FORMATTERS: Record<CommentLanguage, CommentFormatter> = {
   php:        cStyleBlock,
   javascript: cStyleBlock,
+  typescript: cStyleBlock,
   python:     hashLine,
   ruby:       hashLine,
   html:       htmlBlock,
@@ -117,6 +118,7 @@ export function getFileExtension(language: CommentLanguage): string {
   const extensions: Record<CommentLanguage, string> = {
     php:        '.php',
     javascript: '.js',
+    typescript: '.ts',
     python:     '.py',
     ruby:       '.rb',
     html:       '.html',
@@ -131,7 +133,8 @@ export function getFileExtension(language: CommentLanguage): string {
  */
 export const LANGUAGE_LABELS: Record<CommentLanguage, string> = {
   php:        'PHP',
-  javascript: 'JavaScript / TS',
+  javascript: 'JavaScript',
+  typescript: 'TypeScript',
   python:     'Python',
   ruby:       'Ruby',
   html:       'HTML / XML',
