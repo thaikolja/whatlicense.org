@@ -244,3 +244,12 @@ h1, h2, h3, .serif {
 .delay-400 {
   animation-delay: 400ms;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Footer                                                            */
+/* ------------------------------------------------------------------ */
+footer {
+  a {
+    @apply text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:text-charcoal transition-colors;
+  }
+}

@@ -7,6 +7,12 @@
  *               ESLint, Content) and defines global application metadata.
  * @see          https://nuxt.com/docs/api/configuration/nuxt-config
  */
+import { readdirSync }   from 'fs'
+import { join }          from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
@@ -40,6 +46,10 @@ export default defineNuxtConfig({
     },
     display:  'swap',
     preload:  true
+  },
+
+  ogImage: {
+    enabled: false
   },
 
   /* ------------------------------------------------------------------ */
@@ -85,19 +95,34 @@ export default defineNuxtConfig({
     public: {
       debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true',
       links:           {
-        paypal: 'https://paypal.me/thaikolja',
+        paypal:  'https://paypal.me/thaikolja',
         termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
-        github:    'https://github.com/thaikolja/whatlicense.io'
+        github:  'https://github.com/thaikolja/whatlicense.io',
+        twitter: 'https://twitter.com/whatlicenseio',
+        email:   'mailto:kolja.nolte@gmail.com'
       }
     }
   },
 
   vite: {
+    build: {
+      sourcemap: false
+    },
     optimizeDeps: {
       include: [
         'highlight.js',
         '@unhead/schema-org/vue'
       ]
+    }
+  },
+
+  nitro: {
+    preset:    'cloudflare_pages_static',
+    prerender: {
+      crawlLinks: true,
+      routes:     readdirSync(join(__dirname, 'content', 'licenses'))
+                  .filter(f => f.endsWith('.md'))
+                  .map(f => `/licenses/${f.replace(/\.md$/, '')}`)
     }
   }
 })

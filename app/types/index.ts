@@ -166,6 +166,19 @@ export interface HeaderFormState {
   excludeComments: boolean
 }
 
+export interface IconLink {
+  name: string
+  icon: string
+  link: string
+}
+
+export interface FooterLink {
+  name: string
+  link: string
+  icon?: string
+  title: string
+}
+
 /* ------------------------------------------------------------------ */
 /*  Header Validation                                                  */
 
