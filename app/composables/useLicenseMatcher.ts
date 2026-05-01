@@ -22,7 +22,9 @@ export function useLicenseMatcher() {
       return null
     }
 
-    console.log('Matcher: User selected tags:', userTags)
+    if (import.meta.dev) {
+      console.log('Matcher: User selected tags:', userTags)
+    }
 
     let bestMatch: License | null = null
     let highestScore              = -1
@@ -64,7 +66,9 @@ export function useLicenseMatcher() {
         if (userTags.includes(t2 as any) && traits.includes(t1 as any)) score -= 2
       }
 
-      console.log(`Matcher: Checking ${license.spdx}, Score: ${score}`)
+      if (import.meta.dev) {
+        console.log(`Matcher: Checking ${license.spdx}, Score: ${score}`)
+      }
 
       if (score > highestScore) {
         highestScore = score
@@ -77,7 +81,9 @@ export function useLicenseMatcher() {
       }
     }
 
-    console.log('Matcher: Best match found:', bestMatch?.spdx)
+    if (import.meta.dev) {
+      console.log('Matcher: Best match found:', bestMatch?.spdx)
+    }
     return bestMatch
   }
 

@@ -28,10 +28,10 @@
     <LicenseOverview :license="license" />
 
     <!-- File Header Section -->
-    <FileHeaderGenerator :license="license" />
+    <LazyFileHeaderGenerator :license="license" />
 
     <!-- Full Text Section -->
-    <FullLicenseText :license="license" />
+    <LazyFullLicenseText :license="license" />
   </div>
 </template>
 

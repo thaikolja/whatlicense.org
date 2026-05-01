@@ -1,8 +1,8 @@
 <template>
   <div>
-    <IntroScreen v-if="currentScreen === 'intro'" @start="startWizard" />
+    <LazyIntroScreen v-if="currentScreen === 'intro'" @start="startWizard" />
 
-    <QuizWizard
+    <LazyQuizWizard
         v-if="currentScreen === 'quiz' && currentQuestion" :question="currentQuestion" :current-step="currentStep" :total-steps="totalSteps" :answers="answers" :can-advance="canAdvance" @select="selectOption" @next="handleNext" @prev="prevStep" />
 
     <div v-if="currentScreen === 'result'" class="text-center pt-24 pb-16">

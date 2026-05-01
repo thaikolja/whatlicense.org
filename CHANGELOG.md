@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Initial release of whatlicense.io.
+- Initial release of whatlicense.org.
 - 5-step license recommendation wizard.
 - Weighted matching algorithm for high-accuracy results.
 - Support for 26+ open-source licenses.

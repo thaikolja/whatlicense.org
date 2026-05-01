@@ -65,7 +65,7 @@
           </svg>
         </div>
         <span class="text-xl font-bold tracking-tight text-charcoal">
-          whatlicense<span class="text-tan">.io</span>
+          whatlicense<span class="text-tan">.org</span>
         </span></a>
 
       <!-- Navigation & Socials -->

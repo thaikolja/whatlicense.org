@@ -1,6 +1,6 @@
-# Contributing to whatlicense.io
+# Contributing to whatlicense.org
 
-Thank you for contributing to whatlicense.io!
+Thank you for contributing to whatlicense.org!
 
 ## How to add a new License
 

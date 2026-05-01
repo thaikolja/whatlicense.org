@@ -1,7 +1,7 @@
 //noinspection JSUnusedGlobalSymbols
 
 /**
- * Nuxt 4 configuration for whatlicense.io.
+ * Nuxt 4 configuration for whatlicense.org.
  *
  * @description  Registers all required modules (Tailwind, Google Fonts, SEO,
  *               ESLint, Content) and defines global application metadata.
@@ -20,33 +20,17 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
-    '@nuxtjs/google-fonts',
+    '@nuxt/fonts',
     '@nuxtjs/seo',
     '@nuxt/eslint',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@simpleanalytics/nuxt'
   ],
 
   /* ------------------------------------------------------------------ */
   /*  CSS                                                                */
   /* ------------------------------------------------------------------ */
   css: [ '~/assets/css/main.css' ],
-
-  /* ------------------------------------------------------------------ */
-  /*  Google Fonts                                                       */
-  /* ------------------------------------------------------------------ */
-  googleFonts: {
-    families: {
-      'Playfair Display': {
-        wght: [ 400, 600, 700 ],
-        ital: [ 400, 600 ]
-      },
-      'Karla':            {
-        wght: [ 400, 500, 600, 700 ]
-      }
-    },
-    display:  'swap',
-    preload:  true
-  },
 
   ogImage: {
     enabled: false
@@ -56,8 +40,8 @@ export default defineNuxtConfig({
   /*  SEO defaults                                                       */
   /* ------------------------------------------------------------------ */
   site: {
-    url:           'https://whatlicense.io',
-    name:          'whatlicense.io',
+    url:  'https://whatlicense.org',
+    name: 'whatlicense.org',
     description:   'Find the perfect open-source license for your project. Answer a few simple questions and get an instant recommendation with ready-to-use file headers.',
     defaultLocale: 'en'
   },
@@ -97,20 +81,34 @@ export default defineNuxtConfig({
       links:           {
         paypal:  'https://paypal.me/thaikolja',
         termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
-        github:  'https://github.com/thaikolja/whatlicense.io',
-        twitter: 'https://twitter.com/whatlicenseio',
+        github:  'https://github.com/thaikolja/whatlicense.org',
+        twitter: 'https://twitter.com/whatlicenseorg',
         email:   'mailto:kolja.nolte@gmail.com'
       }
     }
   },
 
   vite: {
-    build: {
-      sourcemap: false
+    build:        {
+      sourcemap:     false,
+      minify:        'terser',
+      terserOptions: {
+        compress: {
+          drop_console:  true,
+          drop_debugger: true,
+          pure_funcs:    [ 'console.log', 'console.info' ]
+        }
+      }
     },
     optimizeDeps: {
       include: [
-        'highlight.js',
+        'highlight.js/lib/core',
+        'highlight.js/lib/languages/javascript',
+        'highlight.js/lib/languages/python',
+        'highlight.js/lib/languages/php',
+        'highlight.js/lib/languages/ruby',
+        'highlight.js/lib/languages/xml',
+        'highlight.js/lib/languages/css',
         '@unhead/schema-org/vue'
       ]
     }

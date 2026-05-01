@@ -118,8 +118,23 @@
 
 <script setup lang="ts">
   import { ref, computed }                from 'vue'
-  import hljs                             from 'highlight.js'
+  import hljs       from 'highlight.js/lib/core'
+  import javascript from 'highlight.js/lib/languages/javascript'
+  import python     from 'highlight.js/lib/languages/python'
+  import php        from 'highlight.js/lib/languages/php'
+  import ruby       from 'highlight.js/lib/languages/ruby'
+  import xml        from 'highlight.js/lib/languages/xml'
+  import css        from 'highlight.js/lib/languages/css'
+
   import 'highlight.js/styles/atom-one-dark.css'
+
+  // Register languages
+  hljs.registerLanguage('javascript', javascript)
+  hljs.registerLanguage('python', python)
+  hljs.registerLanguage('php', php)
+  hljs.registerLanguage('ruby', ruby)
+  hljs.registerLanguage('xml', xml)
+  hljs.registerLanguage('css', css)
   import type { License, CustomProperty } from '~/types'
   import { LANGUAGE_LABELS }              from '~/utils/commentStyles'
   import { useHeaderGenerator }           from '~/composables/useHeaderGenerator'

@@ -57,7 +57,7 @@
 
   // SEO
   useSeoMeta({
-    title:       license.value ? `${license.value.spdx} - whatlicense.io`: 'License Not Found',
+    title: license.value ? `${license.value.spdx} - whatlicense.org`: 'License Not Found',
     description: license.value?.subtitle || 'License details'
   })
 </script>

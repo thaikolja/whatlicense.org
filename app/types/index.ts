@@ -1,10 +1,10 @@
 /**
- * Core TypeScript type definitions for the whatlicense.io application.
+ * Core TypeScript type definitions for the whatlicense.org application.
  *
  * @description  Defines all shared interfaces and enums used across composables,
  *               components, and data modules. Centralised here to enforce type
  *               safety and keep the codebase DRY.
- * @author       whatlicense.io
+ * @author       whatlicense.org
  * @license      MIT
  */
 
