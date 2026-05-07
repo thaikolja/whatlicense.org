@@ -1,2 +1,25 @@
-# Ignore AI-generated files and directories
+# Ignore system and IDE files
+.DS_Store
+.idea/
+.node_modules
+.node
+node_modules/
+.nuxt/
+dist/
+
+# Generated files
+just a test Kopie.txt
+just a test.txt
+
+# Other directories
+.content/
+.app/
+
+# Environment files
+.env
+
+# Ignored structure
+.data/
+
+# Ignore AI traces
 .claude/
