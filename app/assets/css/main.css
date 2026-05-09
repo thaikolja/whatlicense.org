@@ -140,11 +140,87 @@ h1, h2, h3, .serif {
   transform:    translateY(-4px);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Scrollbar utilities                                                */
+/* ------------------------------------------------------------------ */
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width:  6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background:    rgba(181, 155, 132, 0.3);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(181, 155, 132, 0.5);
+  }
+}
+
 .opt-card.selected {
-  border-color:     var(--color-charcoal);
-  background-color: #ffffff;
-  box-shadow:       0 12px 40px -12px rgba(67, 58, 49, 0.2);
-  transform:        translateY(-4px);
+  @apply border-charcoal bg-white shadow-[0_12px_40px_-12px_rgba(67,58,49,0.2)] -translate-y-1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Badges & Labels                                                    */
+/* ------------------------------------------------------------------ */
+.badge {
+  @apply animate-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-border text-xs font-bold tracking-widest uppercase text-tan mb-8 shadow-sm;
+}
+
+.label-caps {
+  @apply text-[10px] font-bold uppercase tracking-wider text-muted;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Standard Cards                                                     */
+/* ------------------------------------------------------------------ */
+.card {
+  @apply bg-white p-6 rounded-2xl border border-border shadow-sm;
+}
+
+.step-num {
+  @apply w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 font-serif text-xl;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Modals & Dialogs                                                   */
+/* ------------------------------------------------------------------ */
+.modal-container {
+  @apply relative w-full max-w-xl bg-cream rounded-3xl shadow-2xl border border-border overflow-hidden pointer-events-auto;
+}
+
+.modal-header {
+  @apply px-6 py-5 border-b border-border flex items-center justify-between bg-white;
+}
+
+.modal-body {
+  @apply px-6 py-6 max-h-[60vh] overflow-y-auto custom-scrollbar;
+}
+
+.modal-footer {
+  @apply px-6 py-5 border-t border-border bg-white;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Special Buttons                                                    */
+/* ------------------------------------------------------------------ */
+.btn-dashed {
+  @apply w-full py-3 rounded-xl border border-dashed border-tan text-tan hover:bg-cream-dark transition-all text-sm font-bold flex items-center justify-center gap-2;
+}
+
+.btn-icon {
+  @apply p-2 text-muted hover:text-charcoal transition-colors hover:bg-cream-dark rounded-full flex items-center justify-center;
+}
+
+.btn-delete {
+  @apply p-2 text-red-400 hover:text-red-600 transition-colors shrink-0;
 }
 
 /* ------------------------------------------------------------------ */

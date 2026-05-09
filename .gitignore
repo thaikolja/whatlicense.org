@@ -6,10 +6,9 @@
 node_modules/
 .nuxt/
 dist/
-
-# Generated files
-just a test Kopie.txt
-just a test.txt
+.cache
+DEPLOYMENT.md
+AGENTS.md
 
 # Other directories
 .content/

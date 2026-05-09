@@ -5,44 +5,41 @@
       <h3 class="text-muted text-lg">Personalize your license headers before copying them to your files.</h3>
     </div>
 
-    <div class="bg-white rounded-3xl border border-border shadow-sm overflow-hidden p-6">
-      <div class="grid lg:grid-cols-12 gap-6 w-full">
+    <div class="card overflow-hidden !p-0">
+      <div class="grid lg:grid-cols-12 gap-6 w-full p-6">
         <!-- Editor Left Side -->
-        <div class="lg:col-span-5 bg-cream-dark p-6 rounded-2xl border border-border flex flex-col w-full h-full">
-          <div class="flex items-center justify-between mb-6">
+        <form @submit.prevent class="lg:col-span-5 bg-cream-dark p-6 rounded-2xl border border-border flex flex-col w-full h-full">
+          <header class="flex items-center justify-between mb-6">
             <div class="text-sm tracking-widest uppercase font-bold text-tan">Project Details</div>
-          </div>
+          </header>
 
-          <div class="space-y-4">
+          <fieldset class="space-y-4 border-none p-0 m-0">
             <div>
-              <label for="projectName" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Project
-                Name</label>
+              <label for="projectName" class="block label-caps mb-1 ml-1 cursor-pointer">Project Name</label>
               <input id="projectName" v-model="formState.projectName" placeholder="e.g. My Awesome Library" class="input-field" />
             </div>
             <div>
-              <label for="projectDesc" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Description</label>
+              <label for="projectDesc" class="block label-caps mb-1 ml-1 cursor-pointer">Description</label>
               <input id="projectDesc" v-model="formState.description" placeholder="A short description" class="input-field" />
             </div>
             <div>
-              <label for="authorName" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Author
-                Name</label>
+              <label for="authorName" class="block label-caps mb-1 ml-1 cursor-pointer">Author Name</label>
               <input id="authorName" v-model="formState.authorName" placeholder="Your Name or Company" class="input-field" />
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label for="email" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Email</label>
+                <label for="email" class="block label-caps mb-1 ml-1 cursor-pointer">Email</label>
                 <input id="email" v-model="formState.email" type="email" placeholder="hello@example.com" class="input-field" />
               </div>
               <div>
-                <label for="website" class="block text-xs font-bold uppercase tracking-wide text-muted mb-1 ml-1 cursor-pointer">Website</label>
+                <label for="website" class="block label-caps mb-1 ml-1 cursor-pointer">Website</label>
                 <input id="website" v-model="formState.website" placeholder="https://..." class="input-field" />
               </div>
             </div>
-          </div>
+          </fieldset>
 
           <div class="mt-8 pt-8 border-t border-border">
-            <button
-                @click="isModalOpen = true" class="w-full py-3 rounded-xl border border-border border-dashed bg-white text-charcoal font-bold hover:bg-cream-dark transition-colors flex items-center justify-center gap-2">
+            <button @click="isModalOpen = true" class="btn-dashed bg-white">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
@@ -56,7 +53,7 @@
             </div>
 
             <!-- Monetization: Subtle Affiliate Link -->
-            <div class="bg-white border border-border rounded-xl p-4 transition-colors hover:border-tan group">
+            <aside class="bg-white border border-border rounded-xl p-4 transition-colors hover:border-tan group">
               <div class="flex items-center gap-2 mb-1">
                 <span class="text-[9px] font-bold uppercase tracking-widest text-tan">Sponsored</span>
               </div>
@@ -70,13 +67,13 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </a>
-            </div>
+            </aside>
           </div>
-        </div>
+        </form>
 
         <!-- Live Preview Right Side -->
-        <div class="lg:col-span-7 bg-espresso p-6 rounded-2xl flex flex-col overflow-hidden min-h-0 relative group min-h-[400px]">
-          <div class="flex items-center justify-between mb-6 shrink-0 relative z-10">
+        <section class="lg:col-span-7 bg-espresso p-6 rounded-2xl flex flex-col overflow-hidden min-h-0 relative group min-h-[400px]">
+          <header class="flex items-center justify-between mb-6 shrink-0 relative z-10">
             <div class="flex items-center gap-4">
               <select
                   v-model="formState.language" class="bg-charcoal text-cream text-xs font-bold rounded-lg px-3 py-1.5 border border-bark outline-none focus:ring-1 focus:ring-tan cursor-pointer">
@@ -102,12 +99,12 @@
 
               <CopyButton :text="generatedHeaderCode" label="Copy" variant="light" />
             </div>
-          </div>
+          </header>
 
           <div class="flex-1 overflow-auto relative z-10 custom-scrollbar pb-4 min-h-0">
             <pre class="font-mono text-sm leading-relaxed text-cream/90 m-0 w-full whitespace-pre pointer-events-auto h-full" v-html="validatedHighlightedCode"></pre>
           </div>
-        </div>
+        </section>
       </div>
     </div>
 
@@ -176,22 +173,3 @@
   })
 
 </script>
-<style scoped>
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background:    rgba(181, 155, 132, 0.3);
-    border-radius: 4px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(181, 155, 132, 0.5);
-  }
-</style>

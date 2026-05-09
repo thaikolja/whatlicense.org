@@ -23,8 +23,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxtjs/seo',
     '@nuxt/eslint',
-    '@nuxt/content',
-    '@simpleanalytics/nuxt'
+    '@nuxt/content'
   ],
 
   /* ------------------------------------------------------------------ */
@@ -42,30 +41,29 @@ export default defineNuxtConfig({
   site: {
     url:  'https://whatlicense.org',
     name: 'whatlicense.org',
-    description:   'Find the perfect open-source license for your project. Answer a few simple questions and get an instant recommendation with ready-to-use file headers.',
+    description: 'Find out "what license do I need" for your code. Use our open-source license header generator to get perfect recommendations and file headers instantly.',
     defaultLocale: 'en'
   },
 
   app: {
     head: {
+      titleTemplate: '%s | whatlicense.org',
       title: 'Find the Perfect License for Your Code',
       htmlAttrs: { lang: 'en' },
       meta:      [
         { name: 'theme-color', content: '#fdfaf6' }
+      ],
+      script:        [
+        {
+          src:                'https://scripts.simpleanalytics.com/latest.js',
+          async:              true,
+          defer:              true,
+          'data-collect-dnt': 'false'
+        }
       ]
     }
   },
 
-  /* ------------------------------------------------------------------ */
-  /*  Content (license texts via SQLite)                                 */
-  /* ------------------------------------------------------------------ */
-  content: {
-    build: {
-      markdown: {
-        highlight: false
-      }
-    }
-  },
 
   /* ------------------------------------------------------------------ */
   /*  TypeScript                                                         */
@@ -111,6 +109,17 @@ export default defineNuxtConfig({
         'highlight.js/lib/languages/css',
         '@unhead/schema-org/vue'
       ]
+    }
+  },
+
+  content: {
+    database: {
+      type: 'sqlite'
+    },
+    build:    {
+      markdown: {
+        highlight: false
+      }
     }
   },
 

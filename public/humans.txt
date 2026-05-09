@@ -1,0 +1,12 @@
+/* TEAM */
+Founder & Developer: Kolja Nolte
+Twitter: @whatlicenseorg
+Location: Bangkok, Thailand
+
+/* SITE */
+Last update: 2026/05/10
+Language: English
+Doctype: HTML5
+Standards: Semantic HTML, Tailwind CSS v4, TypeScript
+Components: Nuxt 4, Nuxt UI, Nuxt Content v3
+Software: Vite, Nitro, Bun, Cloudflare Pages

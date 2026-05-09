@@ -1,0 +1,6 @@
+name = "whatlicense-org"
+compatibility_date = "2024-04-01"
+pages_build_output_dir = "dist"
+
+[vars]
+NUXT_PUBLIC_DEBUG_AUTO_SELECT = "false"

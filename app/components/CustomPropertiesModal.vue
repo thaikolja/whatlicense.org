@@ -11,21 +11,20 @@
         enter-active-class="transition duration-400 ease-out delay-100" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="localIsOpen" class="fixed inset-0 z-[110] flex items-center justify-center p-4 pointer-events-none">
         <!-- Modal content -->
-        <div class="relative w-full max-w-xl bg-cream rounded-3xl shadow-2xl border border-border overflow-hidden pointer-events-auto">
-          <div class="px-6 py-5 border-b border-border flex items-center justify-between bg-white">
+        <div class="modal-container">
+          <header class="modal-header">
             <div>
               <h3 class="serif text-2xl font-bold text-charcoal">Custom Properties</h3>
               <p class="text-xs text-muted mt-1">Add your own @ properties to the file header.</p>
             </div>
-            <button @click="closeModal" class="text-muted hover:text-charcoal transition-colors p-2 hover:bg-cream-dark rounded-full">
+            <button @click="closeModal" class="btn-icon">
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-          </div>
+          </header>
 
-          <div class="px-6 py-6 max-h-[60vh] overflow-y-auto custom-scrollbar" @keydown.enter="save">
+          <main class="modal-body" @keydown.enter="save">
             <div v-if="localProperties.length > 0" class="flex gap-2 mb-2 px-1">
-              <label class="w-1/3 text-[10px] font-bold uppercase tracking-wider text-muted">Property Key</label>
-              <label class="flex-1 text-[10px] font-bold uppercase tracking-wider text-muted">Value</label>
+              <label class="w-1/3 label-caps">Property Key</label> <label class="flex-1 label-caps">Value</label>
               <div class="w-9"></div> <!-- Spacer for delete button -->
             </div>
             <div class="space-y-3 mb-6">
@@ -35,8 +34,7 @@
                   <input v-model="prop.key" placeholder="key" class="input-field font-mono text-xs" style="padding-left: 1.25rem !important" />
                 </div>
                 <input v-model="prop.value" placeholder="value" class="input-field flex-1 text-xs" />
-                <button
-                    @click="removeProperty(index)" class="p-2 text-red-400 hover:text-red-600 transition-colors shrink-0">
+                <button @click="removeProperty(index)" class="btn-delete">
                   <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
               </div>
@@ -45,19 +43,17 @@
               </div>
             </div>
 
-            <button
-                @click="addProperty" class="w-full py-3 rounded-xl border border-dashed border-tan text-tan hover:bg-cream-dark transition-all text-sm font-bold flex items-center justify-center gap-2">
+            <button @click="addProperty" class="btn-dashed">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
               Add Property
             </button>
-          </div>
+          </main>
 
-          <div class="px-6 py-5 border-t border-border bg-white">
-            <button
-                @click="save" class="btn w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg">
+          <footer class="modal-footer">
+            <button @click="save" class="btn w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg">
               Save Properties
             </button>
-          </div>
+          </footer>
         </div>
       </div>
     </Transition>
@@ -115,22 +111,3 @@
     closeModal()
   }
 </script>
-
-<style scoped>
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background:    rgba(181, 155, 132, 0.3);
-    border-radius: 4px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(181, 155, 132, 0.5);
-  }
-</style>
