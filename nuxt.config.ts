@@ -39,8 +39,8 @@ export default defineNuxtConfig({
   /*  SEO defaults                                                       */
   /* ------------------------------------------------------------------ */
   site: {
-    url:  'https://whatlicense.org',
-    name: 'whatlicense.org',
+    url:         'https://whatlicense.org',
+    name:        'whatlicense.org',
     description: 'Find out "what license do I need" for your code. Use our open-source license header generator to get perfect recommendations and file headers instantly.',
     defaultLocale: 'en'
   },
@@ -48,7 +48,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       titleTemplate: '%s | whatlicense.org',
-      title: 'Find the Perfect License for Your Code',
+      title:     'Find the Perfect License for Your Code',
       htmlAttrs: { lang: 'en' },
       meta:      [
         { name: 'theme-color', content: '#fdfaf6' }
@@ -113,9 +113,9 @@ export default defineNuxtConfig({
   },
 
   content: {
-    database: {
+    /* database: {
       type: 'sqlite'
-    },
+     }, */
     build:    {
       markdown: {
         highlight: false
