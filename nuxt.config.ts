@@ -52,14 +52,6 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'en' },
       meta:      [
         { name: 'theme-color', content: '#fdfaf6' }
-      ],
-      script:        [
-        {
-          src:                'https://scripts.simpleanalytics.com/latest.js',
-          async:              true,
-          defer:              true,
-          'data-collect-dnt': 'false'
-        }
       ]
     }
   },
@@ -77,7 +69,7 @@ export default defineNuxtConfig({
     public: {
       debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true',
       links:           {
-        paypal:  'https://paypal.me/thaikolja',
+        paypal:  'https://paypal.me/thaikolja/10',
         termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
         github:  'https://github.com/thaikolja/whatlicense.org',
         twitter: 'https://twitter.com/whatlicenseorg',
@@ -114,9 +106,9 @@ export default defineNuxtConfig({
 
   content: {
     /* database: {
-      type: 'sqlite'
+     type: 'sqlite'
      }, */
-    build:    {
+    build: {
       markdown: {
         highlight: false
       }

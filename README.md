@@ -1,9 +1,7 @@
 # whatlicense.org
 
-Find the perfect open-source license for your project. Answer a few simple questions and get an instant recommendation
-with ready-to-use file headers.
-
-![whatlicense.org Preview](https://whatlicense.org/og-image.png)
+**whatlicense.org** helps you to find the perfect open-source license for your project. Answer a few simple questions
+and get an instant recommendation with ready-to-use file headers.
 
 ## Features
 
