@@ -7,8 +7,8 @@ node_modules/
 .nuxt/
 dist/
 .cache
-DEPLOYMENT.md
-AGENTS.md
+.wrangler/
+wrangler.toml
 
 # Other directories
 .content/
