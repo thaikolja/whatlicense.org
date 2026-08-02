@@ -9,50 +9,48 @@ import type { CommentLanguage } from '~/types'
 /** A function that wraps raw content lines in language-specific comment syntax. */
 type CommentFormatter = (lines: readonly string[]) => string
 
-// ... C-style block comment (PHP / JS / TS etc.)
+// C-style block comment (PHP / JS / TS etc.)
 const cStyleBlock: CommentFormatter = (lines) => {
-  // ... prefix every line with " * "
+  // prefix every line with " * "
   const body = lines.map(line => ` * ${line}`).join('\n')
   return `/**\n${body}\n */`
 }
 
-// ... hash line comments (Python / Ruby / Shell)
+// hash line comments (Python / Ruby / Shell)
 const hashLine: CommentFormatter = (lines) => {
-  // ... one # per line
+  // one # per line
   return lines.map(line => `# ${line}`).join('\n')
 }
 
-// ... HTML/XML comment block
+// HTML/XML comment block
 const htmlBlock: CommentFormatter = (lines) => {
-  // ... indent body a bit inside <!-- -->
+  // indent body a bit inside <!-- -->
   const body = lines.map(line => `  ${line}`).join('\n')
   return `<!--\n${body}\n-->`
 }
 
-// ... CSS block comment
+// CSS block comment
 const cssBlock: CommentFormatter = (lines) => {
-  // ... same star-prefix vibe as C-style, without the second *
+  // same star-prefix vibe as C-style, without the second *
   const body = lines.map(line => ` * ${line}`).join('\n')
   return `/*\n${body}\n */`
 }
 
-// ... shell is also hash-style (same as python/ruby for headers)
+// shell is also hash-style (same as python/ruby for headers)
 const shellLine: CommentFormatter = (lines) => {
-  // ... identical to hashLine; kept separate for clarity in the map
+  // identical to hashLine; kept separate for clarity in the map
   return lines.map(line => `# ${line}`).join('\n')
 }
 
 /** Maps each supported language to its formatter. */
 const FORMATTERS: Record<CommentLanguage, CommentFormatter> = {
-  // ... C-family share /** */
+  // C-family share /** */
   php:        cStyleBlock,
   javascript: cStyleBlock,
   typescript: cStyleBlock,
-  // ... # languages
   python:     hashLine,
   ruby:       hashLine,
   shell:      shellLine,
-  // ... markup / stylesheets
   html:       htmlBlock,
   css:        cssBlock
 }
@@ -65,7 +63,7 @@ const FORMATTERS: Record<CommentLanguage, CommentFormatter> = {
  * @returns        Formatted comment block string.
  */
 export function formatComment(language: CommentLanguage, lines: readonly string[]): string {
-  // ... pick formatter and run it
+  // pick formatter and run it
   const formatter = FORMATTERS[language]
   return formatter(lines)
 }
@@ -77,7 +75,7 @@ export function formatComment(language: CommentLanguage, lines: readonly string[
  * @returns        File extension including the dot (e.g. `.php`).
  */
 export function getFileExtension(language: CommentLanguage): string {
-  // ... static map of language → extension
+  // static map of language → extension
   const extensions: Record<CommentLanguage, string> = {
     php:        '.php',
     javascript: '.js',

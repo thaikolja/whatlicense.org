@@ -6,7 +6,7 @@
  * Builds a validator that knows stock JSDoc-ish tags + user custom keys.
  */
 export function useHeaderValidator() {
-  // ... tags we always treat as legit
+  // tags we always treat as legit
   const VALID_ANNOTATIONS = new Set([
     'author', 'copyright', 'license', 'see', 'version',
     'description', 'param', 'return', 'throws', 'deprecated',
@@ -20,16 +20,16 @@ export function useHeaderValidator() {
    * @param customKeys - extra allowed keys from the modal (without @)
    */
   const validateHtmlLines = (htmlCode: string, customKeys: string[]): string => {
-    // ... merge stock + custom keys
+    // merge stock + custom keys
     const allValid = new Set([ ...VALID_ANNOTATIONS, ...customKeys ])
-    // ... one line at a time
+    // one line at a time
     const htmlLines = htmlCode.split('\n')
 
     for (let i = 0; i < htmlLines.length; i++) {
-      // ... first @word on the line, if any
+      // first @word on the line, if any
       const match = htmlLines[i].match(/@([a-zA-Z0-9_]+)/)
       if (match && !allValid.has(match[1])) {
-        // ... mark the whole line so the preview can underline it
+        // mark the whole line so the preview can underline it
         htmlLines[i] = `<span class="error-line">${htmlLines[i]}</span>`
       }
     }
@@ -37,7 +37,7 @@ export function useHeaderValidator() {
     return htmlLines.join('\n')
   }
 
-  // ... public API
+  // public API
   return {
     validateHtmlLines
   }

@@ -2,14 +2,33 @@
   <Teleport to="body">
     <!-- Backdrop Transition (Slower Blur) -->
     <Transition
-        enter-active-class="transition duration-1000 ease-in-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-500 ease-in-out" leave-from-class="opacity-100" leave-to-class="opacity-0">
-      <div v-if="localIsOpen" class="fixed inset-0 z-[100] bg-espresso/40 backdrop-blur-sm transition-[backdrop-filter,opacity] duration-1000" @click="closeModal"></div>
+        enter-active-class="transition duration-1000 ease-in-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-500 ease-in-out"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+    >
+      <div
+          v-if="localIsOpen"
+          class="fixed inset-0 z-[100] bg-espresso/40 backdrop-blur-sm transition-[backdrop-filter,opacity] duration-1000"
+          @click="closeModal"
+      ></div>
     </Transition>
 
     <!-- Modal Content Transition (Faster Fade) -->
     <Transition
-        enter-active-class="transition duration-400 ease-out delay-100" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
-      <div v-if="localIsOpen" class="fixed inset-0 z-[110] flex items-center justify-center p-4 pointer-events-none">
+        enter-active-class="transition duration-400 ease-out delay-100"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+    >
+      <div
+          v-if="localIsOpen"
+          class="fixed inset-0 z-[110] flex items-center justify-center p-4 pointer-events-none"
+      >
         <!-- Modal content -->
         <div class="modal-container">
           <header class="modal-header">
@@ -17,40 +36,110 @@
               <h3 class="serif text-2xl font-bold text-charcoal">Custom Properties</h3>
               <p class="text-xs text-muted mt-1">Add your own @ properties to the file header.</p>
             </div>
-            <button @click="closeModal" class="btn-icon">
-              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            <button
+                @click="closeModal"
+                class="btn-icon"
+            >
+              <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+              >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </header>
 
-          <main class="modal-body" @keydown.enter="save">
-            <div v-if="localProperties.length > 0" class="flex gap-2 mb-2 px-1">
+          <main
+              class="modal-body"
+              @keydown.enter="save"
+          >
+            <div
+                v-if="localProperties.length > 0"
+                class="flex gap-2 mb-2 px-1"
+            >
               <label class="w-1/3 label-caps">Property Key</label> <label class="flex-1 label-caps">Value</label>
               <div class="w-9"></div> <!-- Spacer for delete button -->
             </div>
             <div class="space-y-3 mb-6">
-              <div v-for="(prop, index) in localProperties" :key="index" class="flex gap-2 items-center">
+              <div
+                  v-for="(prop, index) in localProperties"
+                  :key="index"
+                  class="flex gap-2 items-center"
+              >
                 <div class="relative w-1/3">
                   <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted font-mono text-sm z-10 pointer-events-none">@</span>
-                  <input v-model="prop.key" placeholder="key" class="input-field font-mono text-xs" style="padding-left: 1.25rem !important" />
+                  <input
+                      v-model="prop.key"
+                      placeholder="key"
+                      class="input-field font-mono text-xs"
+                      style="padding-left: 1.25rem !important"
+                  />
                 </div>
-                <input v-model="prop.value" placeholder="value" class="input-field flex-1 text-xs" />
-                <button @click="removeProperty(index)" class="btn-delete">
-                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                <input
+                    v-model="prop.value"
+                    placeholder="value"
+                    class="input-field flex-1 text-xs"
+                />
+                <button
+                    @click="removeProperty(index)"
+                    class="btn-delete"
+                >
+                  <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                  >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
                 </button>
               </div>
-              <div v-if="localProperties.length === 0" class="text-center py-10 text-muted text-sm italic border-2 border-dashed border-border rounded-xl bg-cream-dark/50">
+              <div
+                  v-if="localProperties.length === 0"
+                  class="text-center py-10 text-muted text-sm italic border-2 border-dashed border-border rounded-xl bg-cream-dark/50"
+              >
                 No custom properties yet.
               </div>
             </div>
 
-            <button @click="addProperty" class="btn-dashed">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            <button
+                @click="addProperty"
+                class="btn-dashed"
+            >
+              <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+              >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                />
+              </svg>
               Add Property
             </button>
           </main>
 
           <footer class="modal-footer">
-            <button @click="save" class="btn w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg">
+            <button
+                @click="save"
+                class="btn w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg"
+            >
               Save Properties
             </button>
           </footer>
@@ -60,54 +149,57 @@
   </Teleport>
 </template>
 
-<script setup lang="ts">
-  import { ref, watch }          from 'vue'
-  import type { CustomProperty } from '~/types'
+<script
+    setup
+    lang="ts"
+>
+import { ref, watch }          from 'vue'
+import type { CustomProperty } from '~/types'
 
-  const props = defineProps<{
-    isOpen: boolean
-    properties: CustomProperty[]
-  }>()
+const props = defineProps<{
+  isOpen: boolean
+  properties: CustomProperty[]
+}>()
 
-  const emit = defineEmits<{
-    (e: 'close'): void
-    (e: 'update', props: CustomProperty[]): void
-  }>()
+const emit = defineEmits<{
+  (e: 'close'): void
+  (e: 'update', props: CustomProperty[]): void
+}>()
 
-  const localIsOpen     = ref(props.isOpen)
-  const localProperties = ref<CustomProperty[]>([])
+const localIsOpen     = ref(props.isOpen)
+const localProperties = ref<CustomProperty[]>([])
 
-  watch(() => props.isOpen, (newVal) => {
-    localIsOpen.value = newVal
-    if (newVal) {
-      // deep copy
-      localProperties.value = JSON.parse(JSON.stringify(props.properties))
-    }
-  })
+watch(() => props.isOpen, (newVal) => {
+  localIsOpen.value = newVal
+  if (newVal) {
+    // deep copy
+    localProperties.value = JSON.parse(JSON.stringify(props.properties))
+  }
+})
 
-  watch(localIsOpen, (newVal) => {
-    if (!newVal && props.isOpen) {
-      emit('close')
-    }
-  })
-
-  const closeModal = () => {
-    localIsOpen.value = false
+watch(localIsOpen, (newVal) => {
+  if (!newVal && props.isOpen) {
     emit('close')
   }
+})
 
-  const addProperty = () => {
-    localProperties.value.push({ key: '', value: '' })
-  }
+const closeModal = () => {
+  localIsOpen.value = false
+  emit('close')
+}
 
-  const removeProperty = (index: number) => {
-    localProperties.value.splice(index, 1)
-  }
+const addProperty = () => {
+  localProperties.value.push({ key: '', value: '' })
+}
 
-  const save = () => {
-    // filter out completely empty ones
-    const filtered = localProperties.value.filter(p => p.key.trim()!=='' || p.value.trim()!=='')
-    emit('update', filtered)
-    closeModal()
-  }
+const removeProperty = (index: number) => {
+  localProperties.value.splice(index, 1)
+}
+
+const save = () => {
+  // filter out completely empty ones
+  const filtered = localProperties.value.filter(p => p.key.trim() !== '' || p.value.trim() !== '')
+  emit('update', filtered)
+  closeModal()
+}
 </script>

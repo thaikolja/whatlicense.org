@@ -72,9 +72,9 @@ export interface QuizQuestion {
  * selected traits overlap with the license's own trait set.
  */
 export type LicenseTrait =
-    | 'copyleft'           // ... Q1 share-alike family
-    | 'strong-copyleft'    // ... Q4 entire project (GPL-style)
-    | 'weak-copyleft'      // ... Q4 file-level (MPL/LGPL-style)
+    | 'copyleft'           // Q1 share-alike family
+    | 'strong-copyleft'    // Q4 entire project (GPL-style)
+    | 'weak-copyleft'      // Q4 file-level (MPL/LGPL-style)
     | 'permissive'
     | 'commercial-ok'
     | 'non-commercial'
@@ -190,16 +190,19 @@ export interface IconLink {
 export interface FooterLink {
   /** Link text. */
   name: string
-  /** Destination URL. */
+  /** Destination URL or path. */
   link: string
   /** Optional Iconify name. */
   icon?: string
   /** Tooltip / title attribute. */
   title: string
+  /** Open in a new tab (external destinations). */
+  external?: boolean
 }
 
 /* ------------------------------------------------------------------ */
 /*  Header Validation                                                  */
+
 /* ------------------------------------------------------------------ */
 
 /**

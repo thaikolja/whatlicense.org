@@ -18,41 +18,48 @@
       </div>
       <div class="p-8 overflow-auto flex-1 custom-scrollbar">
         <!-- Render the markdown body of the license -->
-        <ContentRenderer v-if="(license as any).body" :value="(license as any).body" class="font-mono text-sm leading-relaxed text-charcoal whitespace-pre-wrap" />
+        <ContentRenderer
+            v-if="(license as any).body"
+            :value="(license as any).body"
+            class="font-mono text-sm leading-relaxed text-charcoal whitespace-pre-wrap"
+        />
         <p v-else>License text not found.</p>
       </div>
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
-  import { computed } from 'vue'
-  import type { License } from '~/types'
-  import { licenseBodyToPlainText } from '~/utils/licenseText'
+<script
+    setup
+    lang="ts"
+>
+import { computed }               from 'vue'
+import type { License }           from '~/types'
+import { licenseBodyToPlainText } from '~/utils/licenseText'
 
-  const props = defineProps<{
-    license: License
-  }>()
+const props = defineProps<{
+  license: License
+}>()
 
-  const plainText = computed(() => {
-    return licenseBodyToPlainText((props.license as { body?: unknown }).body)
-  })
+const plainText = computed(() => {
+  return licenseBodyToPlainText((props.license as { body?: unknown }).body)
+})
 </script>
 <style scoped>
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-  }
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
 
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background:    var(--color-border);
-    border-radius: 4px;
-  }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background:    var(--color-border);
+  border-radius: 4px;
+}
 
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--color-tan);
-  }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-tan);
+}
 </style>

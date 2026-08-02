@@ -38,6 +38,11 @@ describe('app.vue shell', () => {
     expect(wrapper.text()).toContain('GitHub')
     expect(wrapper.text()).toMatch(/©\s*\d{4}\s*whatlicense\.org/)
 
+    // ... footer legal routes (internal, not #)
+    expect(wrapper.html()).toContain('/privacy-policy')
+    expect(wrapper.html()).toContain('/terms-of-service')
+    expect(wrapper.html()).not.toContain('href="#"')
+
     // ... social icons rendered in the header
     expect(wrapper.html()).toContain('mdi:paypal')
     expect(wrapper.html()).toContain('mdi:github')

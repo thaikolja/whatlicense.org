@@ -53,7 +53,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
 import { useWizard }         from '~/composables/useWizard'
 import { useLicenseMatcher } from '~/composables/useLicenseMatcher'
 

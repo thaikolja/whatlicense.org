@@ -1,7 +1,7 @@
 /**
  * Nuxt-facing wrapper: load licenses, then run pure matchLicense scoring.
  */
-import { ref } from 'vue'
+import { ref }                       from 'vue'
 import type { License, LicenseTrait } from '~/types'
 import { matchLicense as pureMatch } from '~/utils/matchLicense'
 
@@ -15,7 +15,7 @@ export interface UseLicenseMatcherOptions {
  * Holds the license catalog and exposes fetch + match helpers.
  */
 export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
-  // ... catalog in memory after fetch
+  // catalog in memory after fetch
   const allLicenses = ref<License[]>([])
 
   /**
@@ -24,18 +24,18 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
   const fetchLicenses = async () => {
     try {
       if (options.fetchAll) {
-        // ... test / custom path
+        // test / custom path
         allLicenses.value = await options.fetchAll()
         return
       }
-      // ... production: Nuxt Content collection
+      // production: Nuxt Content collection
       const { data } = await useAsyncData('licenses', () => queryCollection('licenses').all())
       if (data.value) {
-        // ... Content pages aren’t typed as License — cast is intentional
+        // Content pages aren’t typed as License — cast is intentional
         allLicenses.value = data.value as unknown as License[]
       }
     } catch (e) {
-      // ... keep empty catalog; UI can show “could not load”
+      // keep empty catalog; UI can show “could not load”
       console.error('Failed to load licenses', e)
     }
   }
@@ -45,17 +45,17 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
    */
   const matchLicense = (userTags: LicenseTrait[]): License | null => {
     if (!allLicenses.value.length) {
-      // ... nothing loaded yet (or load failed)
+      // nothing loaded yet (or load failed)
       console.warn('Matcher: No licenses loaded to match against.')
       return null
     }
 
     if (import.meta.dev) {
-      // ... noisy but handy when tuning traits
+      // noisy but handy when tuning traits
       console.log('Matcher: User selected tags:', userTags)
     }
 
-    // ... pure gates + score live in matchLicense.ts
+    // pure gates + score live in matchLicense.ts
     const { license, score } = pureMatch(userTags, allLicenses.value)
 
     if (import.meta.dev) {
@@ -65,7 +65,7 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
     return license
   }
 
-  // ... public API
+  // public API
   return {
     allLicenses,
     fetchLicenses,

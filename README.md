@@ -6,7 +6,10 @@
 
 **[whatlicense.org](https://whatlicense.org/)** is a free, open-source Nuxt 4 web application that helps developers choose an open-source license for their project.
 
-Instead of comparing legal documents by hand, you answer five short questions about how others may use, share, and modify your code. A weighted matching engine scores those answers against a curated set of popular licenses (MIT, Apache-2.0, GPL, AGPL, MPL, and many others) and recommends the best fit.
+Instead of comparing legal documents by hand, you answer a short branching quiz about how others may use, share, and
+modify your code. A pure matching engine applies hard gates, weighted trait scores, and a popularity tie-breaker against
+a curated set of popular licenses (MIT, Apache-2.0, GPL, AGPL, MPL, and many others) and recommends the best honest
+fit — or no match when nothing fits.
 
 After you get a result, you can:
 
@@ -22,18 +25,27 @@ Everything runs in the browser. There is no account system and no server-side st
 ## How it works
 
 1. Start the wizard on the homepage.
-2. Answer five questions (sharing model, commercial use, patents, copyleft strength, network/SaaS).
-3. Receive a recommended license with overview cards and full legal text.
+2. Answer the quiz:
+    - **Always:** sharing model (copyleft vs permissive), commercial use, patents
+    - **If you chose copyleft:** copyleft scope (strong vs weak) and network/SaaS
+    - Permissive paths are **3 steps**; copyleft paths are **5 steps**
+3. Receive a recommended license with overview cards and full legal text (or an honest empty result if no catalog
+   license fits).
 4. Optionally fill in project details and generate a file header to paste into your source files.
+
+Matching is implemented in pure TypeScript (`app/utils/matchLicense.ts`) so it is easy to unit-test; the Nuxt composable
+loads license content and calls that engine.
 
 ## Features
 
-- Weighted license matching with contradiction penalties and popularity as a tie-breaker
+- Branching quiz aligned with license families (strong/weak copyleft, network, non-commercial)
+- Hard gates + weighted scoring + popularity tie-breaker (never invents a contradicted winner)
 - 26+ license definitions stored as Markdown content
 - File header generator (project name, author, copyright, website, custom `@property` tags)
 - Comment styles for PHP, JavaScript, TypeScript, Python, Ruby, HTML, CSS, and Shell
 - Built with Nuxt 4, shadcn-vue, and Tailwind CSS v4
 - Static site: Cloudflare Pages + Wrangler by default; also usable as normal SSG
+- Vitest suite: unit, Nuxt component, and e2e projects (~97% line coverage on app logic)
 
 ## Examples
 
@@ -111,18 +123,23 @@ bun run dev
 
 Tests use [Vitest](https://vitest.dev/) and [@nuxt/test-utils](https://github.com/nuxt/test-utils):
 
-| Suite | Path | Purpose |
-|-------|------|---------|
-| unit | `test/unit/` | Pure logic (e.g. comment formatting) |
-| nuxt | `test/nuxt/` | Components in a Nuxt environment |
-| e2e | `test/e2e/` | HTTP against a local Nuxt server |
+| Suite | Path         | Purpose                                                     |
+|-------|--------------|-------------------------------------------------------------|
+| unit  | `test/unit/` | Pure logic (matcher, wizard, headers, golden answer matrix) |
+| nuxt  | `test/nuxt/` | Components in a Nuxt environment                            |
+| e2e   | `test/e2e/`  | HTTP against a local Nuxt server (`node-server` preset)     |
 
 ```bash
 bun run test
 bun run test:coverage
 ```
 
-Coverage uses `@vitest/coverage-v8`. Reports are written to `coverage/` (text, HTML, lcov). HTML report: `coverage/index.html`. E2E is excluded from the coverage command.
+Coverage uses `@vitest/coverage-v8`. Reports are written to `coverage/` (text, HTML, lcov). HTML report:
+`coverage/index.html`. E2E is excluded from the coverage command. Floors are configured in `vitest.config.ts` (
+lines/statements ≥ 50%, branches/functions ≥ 40%).
+
+Vitest is invoked via Node (`node ./node_modules/vitest/vitest.mjs`) so e2e does not hit Bun’s `bun:test` conflict — use
+the package scripts, not bare `bunx vitest` for the full suite.
 
 ### Deployment
 
@@ -144,23 +161,28 @@ bun run generate
 
 ## Project layout
 
-| Path | Purpose |
-|------|---------|
-| `app/` | Nuxt app (pages, components, composables) |
-| `app/components/ui/` | shadcn-vue components |
-| `app/composables/useLicenseMatcher.ts` | License scoring / matching |
-| `app/data/questions.ts` | Wizard questions and trait tags |
-| `app/utils/commentStyles.ts` | File-header comment formatters |
-| `content/licenses/` | License Markdown content |
-| `content.config.ts` | Content collection schema |
-| `nuxt.config.ts` | Nuxt configuration |
-| `vitest.config.ts` | Vitest projects + coverage |
-| `test/` | unit, nuxt, and e2e tests |
-| `wrangler.toml` | Cloudflare Pages settings |
+| Path                                   | Purpose                                                 |
+|----------------------------------------|---------------------------------------------------------|
+| `app/`                                 | Nuxt app (pages, components, composables)               |
+| `app/components/ui/`                   | shadcn-vue components                                   |
+| `app/composables/useWizard.ts`         | Branching quiz state machine                            |
+| `app/composables/useLicenseMatcher.ts` | Loads licenses; calls pure matcher                      |
+| `app/utils/matchLicense.ts`            | Gates, scoring, tie-break (pure, unit-tested)           |
+| `app/data/questions.ts`                | Wizard questions, tags, branch helpers                  |
+| `app/utils/commentStyles.ts`           | File-header comment formatters                          |
+| `content/licenses/`                    | License Markdown content (26+)                          |
+| `content.config.ts`                    | Content collection schema (frontmatter source of truth) |
+| `nuxt.config.ts`                       | Nuxt configuration                                      |
+| `vitest.config.ts`                     | Vitest projects + coverage                              |
+| `test/unit/wizardAlignment.test.ts`    | Golden matrix: answers → expected SPDX                  |
+| `test/fixtures/`                       | Shared license fixtures for unit tests                  |
+| `test/`                                | unit, nuxt, and e2e tests                               |
+| `wrangler.toml`                        | Cloudflare Pages settings                               |
 
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add licenses and improve matching.
+Agent-oriented project notes live in [AGENTS.md](AGENTS.md).
 
 1. Fork the repository
 2. Create a branch for your change

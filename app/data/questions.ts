@@ -15,7 +15,7 @@ import type { QuizQuestion } from '~/types'
  * branch-aware sequence shown to the user.
  */
 export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
-  // ... Q1: share-alike vs permissive (always shown)
+  // Q1: share-alike vs permissive (always shown)
   {
     id:          'share',
     question:    'What\'s your stance on sharing?',
@@ -35,7 +35,7 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
       }
     ]
   },
-  // ... Q2: can companies make money off it?
+  // Q2: can companies make money off it?
   {
     id:          'commercial',
     question:    'Commercial Usage',
@@ -55,7 +55,7 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
       }
     ]
   },
-  // ... Q3: patent language or keep the license short
+  // Q3: patent language or keep the license short
   {
     id:          'patents',
     question:    'Patent Protection',
@@ -75,7 +75,7 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
       }
     ]
   },
-  // ... Q4 (copyleft only): strong vs weak scope
+  // Q4 (copyleft only): strong vs weak scope
   {
     id:               'scope',
     requiresCopyleft: true,
@@ -96,7 +96,7 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
       }
     ]
   },
-  // ... Q5 (copyleft only): SaaS / network trigger
+  // Q5 (copyleft only): SaaS / network trigger
   {
     id:               'network',
     requiresCopyleft: true,
@@ -127,15 +127,15 @@ export function choseCopyleft(
     questions: readonly QuizQuestion[],
     answers: readonly number[]
 ): boolean {
-  // ... find the share step in this list
+  // find the share step in this list
   const shareIdx      = questions.findIndex(q => q.id === 'share')
-  // ... noUncheckedIndexedAccess: grab the question before using it
+  // noUncheckedIndexedAccess: grab the question before using it
   const shareQuestion = shareIdx >= 0 ? questions[shareIdx] : undefined
   if (!shareQuestion) return false
-  // ... no answer yet → treat as not copyleft
+  // no answer yet → treat as not copyleft
   const answer = answers[shareIdx]
   if (answer === undefined) return false
-  // ... check if that option’s tags include copyleft
+  // check if that option’s tags include copyleft
   return shareQuestion.options[answer]?.tags.includes('copyleft') ?? false
 }
 
@@ -146,17 +146,17 @@ export function getActiveQuestions(
     allQuestions: readonly QuizQuestion[] = QUIZ_QUESTIONS,
     answers: readonly number[]            = []
 ): QuizQuestion[] {
-  // ... build the branch-aware list from scratch each time
+  // build the branch-aware list from scratch each time
   const active: QuizQuestion[] = []
 
   for (const q of allQuestions) {
     if (q.requiresCopyleft) {
-      // ... only unlock scope/network once share = copyleft among active answers
+      // only unlock scope/network once share = copyleft among active answers
       if (!choseCopyleft(active, answers.slice(0, active.length))) {
         continue
       }
     }
-    // ... include this step
+    // include this step
     active.push(q)
   }
 
@@ -171,7 +171,7 @@ export function collectTagsFromAnswers(
     questions: readonly QuizQuestion[],
     answers: readonly number[]
 ): import('~/types').LicenseTrait[] {
-  // ... gather every tag from chosen options
+  // gather every tag from chosen options
   const tags: import('~/types').LicenseTrait[] = []
   answers.forEach((answerIndex, questionIndex) => {
     const option = questions[questionIndex]?.options[answerIndex]
@@ -180,10 +180,10 @@ export function collectTagsFromAnswers(
     }
   })
 
-  // ... unique-ify
+  // unique-ify
   const unique = [ ...new Set(tags) ]
 
-  // ... weak path: Q1 still emitted copyleft — strip it
+  // weak path: Q1 still emitted copyleft — strip it
   if (unique.includes('weak-copyleft')) {
     return unique.filter(t => t !== 'copyleft')
   }

@@ -7,19 +7,31 @@
 
     <div class="grid md:grid-cols-3 gap-6">
       <OverviewFlipCard
-          category="Permissions" :items="license.permissions || []" colorTheme="green" />
+          category="Permissions"
+          :items="license.permissions || []"
+          colorTheme="green"
+      />
       <OverviewFlipCard
-          category="Conditions" :items="license.conditions || []" colorTheme="blue" />
+          category="Conditions"
+          :items="license.conditions || []"
+          colorTheme="blue"
+      />
       <OverviewFlipCard
-          category="Limitations" :items="license.limitations || []" colorTheme="red" />
+          category="Limitations"
+          :items="license.limitations || []"
+          colorTheme="red"
+      />
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
-  import type { License } from '~/types'
+<script
+    setup
+    lang="ts"
+>
+import type { License } from '~/types'
 
-  defineProps<{
-    license: License
-  }>()
+defineProps<{
+  license: License
+}>()
 </script>

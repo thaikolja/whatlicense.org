@@ -19,37 +19,57 @@
             <p class="text-xs text-muted">Support the project with a coffee to keep it running.</p>
           </div>
         </div>
-        <a :href="config.public.links.paypal" target="_blank" class="shrink-0 bg-tan hover:bg-tan/90 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors shadow-sm">
-          Donate via PayPal </a>
+        <a
+            :href="config.public.links.paypal"
+            target="_blank"
+            class="shrink-0 bg-tan hover:bg-tan/90 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+        >
+          Donate via PayPal
+        </a>
       </aside>
     </header>
 
     <!-- Overview Section -->
     <section aria-labelledby="overview-heading">
-      <h2 id="overview-heading" class="sr-only">License Overview</h2>
+      <h2
+          id="overview-heading"
+          class="sr-only"
+      >License Overview
+      </h2>
       <LicenseOverview :license="license" />
     </section>
 
     <!-- File Header Section -->
     <section aria-labelledby="header-generator-heading">
-      <h2 id="header-generator-heading" class="sr-only">File Header Generator</h2>
+      <h2
+          id="header-generator-heading"
+          class="sr-only"
+      >File Header Generator
+      </h2>
       <LazyFileHeaderGenerator :license="license" />
     </section>
 
     <!-- Full Text Section -->
     <section aria-labelledby="full-text-heading">
-      <h2 id="full-text-heading" class="sr-only">Full License Text</h2>
+      <h2
+          id="full-text-heading"
+          class="sr-only"
+      >Full License Text
+      </h2>
       <LazyFullLicenseText :license="license" />
     </section>
   </main>
 </template>
 
-<script setup lang="ts">
-  import type { License } from '~/types'
+<script
+    setup
+    lang="ts"
+>
+import type { License } from '~/types'
 
-  defineProps<{
-    license: License
-  }>()
+defineProps<{
+  license: License
+}>()
 
-  const config = useRuntimeConfig()
+const config = useRuntimeConfig()
 </script>

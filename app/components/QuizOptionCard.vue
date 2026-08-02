@@ -1,11 +1,19 @@
 <template>
   <div
-      class="opt-card p-8 md:p-10 rounded-3xl flex flex-col justify-between h-full" :class="{ 'selected': selected }" @click="$emit('select')">
+      class="opt-card p-8 md:p-10 rounded-3xl flex flex-col justify-between h-full"
+      :class="{ 'selected': selected }"
+      @click="$emit('select')"
+  >
     <div class="flex justify-between items-start mb-6">
       <div class="text-3xl font-bold serif text-espresso">{{ option.title }}</div>
       <div
-          class="w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ml-4" :class="selected ? 'border-charcoal' : 'border-border'">
-        <div v-if="selected" class="w-3 h-3 bg-charcoal rounded-full"></div>
+          class="w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ml-4"
+          :class="selected ? 'border-charcoal' : 'border-border'"
+      >
+        <div
+            v-if="selected"
+            class="w-3 h-3 bg-charcoal rounded-full"
+        ></div>
       </div>
     </div>
 
@@ -20,15 +28,18 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import type { QuizOption } from '~/types'
+<script
+    setup
+    lang="ts"
+>
+import type { QuizOption } from '~/types'
 
-  defineProps<{
-    option: QuizOption
-    selected: boolean
-  }>()
+defineProps<{
+  option: QuizOption
+  selected: boolean
+}>()
 
-  defineEmits<{
-    (e: 'select'): void
-  }>()
+defineEmits<{
+  (e: 'select'): void
+}>()
 </script>

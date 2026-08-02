@@ -7,8 +7,18 @@
 
       <header>
         <div class="badge">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <svg
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+          >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
           </svg>
           Smart License Wizard
         </div>
@@ -25,26 +35,69 @@
       </header>
 
       <div class="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-6 mb-20">
-        <button @click="$emit('start')" class="btn px-10 py-5 rounded-full text-lg font-bold tracking-wide uppercase flex items-center gap-3 w-full sm:w-auto justify-center group">
-          <svg class="w-5 h-5 text-tan group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        <button
+            @click="$emit('start')"
+            class="btn px-10 py-5 rounded-full text-lg font-bold tracking-wide uppercase flex items-center gap-3 w-full sm:w-auto justify-center group"
+        >
+          <svg
+              class="w-5 h-5 text-tan group-hover:text-white transition-colors"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+          >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
           </svg>
           Start Wizard
-          <svg class="w-5 h-5 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          <svg
+              class="w-5 h-5 opacity-50 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+          >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
           </svg>
         </button>
         <div class="flex items-center gap-4 text-sm text-muted font-medium">
           <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-tan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+                class="w-4 h-4 text-tan"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+              <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             ~45 seconds
           </div>
           <span class="w-1 h-1 rounded-full bg-border"></span>
           <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-tan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+                class="w-4 h-4 text-tan"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+              <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             100% Free
           </div>
@@ -55,8 +108,7 @@
         <article class="text-left card">
           <div class="step-num">1</div>
           <h3 class="text-xl font-bold mb-2 text-espresso">Answer Basics</h3>
-          <p class="text-muted text-sm leading-relaxed">Define how others should share and use the project source
-            code.
+          <p class="text-muted text-sm leading-relaxed">Define how others should share and use the project source code.
           </p>
         </article>
         <article class="text-left card">
@@ -79,8 +131,11 @@
   </section>
 </template>
 
-<script setup lang="ts">
-  defineEmits<{
-    (e: 'start'): void
-  }>()
+<script
+    setup
+    lang="ts"
+>
+defineEmits<{
+  (e: 'start'): void
+}>()
 </script>

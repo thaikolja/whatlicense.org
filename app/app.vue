@@ -25,26 +25,30 @@ const icons  = ref<IconLink[]>([
 
 const footerLinks = ref<FooterLink[]>([
   {
-    title: 'Privacy Policy',
-    name:  'Privacy',
-    link:  '#'
+    title:    'Privacy Policy',
+    name:     'Privacy',
+    link:     '/privacy-policy',
+    external: false
   },
   {
-    title: 'Terms of Service',
-    name:  'Terms',
-    link:  '#'
+    title:    'Terms of Service',
+    name:     'Terms',
+    link:     '/terms-of-service',
+    external: false
   },
   {
-    title: 'Support the project',
-    name:  'Support',
-    link:  config.public?.links?.paypal ?? '',
-    icon:  'mdi:paypal'
+    title:    'Support the project',
+    name:     'Support',
+    link:     config.public?.links?.paypal ?? '',
+    icon:     'mdi:paypal',
+    external: true
   },
   {
-    title: 'GitHub',
-    name:  'GitHub',
-    link:  config.public?.links?.github ?? '',
-    icon:  'mdi:github'
+    title:    'GitHub',
+    name:     'GitHub',
+    link:     config.public?.links?.github ?? '',
+    icon:     'mdi:github',
+    external: true
   }
 ])
 </script>
@@ -127,7 +131,9 @@ const footerLinks = ref<FooterLink[]>([
               v-for="link in footerLinks"
               :key="link.name"
               :to="link.link"
-              target="_blank"
+              :title="link.title"
+              :target="link.external ? '_blank' : undefined"
+              :rel="link.external ? 'noopener noreferrer' : undefined"
               class="text-muted hover:text-charcoal transition-colors flex items-center gap-2"
           >
             <Icon
