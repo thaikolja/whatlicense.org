@@ -5,14 +5,10 @@
 /**
  * Privacy Policy — written for whatlicense.org’s client-side design.
  */
-const config = useRuntimeConfig()
-const email  = computed(() => {
-  const raw = config.public?.links?.email as string | undefined
-
-  if (!raw) return 'kolja.nolte@gmail.com'
-
-  return raw.replace(/^mailto:/i, '')
-})
+// shared contact + social URLs
+const links = useSiteLinks()
+// human-readable email for body copy (no mailto: prefix)
+const email = computed(() => links.email.replace(/^mailto:/i, ''))
 
 useSeoMeta({
   title:         'Privacy Policy',
@@ -33,10 +29,10 @@ useSeoMeta({
       <p>
         <strong>whatlicense.org</strong> is a free, open-source web app that recommends open-source licenses from a
         short quiz and helps you generate file headers. It is operated by <strong>Kolja Nolte</strong> (
-        <a :href="`mailto:${email}`">{{ email }}</a>
+        <a :href="links.email">{{ email }}</a>
         ). The project source is available on
         <a
-            :href="config.public.links.github"
+            :href="links.github"
             target="_blank"
             rel="noopener noreferrer"
         >GitHub
@@ -174,10 +170,10 @@ useSeoMeta({
       <h2>11. Contact</h2>
       <p>
         Privacy questions:
-        <a :href="`mailto:${email}`">{{ email }}</a>
+        <a :href="links.email">{{ email }}</a>
         . You can also open an issue on our
         <a
-            :href="config.public.links.github"
+            :href="links.github"
             target="_blank"
             rel="noopener noreferrer"
         >GitHub repository

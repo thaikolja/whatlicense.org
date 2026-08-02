@@ -113,16 +113,18 @@ export default defineNuxtConfig({
     typeCheck: false
   },
 
-  // ... public env + monetization / social links
+  // ... public env + monetization / social links (non-empty defaults for SSG/tests)
   runtimeConfig: {
     public: {
       // ... debug: auto-pick option 0 for every quiz step
       debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT === 'true',
-      links:           {
-        paypal:  process.env.NUXT_PUBLIC_PAYPAL_URL ?? '',
-        github:  'https://github.com/thaikolja/whatlicense.org',
-        twitter: '#',
-        email:   process.env.NUXT_PUBLIC_EMAIL_ADDRESS ?? ''
+      // ... useSiteLinks() normalizes these; env may override
+      links: {
+        paypal:    process.env.NUXT_PUBLIC_PAYPAL_URL || 'https://paypal.me/thaikolja/10',
+        github:    process.env.NUXT_PUBLIC_GITHUB_URL || 'https://github.com/thaikolja/whatlicense.org',
+        twitter:   process.env.NUXT_PUBLIC_TWITTER_URL || 'https://twitter.com/whatlicenseorg',
+        email:     process.env.NUXT_PUBLIC_EMAIL_ADDRESS || 'mailto:kolja.nolte@gmail.com',
+        termsFeed: process.env.NUXT_PUBLIC_TERMSFEED_URL || 'https://www.termsfeed.com/?ref=whatlicense'
       }
     }
   },

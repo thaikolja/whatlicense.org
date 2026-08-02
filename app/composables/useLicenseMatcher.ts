@@ -1,7 +1,9 @@
 /**
- * Nuxt-facing wrapper: load licenses, then run pure matchLicense scoring.
+ * Nuxt-facing wrapper: load licenses, then run pure `matchLicense` scoring.
+ *
+ * Pure gates/score live in `~/utils/matchLicense` for unit tests without Nuxt.
  */
-import { ref }                       from 'vue'
+import { ref } from 'vue'
 import type { License, LicenseTrait } from '~/types'
 import { matchLicense as pureMatch } from '~/utils/matchLicense'
 
@@ -15,7 +17,7 @@ export interface UseLicenseMatcherOptions {
  * Holds the license catalog and exposes fetch + match helpers.
  */
 export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
-  // catalog in memory after fetch
+  // catalog in memory after fetch (empty until fetchLicenses succeeds)
   const allLicenses = ref<License[]>([])
 
   /**
@@ -25,18 +27,18 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
   const fetchLicenses = async () => {
     try {
       if (options.fetchAll) {
-        // test / custom path
+        // test / custom path — skip Content
         allLicenses.value = await options.fetchAll()
         return
       }
       // stable key → shared between generate + client hydration
       const { data } = await useAsyncData(
-          'licenses-catalog',
-          () => queryCollection('licenses').all(),
-          {
-            // licenses rarely change per deploy; keep default server/cache behavior
-            default: () => []
-          }
+        'licenses-catalog',
+        () => queryCollection('licenses').all(),
+        {
+          // empty array until Content resolves
+          default: () => []
+        }
       )
       if (data.value?.length) {
         // Content pages aren’t typed as License — cast is intentional

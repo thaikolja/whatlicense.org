@@ -138,7 +138,7 @@
           <footer class="modal-footer">
             <button
                 @click="save"
-                class="btn w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg"
+                class="cta cta-soft"
             >
               Save Properties
             </button>
@@ -156,6 +156,9 @@
 import { ref, watch }          from 'vue'
 import type { CustomProperty } from '~/types'
 
+/**
+ * Modal editor for custom @key / value pairs in the file header.
+ */
 const props = defineProps<{
   isOpen: boolean
   properties: CustomProperty[]
@@ -166,39 +169,49 @@ const emit = defineEmits<{
   (e: 'update', props: CustomProperty[]): void
 }>()
 
-const localIsOpen     = ref(props.isOpen)
+// local open flag so we can animate close before parent updates
+const localIsOpen = ref(props.isOpen)
+// working copy — never mutate parent props in place
 const localProperties = ref<CustomProperty[]>([])
 
+// when parent opens the modal, deep-clone the current list
 watch(() => props.isOpen, (newVal) => {
   localIsOpen.value = newVal
   if (newVal) {
-    // deep copy
+    // deep copy so cancel doesn’t dirty parent state
     localProperties.value = JSON.parse(JSON.stringify(props.properties))
   }
 })
 
+// if local close races parent, still emit close once
 watch(localIsOpen, (newVal) => {
   if (!newVal && props.isOpen) {
     emit('close')
   }
 })
 
+/** Close without saving. */
 const closeModal = () => {
   localIsOpen.value = false
   emit('close')
 }
 
+/** Append an empty key/value row. */
 const addProperty = () => {
   localProperties.value.push({ key: '', value: '' })
 }
 
+/** Remove one row by index. */
 const removeProperty = (index: number) => {
   localProperties.value.splice(index, 1)
 }
 
+/** Persist non-empty rows and close. */
 const save = () => {
-  // filter out completely empty ones
-  const filtered = localProperties.value.filter(p => p.key.trim() !== '' || p.value.trim() !== '')
+  // drop rows that are completely blank
+  const filtered = localProperties.value.filter(
+    p => p.key.trim() !== '' || p.value.trim() !== ''
+  )
   emit('update', filtered)
   closeModal()
 }

@@ -33,7 +33,7 @@
       </p>
       <NuxtLink
           to="/"
-          class="btn"
+          class="cta"
       >
         Go Back Home
       </NuxtLink>

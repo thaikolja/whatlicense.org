@@ -5,13 +5,11 @@
 /**
  * About — editorial story of whatlicense.org (not a legal page).
  */
-const config = useRuntimeConfig()
+// canonical outbound URLs (paypal, github, email, …)
+const links = useSiteLinks()
 
-const email = computed(() => {
-  const raw = config.public?.links?.email as string | undefined
-  if (!raw) return 'kolja.nolte@gmail.com'
-  return raw.replace(/^mailto:/i, '')
-})
+// display-only address without mailto: for visible text
+const emailDisplay = computed(() => links.email.replace(/^mailto:/i, ''))
 
 const constellation = [
   { spdx: 'MIT', vibe: 'maximum freedom', rotate: '-rotate-2' },
@@ -100,12 +98,12 @@ useSeoMeta({
       <div class="flex flex-wrap items-center gap-3 sm:gap-4">
         <NuxtLink
             to="/"
-            class="btn"
+            class="cta"
         >
           Start the wizard <span aria-hidden="true">→</span>
         </NuxtLink>
         <a
-            :href="config.public.links.github"
+            :href="links.github"
             target="_blank"
             rel="noopener noreferrer"
             class="link-ghost"
@@ -261,17 +259,17 @@ useSeoMeta({
         </p>
         <div class="flex flex-wrap gap-4">
           <a
-              :href="`mailto:${email}`"
+              :href="links.email"
               class="inline-flex items-center gap-2 eyebrow text-cream/90 hover:text-white transition-colors"
           >
             <Icon
                 name="mdi:envelope"
                 size="14"
             />
-            {{ email }}
+            {{ emailDisplay }}
           </a>
           <a
-              :href="config.public.links.github"
+              :href="links.github"
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-2 eyebrow text-cream/90 hover:text-white transition-colors"
@@ -296,10 +294,10 @@ useSeoMeta({
             </p>
           </div>
           <a
-              :href="config.public.links.paypal"
+              :href="links.paypal"
               target="_blank"
               rel="noopener noreferrer"
-              class="btn btn-sm btn-block"
+              class="cta cta-sm cta-block"
           >
             <Icon
                 name="mdi:paypal"
@@ -335,7 +333,7 @@ useSeoMeta({
       </h2>
       <NuxtLink
           to="/"
-          class="btn"
+          class="cta"
       >
         Open the wizard
       </NuxtLink>

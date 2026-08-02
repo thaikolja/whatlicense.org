@@ -5,12 +5,10 @@
 /**
  * Terms of Service — product-specific, not legal advice for end-user projects.
  */
-const config = useRuntimeConfig()
-const email  = computed(() => {
-  const raw = config.public?.links?.email as string | undefined
-  if (!raw) return 'kolja.nolte@gmail.com'
-  return raw.replace(/^mailto:/i, '')
-})
+// shared contact + social URLs
+const links = useSiteLinks()
+// human-readable email for body copy (no mailto: prefix)
+const email = computed(() => links.email.replace(/^mailto:/i, ''))
 
 useSeoMeta({
   title: 'Terms of Service',
@@ -33,7 +31,7 @@ useSeoMeta({
       <p>
         By accessing or using <strong>whatlicense.org</strong> (the “Site”), you agree to these Terms of Service
         (“Terms”). If you do not agree, do not use the Site. The Site is operated by <strong>Kolja Nolte</strong> (
-        <a :href="`mailto:${email}`">{{ email }}</a>
+        <a :href="links.email">{{ email }}</a>
         ).
       </p>
     </section>
@@ -107,7 +105,7 @@ useSeoMeta({
       <p>
         The Site’s own source code is available under the <strong>MIT License</strong> (see the repository
         <a
-            :href="config.public.links.github"
+            :href="links.github"
             target="_blank"
             rel="noopener noreferrer"
         >on GitHub
@@ -181,10 +179,10 @@ useSeoMeta({
       <h2>14. Contact</h2>
       <p>
         Questions about these Terms:
-        <a :href="`mailto:${email}`">{{ email }}</a>
+        <a :href="links.email">{{ email }}</a>
         or via the
         <a
-            :href="config.public.links.github"
+            :href="links.github"
             target="_blank"
             rel="noopener noreferrer"
         >GitHub project

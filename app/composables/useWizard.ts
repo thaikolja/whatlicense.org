@@ -1,13 +1,15 @@
 /**
  * Wizard state machine: intro → branching quiz → result.
- * Copyleft on “share” unlocks scope + network steps.
+ *
+ * Copyleft on “share” unlocks scope + network steps via `getActiveQuestions`.
+ * Select truncates later answers; next never slices (Back→Next must keep path).
  */
 import { ref, computed } from 'vue'
 import {
   QUIZ_QUESTIONS,
   getActiveQuestions,
   collectTagsFromAnswers
-}                        from '~/data/questions'
+} from '~/data/questions'
 import type { WizardScreen, LicenseTrait } from '~/types'
 
 /** Optional overrides for tests (skip real runtimeConfig). */
@@ -22,13 +24,14 @@ export interface UseWizardOptions {
 export function useWizard(options: UseWizardOptions = {}) {
   // which full-screen phase we’re on
   const currentScreen = ref<WizardScreen>('intro')
-  // index into the *active* question list
+  // index into the *active* question list (not full catalog)
   const currentStep = ref(0)
-  // answers aligned with active questions (not the full catalog)
-  const answers     = ref<number[]>([])
+  // answers aligned with active questions only
+  const answers = ref<number[]>([])
 
   /** Resolve debug auto-select from options or Nuxt runtime config. */
   const resolveDebugAutoSelect = (): boolean => {
+    // explicit test override wins
     if (typeof options.debugAutoSelect === 'boolean') {
       return options.debugAutoSelect
     }
@@ -43,7 +46,9 @@ export function useWizard(options: UseWizardOptions = {}) {
   /**
    * Active questions depend on answers so far (copyleft unlocks scope + network).
    */
-  const activeQuestions = computed(() => getActiveQuestions(QUIZ_QUESTIONS, answers.value))
+  const activeQuestions = computed(() =>
+    getActiveQuestions(QUIZ_QUESTIONS, answers.value)
+  )
 
   // progress bar length follows the branch
   const totalSteps = computed(() => activeQuestions.value.length)

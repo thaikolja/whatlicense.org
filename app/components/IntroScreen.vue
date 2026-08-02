@@ -28,7 +28,7 @@
       <div class="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-12 sm:mb-20 w-full">
         <button
             type="button"
-            class="btn btn-lg btn-block group"
+            class="cta cta-lg cta-block group"
             @click="$emit('start')"
         >
           <svg

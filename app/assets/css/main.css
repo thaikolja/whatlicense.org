@@ -175,8 +175,9 @@
   }
 }
 
+
 /* ------------------------------------------------------------------ */
-/*  Dot-pattern background                                             */
+/*  Dot-pattern background (compose with page-shell)                   */
 /* ------------------------------------------------------------------ */
 .bg-pattern {
   background-image: radial-gradient(var(--color-sand) 1px, transparent 1px);
@@ -184,291 +185,513 @@
 }
 
 /* ------------------------------------------------------------------ */
-/*  Typography shortcuts (cut long Tailwind stacks in .vue)            */
+/*  Product components — @layer so Tailwind utilities can override     */
 /* ------------------------------------------------------------------ */
-.eyebrow {
-  @apply text-[10px] font-bold uppercase tracking-widest text-tan;
-}
+@layer components {
+  /* ---- Typography ---- */
+  .eyebrow {
+    @apply text-[10px] font-bold uppercase tracking-widest text-tan;
+  }
 
-.eyebrow-wide {
-  @apply text-[10px] font-bold uppercase tracking-[0.2em] text-tan;
-}
+  .eyebrow-wide {
+    @apply text-[10px] font-bold uppercase tracking-[0.2em] text-tan;
+  }
 
-.eyebrow-muted {
-  @apply text-[10px] font-bold uppercase tracking-widest text-muted;
-}
+  .eyebrow-muted {
+    @apply text-[10px] font-bold uppercase tracking-widest text-muted;
+  }
 
-.eyebrow-sm {
-  @apply text-sm tracking-widest uppercase font-bold text-tan;
-}
+  .eyebrow-sm {
+    @apply text-sm tracking-widest uppercase font-bold text-tan;
+  }
 
-.nav-link {
-  @apply text-xs font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors;
-}
+  .nav-link {
+    @apply text-xs font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors;
+  }
 
-.link-quiet {
-  @apply text-muted hover:text-charcoal transition-colors;
-}
+  .link-quiet {
+    @apply text-muted hover:text-charcoal transition-colors;
+  }
 
-.link-brand {
-  @apply font-semibold text-charcoal underline decoration-sand underline-offset-4 hover:decoration-tan;
-}
+  .link-brand {
+    @apply font-semibold text-charcoal underline decoration-sand underline-offset-4 hover:decoration-tan;
+  }
 
-.link-ghost {
-  @apply text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors border-b border-transparent hover:border-tan pb-0.5;
-}
+  .link-ghost {
+    @apply text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors border-b border-transparent hover:border-tan pb-0.5;
+  }
 
-.text-body {
-  @apply text-muted leading-relaxed;
-}
+  .text-body {
+    @apply text-muted leading-relaxed;
+  }
 
-.text-body-sm {
-  @apply text-sm text-muted leading-relaxed;
-}
+  .text-body-sm {
+    @apply text-sm text-muted leading-relaxed;
+  }
 
-.heading-display {
-  @apply font-bold text-espresso tracking-tight;
-}
+  .heading-display {
+    @apply font-bold text-espresso tracking-tight;
+  }
 
-.heading-section {
-  font-family: var(--font-serif);
-  @apply text-3xl font-bold text-charcoal mb-2;
-}
+  .heading-section {
+    font-family: var(--font-serif);
+    @apply text-3xl font-bold text-charcoal mb-2;
+  }
 
-.heading-section-sub {
-  @apply text-muted text-lg;
-}
+  .heading-section-sub {
+    @apply text-muted text-lg;
+  }
 
-/* ------------------------------------------------------------------ */
-/*  Layout shells                                                      */
-/* ------------------------------------------------------------------ */
-.page-shell {
-  @apply min-h-screen flex flex-col selection:bg-tan selection:text-white relative;
-  background-image: radial-gradient(var(--color-sand) 1px, transparent 1px);
-  background-size:  24px 24px;
-}
+  .field-label {
+    @apply block text-[10px] font-bold uppercase tracking-wider text-muted mb-1 ml-1 cursor-pointer;
+  }
 
-.container-wide {
-  @apply w-full max-w-6xl mx-auto;
-}
+  /* ---- Layout ---- */
+  .page-shell {
+    @apply min-h-screen flex flex-col selection:bg-tan selection:text-white relative;
+  }
 
-.container-page {
-  @apply w-full max-w-5xl mx-auto min-w-0;
-}
+  .container-wide {
+    @apply w-full max-w-6xl mx-auto;
+  }
 
-.container-narrow {
-  @apply w-full max-w-3xl mx-auto min-w-0;
-}
+  .container-page {
+    @apply w-full max-w-5xl mx-auto min-w-0;
+  }
 
-.container-reading {
-  @apply w-full max-w-4xl mx-auto;
-}
+  .container-narrow {
+    @apply w-full max-w-3xl mx-auto min-w-0;
+  }
 
-.section-block {
-  @apply mb-12 sm:mb-16 md:mb-24;
-}
+  .container-reading {
+    @apply w-full max-w-4xl mx-auto;
+  }
 
-.section-intro {
-  @apply text-center mb-10;
-}
+  .section-block {
+    @apply mb-12 sm:mb-16 md:mb-24;
+  }
 
-.state-center {
-  @apply flex-1 flex flex-col items-center justify-center py-24 sm:py-32 text-center;
-}
+  .section-intro {
+    @apply text-center mb-10;
+  }
 
-/* ------------------------------------------------------------------ */
-/*  Surfaces / panels                                                  */
-/* ------------------------------------------------------------------ */
-.panel {
-  @apply rounded-2xl border border-border bg-white shadow-sm;
-}
+  .state-center {
+    @apply flex-1 flex flex-col items-center justify-center py-24 sm:py-32 text-center;
+  }
 
-.panel-soft {
-  @apply rounded-2xl border border-border bg-cream-dark/80;
-}
+  /* ---- Surfaces ---- */
+  .panel {
+    @apply rounded-2xl border border-border bg-white shadow-sm;
+  }
 
-.panel-glass {
-  @apply rounded-2xl border border-border bg-white/70 backdrop-blur-sm shadow-sm;
-}
+  .panel-soft {
+    @apply rounded-2xl border border-border bg-cream-dark/80;
+  }
 
-.panel-dark {
-  @apply rounded-3xl border border-border bg-charcoal text-cream relative overflow-hidden;
-}
+  .panel-glass {
+    @apply rounded-2xl border border-border bg-white/70 backdrop-blur-sm shadow-sm;
+  }
 
-.panel-inset {
-  @apply bg-cream-dark p-6 rounded-2xl border border-border;
-}
+  .panel-dark {
+    @apply rounded-3xl border border-border bg-charcoal text-cream relative overflow-hidden;
+  }
 
-.spinner {
-  @apply inline-block w-10 h-10 sm:w-12 sm:h-12 border-4 border-tan border-t-transparent rounded-full animate-spin;
-}
+  .panel-inset {
+    @apply bg-cream-dark p-6 rounded-2xl border border-border;
+  }
 
-/* ------------------------------------------------------------------ */
-/*  Primary button (pill CTA defaults baked in)                        */
-/* ------------------------------------------------------------------ */
-.btn {
-  display:         inline-flex;
-  align-items:     center;
-  justify-content: center;
-  gap:             0.5rem;
-  background:      var(--color-charcoal);
-  color:           #ffffff;
-  border-radius:   9999px;
-  font-weight:     700;
-  text-transform:  uppercase;
-  letter-spacing:  0.05em;
-  font-size:       0.875rem;
-  line-height:     1.25;
-  padding:         0.875rem 2rem;
-  min-height:      2.75rem;
-  transition:      all 0.3s ease;
-  touch-action:    manipulation;
-  cursor:          pointer;
-  border:          none;
-}
+  .card {
+    @apply bg-white p-6 rounded-2xl border border-border shadow-sm;
+  }
 
-.btn:hover:not(:disabled) {
-  background: var(--color-espresso);
-  transform:  translateY(-2px);
-  box-shadow: 0 8px 20px -8px rgba(38, 33, 28, 0.5);
-}
+  .spinner {
+    @apply inline-block w-10 h-10 sm:w-12 sm:h-12 border-4 border-tan border-t-transparent rounded-full animate-spin;
+  }
 
-.btn:active:not(:disabled) {
-  transform: translateY(0);
-}
+  .badge {
+    @apply animate-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-border text-xs font-bold tracking-widest uppercase text-tan mb-8 shadow-sm;
+  }
 
-.btn:disabled {
-  opacity: 0.3;
-  cursor:  not-allowed;
-}
+  .step-num {
+    @apply w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 text-xl;
+    font-family: var(--font-serif);
+  }
 
-.btn-lg {
-  @apply text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 min-h-12;
-}
+  /* ---- CTA (plain <a>/<button> only — never on shadcn Button) ---- */
+  .cta {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    gap:             0.5rem;
+    background:      var(--color-charcoal);
+    color:           #ffffff;
+    border-radius:   9999px;
+    font-weight:     700;
+    text-transform:  uppercase;
+    letter-spacing:  0.05em;
+    font-size:       0.875rem;
+    line-height:     1.25;
+    padding:         0.875rem 2rem;
+    min-height:      2.75rem;
+    transition:      all 0.3s ease;
+    touch-action:    manipulation;
+    cursor:          pointer;
+    border:          none;
+    text-decoration: none;
+  }
 
-.btn-sm {
-  @apply text-xs px-5 py-2.5 min-h-10;
-}
+  .cta:hover:not(:disabled) {
+    background: var(--color-espresso);
+    transform:  translateY(-2px);
+    box-shadow: 0 8px 20px -8px rgba(38, 33, 28, 0.5);
+  }
 
-.btn-block {
-  @apply w-full sm:w-auto;
-}
+  .cta:active:not(:disabled) {
+    transform: translateY(0);
+  }
 
-.btn-donate {
-  @apply shrink-0 bg-tan hover:bg-tan/90 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors shadow-sm;
-}
+  .cta:disabled {
+    opacity: 0.3;
+    cursor:  not-allowed;
+  }
 
-/* ------------------------------------------------------------------ */
-/*  Form input field                                                   */
-/* ------------------------------------------------------------------ */
-.input-field {
-  width:         100%;
-  background:    var(--color-cream);
-  border:        1px solid var(--color-sand);
-  border-radius: 8px;
-  padding:       8px 12px;
-  font-size:     0.875rem;
-  color:         var(--color-charcoal);
-  outline:       none;
-  transition:    border-color 0.2s;
-}
+  .cta-lg {
+    @apply text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 min-h-12;
+  }
 
-.input-field:focus {
-  border-color: var(--color-tan);
-  background:   #ffffff;
-}
+  .cta-sm {
+    @apply text-xs px-5 py-2.5 min-h-10;
+  }
 
-/* ------------------------------------------------------------------ */
-/*  Syntax error underline (header validator)                          */
-/* ------------------------------------------------------------------ */
-.error-line {
-  background-color:          #fef2f2;
-  text-decoration:           underline;
-  text-decoration-color:     #ef4444;
-  text-decoration-thickness: 2px;
-  text-underline-offset:     4px;
-}
+  .cta-block {
+    @apply w-full sm:w-auto;
+  }
 
-/* ------------------------------------------------------------------ */
-/*  Option cards (quiz)                                                */
-/* ------------------------------------------------------------------ */
-.opt-card {
-  display:         flex;
-  flex-direction:  column;
-  justify-content: space-between;
-  width:           100%;
-  min-height:      11rem;
-  text-align:      left;
-  padding:         1.25rem;
-  border-radius:   1rem;
-  border:          1px solid var(--color-sand);
-  background:      var(--color-cream-dark);
-  transition:                  border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                               box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                               transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                               background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor:          pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action:                manipulation;
-}
+  /* soft rectangular CTA for modals (utilities can still tweak further) */
+  .cta-soft {
+    border-radius: 0.75rem;
+    width:         100%;
+    box-shadow:    0 10px 15px -3px rgb(0 0 0 / 0.1);
+  }
 
-@media (min-width: 640px) {
+  .cta-donate {
+    @apply shrink-0 bg-tan hover:bg-tan/90 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors shadow-sm;
+  }
+
+  .btn-dashed {
+    @apply w-full py-3 rounded-xl border border-dashed border-tan text-tan hover:bg-cream-dark transition-all text-sm font-bold flex items-center justify-center gap-2;
+  }
+
+  .btn-icon {
+    @apply p-2 text-muted hover:text-charcoal transition-colors hover:bg-cream-dark rounded-full flex items-center justify-center;
+  }
+
+  .btn-delete {
+    @apply p-2 text-red-400 hover:text-red-600 transition-colors shrink-0;
+  }
+
+  /* ---- Forms ---- */
+  .input-field {
+    width:         100%;
+    background:    var(--color-cream);
+    border:        1px solid var(--color-sand);
+    border-radius: 8px;
+    padding:       8px 12px;
+    font-size:     0.875rem;
+    color:         var(--color-charcoal);
+    outline:       none;
+    transition:    border-color 0.2s;
+  }
+
+  .input-field:focus {
+    border-color: var(--color-tan);
+    background:   #ffffff;
+  }
+
+  .error-line {
+    background-color:          #fef2f2;
+    text-decoration:           underline;
+    text-decoration-color:     #ef4444;
+    text-decoration-thickness: 2px;
+    text-underline-offset:     4px;
+  }
+
+  /* ---- Quiz option cards ---- */
   .opt-card {
-    min-height:    0;
-    padding:       2rem;
-    border-radius: 1.5rem;
+    display:                     flex;
+    flex-direction:              column;
+    justify-content:             space-between;
+    width:                       100%;
+    min-height:                  11rem;
+    text-align:                  left;
+    padding:                     1.25rem;
+    border-radius:               1rem;
+    border:                      1px solid var(--color-sand);
+    background:                  var(--color-cream-dark);
+    transition:
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor:                      pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action:                manipulation;
   }
-}
 
-@media (min-width: 768px) {
-  .opt-card {
-    padding: 2.5rem;
+  @media (min-width: 640px) {
+    .opt-card {
+      min-height:    0;
+      padding:       2rem;
+      border-radius: 1.5rem;
+    }
   }
-}
 
-.opt-card-title {
-  font-family: var(--font-serif);
-  @apply text-xl sm:text-2xl md:text-3xl font-bold text-espresso leading-snug;
-}
+  @media (min-width: 768px) {
+    .opt-card {
+      padding: 2.5rem;
+    }
+  }
 
-.opt-card-desc {
-  @apply text-base sm:text-lg md:text-xl text-muted mb-4 sm:mb-6 flex-1 leading-relaxed;
-}
+  .opt-card-title {
+    font-family: var(--font-serif);
+    @apply text-xl sm:text-2xl md:text-3xl font-bold text-espresso leading-snug;
+  }
 
-.opt-card-radio {
-  @apply w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-300;
-}
+  .opt-card-desc {
+    @apply text-base sm:text-lg md:text-xl text-muted mb-4 sm:mb-6 flex-1 leading-relaxed;
+  }
 
-.opt-card-radio-dot {
-  @apply w-3 h-3 bg-charcoal rounded-full transition-transform duration-300;
-}
+  .opt-card-radio {
+    @apply w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-300;
+  }
 
-.opt-card:hover:not(:disabled):not(.opt-card--disabled) {
-  border-color: var(--color-tan);
-  box-shadow:   0 12px 40px -12px rgba(181, 155, 132, 0.3);
-  transform:    translateY(-4px);
-}
+  .opt-card-radio-dot {
+    @apply w-3 h-3 bg-charcoal rounded-full transition-transform duration-300;
+  }
 
-.opt-card:focus-visible {
-  outline:        2px solid var(--color-tan);
-  outline-offset: 3px;
-}
+  .opt-card:hover:not(:disabled):not(.opt-card--disabled) {
+    border-color: var(--color-tan);
+    box-shadow:   0 12px 40px -12px rgba(181, 155, 132, 0.3);
+    transform:    translateY(-4px);
+  }
 
-.opt-card--disabled {
-  cursor:  wait;
-  opacity: 0.85;
-}
+  .opt-card:focus-visible {
+    outline:        2px solid var(--color-tan);
+    outline-offset: 3px;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .opt-card,
-  .opt-card:hover {
-    transition: none;
-    transform:  none;
+  .opt-card--disabled {
+    cursor:  wait;
+    opacity: 0.85;
+  }
+
+  .opt-card.selected {
+    @apply border-charcoal bg-white shadow-[0_12px_40px_-12px_rgba(67,58,49,0.2)] -translate-y-0.5 sm:-translate-y-1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .opt-card,
+    .opt-card:hover {
+      transition: none;
+      transform:  none;
+    }
+  }
+
+  .example-panel {
+    @apply mt-2 sm:mt-4 text-walnut text-xs sm:text-sm leading-relaxed bg-cream-dark/50 p-3 sm:p-4 rounded-xl border border-border;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .example-panel-label {
+    @apply text-[10px] font-bold uppercase tracking-widest text-tan block mb-1;
+  }
+
+  /* ---- Site chrome ---- */
+  .site-header {
+    @apply w-full max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex justify-between items-center relative z-20 gap-3;
+  }
+
+  .site-main {
+    @apply flex-1 flex flex-col px-4 sm:px-6 w-full min-w-0;
+  }
+
+  .site-footer {
+    @apply py-8 sm:py-10 px-4 sm:px-6 border-t border-border mt-10 sm:mt-12 bg-white/30 backdrop-blur-sm;
+  }
+
+  .site-footer a {
+    @apply text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:text-charcoal transition-colors;
+  }
+
+  .logo-mark {
+    @apply relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center;
+  }
+
+  .logo-mark-back {
+    @apply absolute inset-0 bg-charcoal rounded-xl rotate-3 transition-transform duration-300;
+  }
+
+  .logo-mark-front {
+    @apply absolute inset-0 bg-tan rounded-xl -rotate-3 transition-transform duration-300 opacity-50;
+  }
+
+  .group:hover .logo-mark-back {
+    transform: rotate(6deg);
+  }
+
+  .group:hover .logo-mark-front {
+    transform: rotate(-6deg);
+  }
+
+  .logo-wordmark {
+    @apply text-base sm:text-xl font-bold tracking-tight text-charcoal;
+  }
+
+  .icon-link {
+    @apply text-muted hover:text-charcoal transition-colors px-1 flex items-center gap-1.5 sm:gap-2;
+  }
+
+  /* ---- Quiz layout ---- */
+  .quiz-shell {
+    @apply w-full max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-24 pb-16 sm:pb-20;
+  }
+
+  .quiz-progress {
+    @apply flex items-center justify-center gap-1.5 sm:gap-3 mb-10 sm:mb-16;
+  }
+
+  .quiz-progress-seg {
+    @apply h-1.5 sm:h-2 flex-1 max-w-12 sm:max-w-20 rounded-full transition-colors duration-500;
+  }
+
+  .quiz-question-meta {
+    @apply text-[10px] sm:text-sm tracking-widest uppercase font-bold text-tan mb-3 sm:mb-4;
+  }
+
+  .quiz-question-title {
+    @apply text-3xl sm:text-4xl md:text-6xl mb-4 sm:mb-6 text-espresso leading-tight px-1;
+  }
+
+  .quiz-question-desc {
+    @apply text-base sm:text-xl md:text-2xl text-muted max-w-2xl mx-auto px-1 leading-relaxed;
+  }
+
+  .quiz-options {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-16;
+  }
+
+  .quiz-nav {
+    @apply flex justify-between items-center gap-3 border-t border-border pt-6 sm:pt-8;
+  }
+
+  /* ---- Result / about ---- */
+  .donation-banner {
+    @apply inline-flex flex-col sm:flex-row items-center gap-4 bg-cream-dark/50 border border-border rounded-2xl p-4 transition-colors hover:bg-cream-dark;
+  }
+
+  .constellation-card {
+    @apply relative rounded-2xl border border-border bg-white/70 backdrop-blur-sm p-3.5 sm:p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 min-w-0;
+  }
+
+  .constellation-card:hover .constellation-dot {
+    background-color: var(--color-tan);
+  }
+
+  .constellation-dot {
+    @apply absolute top-3 right-3 w-2 h-2 rounded-full bg-tan/60 transition-colors;
+  }
+
+  .principle-card {
+    @apply rounded-2xl border border-border bg-cream-dark/80 p-5 sm:p-6 hover:border-tan/60 transition-colors;
+  }
+
+  .engine-panel {
+    @apply rounded-3xl border border-border bg-white/60 backdrop-blur-sm overflow-hidden;
+  }
+
+  .terminal-window {
+    @apply bg-white rounded-3xl border border-border shadow-sm overflow-hidden flex flex-col max-h-[600px];
+  }
+
+  .terminal-chrome {
+    @apply bg-cream-dark p-4 border-b border-border flex items-center justify-between shrink-0;
+  }
+
+  .dot-traffic {
+    @apply flex gap-2;
+  }
+
+  .dot-traffic > span {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .meta-chip {
+    @apply flex items-center gap-1.5 text-sm text-muted font-medium;
+  }
+
+  /* ---- Modals ---- */
+  .modal-container {
+    @apply relative w-full max-w-xl bg-cream rounded-3xl shadow-2xl border border-border overflow-hidden pointer-events-auto;
+  }
+
+  .modal-header {
+    @apply px-6 py-5 border-b border-border flex items-center justify-between bg-white;
+  }
+
+  .modal-body {
+    @apply px-6 py-6 max-h-[60vh] overflow-y-auto;
+  }
+
+  .modal-body::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-body::-webkit-scrollbar-thumb {
+    background:    rgba(181, 155, 132, 0.3);
+    border-radius: 4px;
+  }
+
+  .modal-footer {
+    @apply px-6 py-5 border-t border-border bg-white;
+  }
+
+  /* ---- Flip cards ---- */
+  .flip-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flip-front,
+  .flip-back {
+    transition:     transform 0.4s ease, opacity 0.4s ease;
+    width:          100%;
+    height:         100%;
+    display:        flex;
+    flex-direction: column;
+  }
+
+  .flip-back {
+    position:  absolute;
+    top:       0;
+    left:      0;
+    padding:   2rem;
+    transform: translateX(100%);
+    opacity:   0;
+  }
+
+  .flipped .flip-front {
+    transform: translateX(-100%);
+    opacity:   0;
+  }
+
+  .flipped .flip-back {
+    transform: translateX(0);
+    opacity:   1;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Scrollbar utilities                                                */
+/*  Scrollbar utility (Tailwind v4 @utility)                           */
 /* ------------------------------------------------------------------ */
 @utility custom-scrollbar {
   &::-webkit-scrollbar {
@@ -490,267 +713,6 @@
   }
 }
 
-.opt-card.selected {
-  @apply border-charcoal bg-white shadow-[0_12px_40px_-12px_rgba(67,58,49,0.2)] -translate-y-0.5 sm:-translate-y-1;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Badges & Labels                                                    */
-/* ------------------------------------------------------------------ */
-.badge {
-  @apply animate-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-border text-xs font-bold tracking-widest uppercase text-tan mb-8 shadow-sm;
-}
-
-.label-caps {
-  @apply text-[10px] font-bold uppercase tracking-wider text-muted;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Standard Cards                                                     */
-/* ------------------------------------------------------------------ */
-.card {
-  @apply bg-white p-6 rounded-2xl border border-border shadow-sm;
-}
-
-.step-num {
-  @apply w-10 h-10 rounded-full bg-cream-dark border border-border flex items-center justify-center font-bold text-tan mb-4 font-serif text-xl;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Modals & Dialogs                                                   */
-/* ------------------------------------------------------------------ */
-.modal-container {
-  @apply relative w-full max-w-xl bg-cream rounded-3xl shadow-2xl border border-border overflow-hidden pointer-events-auto;
-}
-
-.modal-header {
-  @apply px-6 py-5 border-b border-border flex items-center justify-between bg-white;
-}
-
-.modal-body {
-  @apply px-6 py-6 max-h-[60vh] overflow-y-auto;
-}
-
-.modal-footer {
-  @apply px-6 py-5 border-t border-border bg-white;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Special Buttons                                                    */
-/* ------------------------------------------------------------------ */
-.btn-dashed {
-  @apply w-full py-3 rounded-xl border border-dashed border-tan text-tan hover:bg-cream-dark transition-all text-sm font-bold flex items-center justify-center gap-2;
-}
-
-.btn-icon {
-  @apply p-2 text-muted hover:text-charcoal transition-colors hover:bg-cream-dark rounded-full flex items-center justify-center;
-}
-
-.btn-delete {
-  @apply p-2 text-red-400 hover:text-red-600 transition-colors shrink-0;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Accordion example panel (quiz cards)                               */
-/* ------------------------------------------------------------------ */
-.example-panel {
-  @apply mt-2 sm:mt-4 text-walnut text-xs sm:text-sm leading-relaxed bg-cream-dark/50 p-3 sm:p-4 rounded-xl border border-border;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.example-panel-label {
-  @apply text-[10px] font-bold uppercase tracking-widest text-tan block mb-1;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Site chrome (header / logo / footer)                               */
-/* ------------------------------------------------------------------ */
-.site-header {
-  @apply w-full max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex justify-between items-center relative z-20 gap-3;
-}
-
-.site-main {
-  @apply flex-1 flex flex-col px-4 sm:px-6 w-full min-w-0;
-}
-
-.site-footer {
-  @apply py-8 sm:py-10 px-4 sm:px-6 border-t border-border mt-10 sm:mt-12 bg-white/30 backdrop-blur-sm;
-}
-
-.logo-mark {
-  @apply relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center;
-}
-
-.logo-mark-back {
-  @apply absolute inset-0 bg-charcoal rounded-xl rotate-3 transition-transform duration-300;
-}
-
-.logo-mark-front {
-  @apply absolute inset-0 bg-tan rounded-xl -rotate-3 transition-transform duration-300 opacity-50;
-}
-
-.group:hover .logo-mark-back {
-  transform: rotate(6deg);
-}
-
-.group:hover .logo-mark-front {
-  transform: rotate(-6deg);
-}
-
-.logo-wordmark {
-  @apply text-base sm:text-xl font-bold tracking-tight text-charcoal;
-}
-
-.icon-link {
-  @apply text-muted hover:text-charcoal transition-colors px-1 flex items-center gap-1.5 sm:gap-2;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Quiz wizard layout                                                 */
-/* ------------------------------------------------------------------ */
-.quiz-shell {
-  @apply w-full max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-24 pb-16 sm:pb-20;
-}
-
-.quiz-progress {
-  @apply flex items-center justify-center gap-1.5 sm:gap-3 mb-10 sm:mb-16;
-}
-
-.quiz-progress-seg {
-  @apply h-1.5 sm:h-2 flex-1 max-w-12 sm:max-w-20 rounded-full transition-colors duration-500;
-}
-
-.quiz-question-meta {
-  @apply text-[10px] sm:text-sm tracking-widest uppercase font-bold text-tan mb-3 sm:mb-4;
-}
-
-.quiz-question-title {
-  @apply text-3xl sm:text-4xl md:text-6xl mb-4 sm:mb-6 text-espresso leading-tight px-1;
-}
-
-.quiz-question-desc {
-  @apply text-base sm:text-xl md:text-2xl text-muted max-w-2xl mx-auto px-1 leading-relaxed;
-}
-
-.quiz-options {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-16;
-}
-
-.quiz-nav {
-  @apply flex justify-between items-center gap-3 border-t border-border pt-6 sm:pt-8;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Result / about helpers                                             */
-/* ------------------------------------------------------------------ */
-.donation-banner {
-  @apply inline-flex flex-col sm:flex-row items-center gap-4 bg-cream-dark/50 border border-border rounded-2xl p-4 transition-colors hover:bg-cream-dark;
-}
-
-.constellation-card {
-  @apply relative rounded-2xl border border-border bg-white/70 backdrop-blur-sm p-3.5 sm:p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 min-w-0;
-}
-
-.constellation-card:hover .constellation-dot {
-  background-color: var(--color-tan);
-}
-
-.constellation-dot {
-  @apply absolute top-3 right-3 w-2 h-2 rounded-full bg-tan/60 transition-colors;
-}
-
-.principle-card {
-  @apply rounded-2xl border border-border bg-cream-dark/80 p-5 sm:p-6 hover:border-tan/60 transition-colors;
-}
-
-.engine-panel {
-  @apply rounded-3xl border border-border bg-white/60 backdrop-blur-sm overflow-hidden;
-}
-
-.terminal-window {
-  @apply bg-white rounded-3xl border border-border shadow-sm overflow-hidden flex flex-col max-h-[600px];
-}
-
-.terminal-chrome {
-  @apply bg-cream-dark p-4 border-b border-border flex items-center justify-between shrink-0;
-}
-
-.dot-traffic {
-  @apply flex gap-2;
-}
-
-.dot-traffic > span {
-  @apply w-3 h-3 rounded-full;
-}
-
-.meta-chip {
-  @apply flex items-center gap-1.5 text-sm text-muted font-medium;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Modal overlay + content                                            */
-/* ------------------------------------------------------------------ */
-.modal-overlay {
-  background:      rgba(38, 33, 28, 0.4);
-  backdrop-filter: blur(4px);
-  opacity:         0;
-  pointer-events:  none;
-  transition:      opacity 0.3s;
-  z-index:         50;
-}
-
-.modal-overlay.open {
-  opacity:        1;
-  pointer-events: auto;
-}
-
-.modal-content {
-  transform:  scale(0.95);
-  opacity:    0;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-overlay.open .modal-content {
-  transform: scale(1);
-  opacity:   1;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Flip cards (license overview)                                      */
-/* ------------------------------------------------------------------ */
-.flip-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.flip-front,
-.flip-back {
-  transition:     transform 0.4s ease, opacity 0.4s ease;
-  width:          100%;
-  height:         100%;
-  display:        flex;
-  flex-direction: column;
-}
-
-.flip-back {
-  position:  absolute;
-  top:       0;
-  left:      0;
-  padding:   2rem;
-  transform: translateX(100%);
-  opacity:   0;
-}
-
-.flipped .flip-front {
-  transform: translateX(-100%);
-  opacity:   0;
-}
-
-.flipped .flip-back {
-  transform: translateX(0);
-  opacity:   1;
-}
-
 /* ------------------------------------------------------------------ */
 /*  Highlight.js overrides                                             */
 /* ------------------------------------------------------------------ */
@@ -762,35 +724,7 @@
 /* ------------------------------------------------------------------ */
 /*  Animation delay utilities                                          */
 /* ------------------------------------------------------------------ */
-.delay-100 {
-  animation-delay: 100ms;
-}
-
-.delay-200 {
-  animation-delay: 200ms;
-}
-
-.delay-300 {
-  animation-delay: 300ms;
-}
-
-.delay-400 {
-  animation-delay: 400ms;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Footer                                                             */
-/* ------------------------------------------------------------------ */
-.site-footer a,
-footer a {
-  @apply text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:text-charcoal transition-colors;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Form labels                                                        */
-/* ------------------------------------------------------------------ */
-.field-label {
-  @apply block text-[10px] font-bold uppercase tracking-wider text-muted mb-1 ml-1 cursor-pointer;
-}
-
-
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }

@@ -60,7 +60,7 @@
         </p>
         <button
             type="button"
-            class="btn"
+            class="cta"
             @click="onStart"
         >
           Start over
@@ -80,48 +80,64 @@
 import { useWizard } from '~/composables/useWizard'
 import { useLicenseMatcher } from '~/composables/useLicenseMatcher'
 
+// branching quiz state (intro → quiz → result)
 const {
-        currentScreen,
-        currentStep,
-        answers,
-        startWizard,
-        selectOption,
-        nextStep,
-        prevStep,
-        totalSteps,
-        currentQuestion,
-        canAdvance,
-        collectedTags
-      } = useWizard()
+  currentScreen,
+  currentStep,
+  answers,
+  startWizard,
+  selectOption,
+  nextStep,
+  prevStep,
+  totalSteps,
+  currentQuestion,
+  canAdvance,
+  collectedTags
+} = useWizard()
 
+// catalog + pure matcher
 const { allLicenses, fetchLicenses, matchLicense } = useLicenseMatcher()
 
+// brief “matching…” UI before navigateTo license page
 const matching = ref(false)
-const noMatch  = ref(false)
+// honest empty result when gates eliminate every license
+const noMatch = ref(false)
+// true when catalog failed to load (distinct empty-match copy)
 const catalogEmpty = computed(() => allLicenses.value.length === 0)
 
+/** Reset match UI and enter the quiz. */
 const onStart = () => {
   matching.value = false
   noMatch.value = false
   startWizard()
 }
 
+// load Content catalog during setup (SSG payload + client hydration)
 await fetchLicenses()
 
+/**
+ * Advance quiz; on final step run matcher and route to license page.
+ */
 const handleNext = async () => {
+  // move step or flip to result screen
   nextStep()
   if (currentScreen.value === 'result') {
+    // show spinner briefly so navigation doesn’t feel instant
     matching.value = true
     noMatch.value = false
 
     await new Promise(r => setTimeout(r, 80))
 
+    // score collected tags against the catalog
     const matchedLicense = matchLicense(collectedTags.value)
     if (matchedLicense) {
+      // Content path or SPDX → URL slug
       const path = (matchedLicense as { path?: string }).path || matchedLicense.id || ''
       const slug = path.split('/').pop() || matchedLicense.spdx.toLowerCase()
+      // calc=1 triggers the short loading animation on the license page
       await navigateTo(`/licenses/${slug}?calc=1`)
     } else {
+      // honest empty — no contradicted soft pick
       matching.value = false
       noMatch.value = true
     }
