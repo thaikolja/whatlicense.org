@@ -11,21 +11,28 @@ import type { IconLink, FooterLink } from '~/types'
 
 const config = useRuntimeConfig()
 
+// defaults keep shell useful if runtimeConfig is partial (tests)
+const links = {
+  paypal: config.public.links?.paypal || 'https://paypal.me/thaikolja/10',
+  github: config.public.links?.github || 'https://github.com/thaikolja/whatlicense.org',
+  email:  config.public.links?.email || 'mailto:kolja.nolte@gmail.com'
+}
+
 const icons = ref<IconLink[]>([
   {
     name: 'PayPal',
     icon: 'mdi:paypal',
-    link: config.public?.links?.paypal ?? ''
+    link: links.paypal
   },
   {
     name: 'GitHub',
     icon: 'mdi:github',
-    link: config.public?.links?.github ?? ''
+    link: links.github
   },
   {
     name: 'E-Mail',
     icon: 'mdi:envelope',
-    link: config.public?.links?.email ?? ''
+    link: links.email
   }
 ])
 
@@ -47,38 +54,34 @@ const footerLinks = ref<FooterLink[]>([
   {
     title:    'Support the project',
     name: 'Support',
-    link:     config.public?.links?.paypal ?? '',
+    link: links.paypal,
     icon:     'mdi:paypal',
     external: true
   },
   {
     title:    'GitHub',
     name:     'GitHub',
-    link:     config.public?.links?.github ?? '',
+    link: links.github,
     icon:     'mdi:github',
     external: true
   }
 ])
 
-//year is fixed at build for pure SSG markup (avoids hydration mismatch)
+// year fixed at build for pure SSG markup (avoids hydration mismatch)
 const copyrightYear = new Date().getFullYear()
-const isEmail       = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return emailRegex.test(email)
-}
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-pattern selection:bg-tan selection:text-white relative">
-    <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex justify-between items-center relative z-20 gap-3">
+  <div class="page-shell">
+    <header class="site-header">
       <NuxtLink
           to="/"
           class="flex items-center gap-2 sm:gap-3 group shrink-0"
           title="whatlicense.org home"
       >
-        <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center">
-          <div class="absolute inset-0 bg-charcoal rounded-xl rotate-3 group-hover:rotate-6 transition-transform duration-300" />
-          <div class="absolute inset-0 bg-tan rounded-xl -rotate-3 group-hover:-rotate-6 transition-transform duration-300 opacity-50" />
+        <div class="logo-mark">
+          <div class="logo-mark-back" />
+          <div class="logo-mark-front" />
           <svg
               class="w-4 h-4 sm:w-5 sm:h-5 text-white relative z-10"
               fill="none"
@@ -94,7 +97,7 @@ const isEmail       = (email: string) => {
             />
           </svg>
         </div>
-        <span class="text-base sm:text-xl font-bold tracking-tight text-charcoal">
+        <span class="logo-wordmark">
           whatlicense<span class="text-tan">.org</span>
         </span>
       </NuxtLink>
@@ -107,14 +110,7 @@ const isEmail       = (email: string) => {
           <NuxtLink
               to="/about"
               title="About whatlicense.org"
-              class="text-xs font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors"
-          >
-            About
-          </NuxtLink>
-          <NuxtLink
-              to="/about"
-              title="About whatlicense.org"
-              class="text-xs font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors"
+              class="nav-link"
           >
             About
           </NuxtLink>
@@ -123,10 +119,11 @@ const isEmail       = (email: string) => {
           <NuxtLink
               v-for="icon in icons"
               :key="icon.name"
-              :to="isEmail(icon.link) ? `mailto:${icon.link}` : icon.link"
+              :to="icon.link"
               :title="`Go to ${icon.name}`"
-              target="_blank"
-              class="text-muted hover:text-charcoal transition-colors px-1 flex items-center gap-1.5 sm:gap-2"
+              :target="icon.link.startsWith('mailto:') ? undefined : '_blank'"
+              :rel="icon.link.startsWith('mailto:') ? undefined : 'noopener noreferrer'"
+              class="icon-link"
           >
             <Icon
                 :id="`icon-${useSlug(icon.name)}`"
@@ -134,19 +131,19 @@ const isEmail       = (email: string) => {
                 :aria-label="icon.name"
                 aria-hidden="true"
             />
-            {{ icon.name }}
+            <span class="hidden sm:inline eyebrow-muted">{{ icon.name }}</span>
           </NuxtLink>
         </div>
       </div>
     </header>
 
-    <main class="flex-1 flex flex-col px-4 sm:px-6 w-full min-w-0">
+    <main class="site-main">
       <NuxtPage />
     </main>
 
-    <footer class="py-8 sm:py-10 px-4 sm:px-6 border-t border-border mt-10 sm:mt-12 bg-white/30 backdrop-blur-sm">
-      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6">
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-muted text-center sm:text-left">
+    <footer class="site-footer">
+      <div class="container-wide flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6">
+        <p class="eyebrow-muted tracking-[0.2em] text-center sm:text-left">
           © {{ copyrightYear }} whatlicense.org
         </p>
 
@@ -161,7 +158,7 @@ const isEmail       = (email: string) => {
               :title="link.title"
               :target="link.external ? '_blank' : undefined"
               :rel="link.external ? 'noopener noreferrer' : undefined"
-              class="text-muted hover:text-charcoal transition-colors flex items-center gap-1.5 sm:gap-2"
+              class="icon-link"
           >
             <Icon
                 v-if="link.icon"
@@ -169,9 +166,7 @@ const isEmail       = (email: string) => {
                 :name="link.icon"
                 size="12"
             />
-            <span class="text-[10px] font-bold uppercase tracking-widest">
-            {{ link.name }}
-            </span>
+            <span class="eyebrow-muted">{{ link.name }}</span>
           </NuxtLink>
         </nav>
       </div>

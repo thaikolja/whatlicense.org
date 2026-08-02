@@ -1,26 +1,26 @@
 <template>
   <section class="mb-16">
-    <div class="text-center mb-10">
-      <h2 class="serif text-3xl font-bold text-charcoal mb-2">2. File Header Customizer</h2>
-      <h3 class="text-muted text-lg">Personalize your license headers before copying them to your files.</h3>
+    <div class="section-intro">
+      <h2 class="heading-section">2. File Header Customizer</h2>
+      <h3 class="heading-section-sub">Personalize your license headers before copying them to your files.</h3>
     </div>
 
     <div class="card overflow-hidden p-0!">
       <div class="grid lg:grid-cols-12 gap-6 w-full p-6">
         <!-- Editor Left Side -->
         <form
-            class="lg:col-span-5 bg-cream-dark p-6 rounded-2xl border border-border flex flex-col w-full h-full"
+            class="lg:col-span-5 panel-inset flex flex-col w-full h-full"
             @submit.prevent
         >
           <header class="flex items-center justify-between mb-6">
-            <div class="text-sm tracking-widest uppercase font-bold text-tan">Project Details</div>
+            <div class="eyebrow-sm">Project Details</div>
           </header>
 
           <fieldset class="space-y-4 border-none p-0 m-0">
             <div>
               <label
                   for="projectName"
-                  class="block label-caps mb-1 ml-1 cursor-pointer"
+                  class="field-label"
               >Project Name</label> <input
                 id="projectName"
                 v-model="formState.projectName"
@@ -31,7 +31,7 @@
             <div>
               <label
                   for="projectDesc"
-                  class="block label-caps mb-1 ml-1 cursor-pointer"
+                  class="field-label"
               >Description</label> <input
                 id="projectDesc"
                 v-model="formState.description"
@@ -42,7 +42,7 @@
             <div>
               <label
                   for="authorName"
-                  class="block label-caps mb-1 ml-1 cursor-pointer"
+                  class="field-label"
               >Author Name</label> <input
                 id="authorName"
                 v-model="formState.authorName"
@@ -54,7 +54,7 @@
               <div>
                 <label
                     for="email"
-                    class="block label-caps mb-1 ml-1 cursor-pointer"
+                    class="field-label"
                 >Email</label> <input
                   id="email"
                   v-model="formState.email"
@@ -66,7 +66,7 @@
               <div>
                 <label
                     for="website"
-                    class="block label-caps mb-1 ml-1 cursor-pointer"
+                    class="field-label"
                 >Website</label> <input
                   id="website"
                   v-model="formState.website"
@@ -98,7 +98,7 @@
               Add Custom Properties
             </button>
             <div class="text-center mt-2 mb-6">
-              <span class="text-[10px] uppercase tracking-widest text-muted font-bold opacity-70">
+              <span class="eyebrow-muted opacity-70">
                 <svg
                     class="w-3 h-3 inline-block mr-1 -mt-0.5"
                     fill="none"
@@ -114,15 +114,14 @@
               </span>
             </div>
 
-            <!-- Monetization: Subtle Affiliate Link -->
-            <aside class="bg-white border border-border rounded-xl p-4 ">
+            <aside class="panel rounded-xl p-4">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-[9px] font-bold uppercase tracking-widest text-tan">Sponsored</span>
+                <span class="eyebrow text-[9px]">Sponsored</span>
               </div>
-              <p class="text-sm  text-charcoal mb-1 font-black">
+              <p class="text-sm text-charcoal mb-1 font-black">
                 Keep open-source projects like this one alive
               </p>
-              <p class="text-xs text-muted mb-3 leading-relaxed">
+              <p class="text-xs text-body mb-3">
                 Find this tool useful? Consider supporting it with a donation
               </p>
               <span class="transition-colors hover:border-tan group">
@@ -167,7 +166,7 @@
                   {{ label }}
                 </option>
               </select>
-              <div class="text-sm tracking-widest uppercase font-bold text-tan/70 hidden sm:block">Preview</div>
+              <div class="eyebrow-sm text-tan/70 hidden sm:block">Preview</div>
             </div>
 
             <div class="flex items-center gap-6">

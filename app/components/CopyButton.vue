@@ -1,6 +1,7 @@
 <template>
   <button
-      class="text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 group"
+      type="button"
+      class="eyebrow flex items-center gap-2 group transition-colors"
       :class="[
         isCopied ? 'text-green-600' : (variant === 'light' ? 'text-tan hover:text-white' : 'text-tan hover:text-charcoal')
       ]"

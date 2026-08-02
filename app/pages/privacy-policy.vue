@@ -8,17 +8,17 @@
 const config = useRuntimeConfig()
 const email  = computed(() => {
   const raw = config.public?.links?.email as string | undefined
+
   if (!raw) return 'kolja.nolte@gmail.com'
+
   return raw.replace(/^mailto:/i, '')
 })
 
 useSeoMeta({
-  title: 'Privacy Policy',
-  description:
-      'How whatlicense.org handles privacy: client-side license matching, no quiz accounts, and privacy-friendly analytics.',
-  ogTitle: 'Privacy Policy | whatlicense.org',
-  ogDescription:
-      'Client-side license wizard. No accounts. No server-side storage of quiz answers.'
+  title:         'Privacy Policy',
+  description:   'How whatlicense.org handles privacy: client-side license matching, no quiz accounts, and privacy-friendly analytics.',
+  ogTitle:       'Privacy Policy | whatlicense.org',
+  ogDescription: 'Client-side license wizard. No accounts. No server-side storage of quiz answers.'
 })
 </script>
 

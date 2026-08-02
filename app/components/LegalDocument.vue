@@ -16,18 +16,18 @@ defineProps<{
 </script>
 
 <template>
-  <article class="w-full max-w-3xl mx-auto py-6 sm:py-12 animate-fade-up min-w-0">
+  <article class="container-narrow py-6 sm:py-12 animate-fade-up">
     <header class="mb-8 sm:mb-10 border-b border-border pb-6 sm:pb-8">
-      <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-tan mb-3">
+      <p class="eyebrow-wide mb-3">
         Legal
       </p>
-      <h1 class="text-3xl sm:text-5xl font-bold text-espresso tracking-tight mb-3">
+      <h1 class="text-3xl sm:text-5xl heading-display mb-3">
         {{ title }}
       </h1>
-      <p class="text-base sm:text-lg text-muted leading-relaxed mb-4">
+      <p class="text-base sm:text-lg text-body mb-4">
         {{ subtitle }}
       </p>
-      <p class="text-xs font-bold uppercase tracking-widest text-muted/80">
+      <p class="eyebrow-muted text-xs opacity-80">
         Effective date: {{ effectiveDate }}
       </p>
     </header>
@@ -39,11 +39,11 @@ defineProps<{
     <footer class="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <NuxtLink
           to="/"
-          class="text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors"
+          class="nav-link text-[10px]"
       >
         ← Back to wizard
       </NuxtLink>
-      <p class="text-[10px] font-bold uppercase tracking-widest text-muted/70">
+      <p class="eyebrow-muted opacity-70">
         whatlicense.org
       </p>
     </footer>

@@ -25,25 +25,25 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
   const fetchLicenses = async () => {
     try {
       if (options.fetchAll) {
-        // ... test / custom path
+        // test / custom path
         allLicenses.value = await options.fetchAll()
         return
       }
-      // ... stable key → shared between generate + client hydration
+      // stable key → shared between generate + client hydration
       const { data } = await useAsyncData(
           'licenses-catalog',
           () => queryCollection('licenses').all(),
           {
-            // ... licenses rarely change per deploy; keep default server/cache behavior
+            // licenses rarely change per deploy; keep default server/cache behavior
             default: () => []
           }
       )
       if (data.value?.length) {
-        // ... Content pages aren’t typed as License — cast is intentional
+        // Content pages aren’t typed as License — cast is intentional
         allLicenses.value = data.value as unknown as License[]
       }
     } catch (e) {
-      // ... keep empty catalog; UI can show “could not load”
+      // keep empty catalog; UI can show “could not load”
       console.error('Failed to load licenses', e)
     }
   }

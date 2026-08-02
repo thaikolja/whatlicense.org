@@ -28,6 +28,6 @@ describe('example e2e test', async () => {
     const html = await $fetch('/')
     expect(html).toContain('What license')
     expect(html).toContain('do I need?')
-    expect(html).toContain('Smart License Wizard')
+    expect(html).toContain('Start Wizard')
   })
 })

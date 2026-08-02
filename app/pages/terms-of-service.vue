@@ -15,10 +15,10 @@ const email  = computed(() => {
 useSeoMeta({
   title: 'Terms of Service',
   description:
-      'Terms for using whatlicense.org: informational license recommendations, no warranties, and open-source project terms.',
+         'Terms for using whatlicense.org: informational license recommendations, no warranties, and open-source project terms.',
   ogTitle: 'Terms of Service | whatlicense.org',
   ogDescription:
-      'Use of the license wizard is at your own risk. Recommendations are not legal advice.'
+         'Use of the license wizard is at your own risk. Recommendations are not legal advice.'
 })
 </script>
 

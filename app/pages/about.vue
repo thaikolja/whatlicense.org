@@ -13,7 +13,6 @@ const email = computed(() => {
   return raw.replace(/^mailto:/i, '')
 })
 
-/** Tiny “license constellation” for the hero mosaic. */
 const constellation = [
   { spdx: 'MIT', vibe: 'maximum freedom', rotate: '-rotate-2' },
   { spdx: 'Apache-2.0', vibe: 'patents included', rotate: 'rotate-1' },
@@ -66,19 +65,16 @@ const timeline = [
 ] as const
 
 useSeoMeta({
-  title:   'About',
-  description:
-           'The story of whatlicense.org — a privacy-first, browser-side open-source license wizard for developers who hate legal jargon.',
-  ogTitle: 'About | whatlicense.org',
-  ogDescription:
-           'Why we built a branching license quiz, honest matching, and a file-header generator that never uploads your answers.'
+  title:         'About Licenses',
+  description:   'The story of whatlicense.org — a privacy-first, browser-side open-source license wizard for developers who hate legal jargon.',
+  ogTitle:       'About Licenses',
+  ogDescription: 'Why we built a branching license quiz, honest matching, and a file-header generator that never uploads your answers.'
 })
 </script>
 
 <template>
-  <div class="w-full max-w-5xl mx-auto py-4 sm:py-10 pb-16 sm:pb-20 min-w-0">
-    <!-- Hero -->
-    <section class="relative mb-12 sm:mb-24 animate-fade-up">
+  <div class="container-page py-4 sm:py-10 pb-16 sm:pb-20">
+    <section class="relative section-block animate-fade-up">
       <div
           class="pointer-events-none absolute -top-8 right-0 w-48 h-48 border border-sand rounded-full opacity-40 -z-10 hidden sm:block"
           aria-hidden="true"
@@ -88,13 +84,13 @@ useSeoMeta({
           aria-hidden="true"
       />
 
-      <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-tan mb-3 sm:mb-4">
+      <p class="eyebrow-wide tracking-[0.25em] mb-3 sm:mb-4">
         About the project
       </p>
-      <h1 class="text-3xl sm:text-5xl md:text-7xl font-bold text-espresso tracking-tight leading-[1.08] mb-5 sm:mb-6 max-w-3xl">
+      <h1 class="text-3xl sm:text-5xl md:text-7xl heading-display leading-[1.08] mb-5 sm:mb-6 max-w-3xl">
         Licenses are poetry <span class="italic text-muted font-normal">with teeth.</span>
       </h1>
-      <p class="text-base sm:text-xl text-muted max-w-2xl leading-relaxed mb-6 sm:mb-8">
+      <p class="text-base sm:text-xl text-body max-w-2xl mb-6 sm:mb-8">
         <strong class="text-charcoal">whatlicense.org</strong> is a small, stubborn tool for developers who want a clear
         answer to a messy question: <em class="text-charcoal not-italic font-semibold">what open-source license do I
         actually need?</em> No account. No jargon gauntlet. Just a branching quiz, a honest matcher, and a header you
@@ -104,7 +100,7 @@ useSeoMeta({
       <div class="flex flex-wrap items-center gap-3 sm:gap-4">
         <NuxtLink
             to="/"
-            class="btn px-6 sm:px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2 min-h-11"
+            class="btn"
         >
           Start the wizard <span aria-hidden="true">→</span>
         </NuxtLink>
@@ -112,23 +108,22 @@ useSeoMeta({
             :href="config.public.links.github"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors border-b border-transparent hover:border-tan pb-0.5"
+            class="link-ghost"
         >
           Source on GitHub
         </a>
       </div>
     </section>
 
-    <!-- Constellation mosaic -->
     <section
-        class="mb-16 sm:mb-24 animate-fade-up"
+        class="section-block animate-fade-up"
         aria-label="Sample licenses in the catalog"
     >
       <div class="flex items-end justify-between gap-4 mb-6">
-        <h2 class="text-2xl sm:text-3xl font-bold text-espresso tracking-tight">
+        <h2 class="text-2xl sm:text-3xl heading-display">
           A constellation of choices
         </h2>
-        <p class="text-[10px] font-bold uppercase tracking-widest text-muted hidden sm:block">
+        <p class="eyebrow-muted hidden sm:block">
           26+ licenses curated
         </p>
       </div>
@@ -136,7 +131,7 @@ useSeoMeta({
         <div
             v-for="(item, i) in constellation"
             :key="item.spdx"
-            class="group relative rounded-2xl border border-border bg-white/70 backdrop-blur-sm p-3.5 sm:p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 min-w-0"
+            class="constellation-card"
             :class="[item.rotate, i % 2 === 1 ? 'md:translate-y-3' : '']"
         >
           <p class="font-mono text-sm sm:text-base font-bold text-charcoal tracking-tight mb-1">
@@ -146,28 +141,27 @@ useSeoMeta({
             {{ item.vibe }}
           </p>
           <div
-              class="absolute top-3 right-3 w-2 h-2 rounded-full bg-tan/60 group-hover:bg-tan transition-colors"
+              class="constellation-dot"
               aria-hidden="true"
           />
         </div>
       </div>
-      <p class="mt-4 text-sm text-muted max-w-xl">
+      <p class="mt-4 text-body-sm max-w-xl">
         From “do almost anything” MIT energy to AGPL’s network copyleft — the catalog lives as Markdown under
         <code class="text-charcoal font-semibold">content/licenses/</code>, scored by traits, not vibes alone.
       </p>
     </section>
 
-    <!-- Manifesto principles -->
-    <section class="mb-16 sm:mb-24">
+    <section class="section-block">
       <div class="grid md:grid-cols-12 gap-8 md:gap-10 items-start">
         <div class="md:col-span-4">
-          <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-tan mb-3">
+          <p class="eyebrow-wide mb-3">
             Manifesto
           </p>
-          <h2 class="text-3xl sm:text-4xl font-bold text-espresso tracking-tight leading-tight mb-4">
+          <h2 class="text-3xl sm:text-4xl heading-display leading-tight mb-4">
             Built for people who ship on evenings and weekends
           </h2>
-          <p class="text-muted leading-relaxed">
+          <p class="text-body">
             Legal documents are long. Your pull request is short. We sit in the awkward middle — translation layer
             between intent and SPDX.
           </p>
@@ -176,15 +170,15 @@ useSeoMeta({
           <article
               v-for="(p, idx) in principles"
               :key="p.title"
-              class="rounded-2xl border border-border bg-cream-dark/80 p-5 sm:p-6 hover:border-tan/60 transition-colors"
+              class="principle-card"
           >
-            <span class="text-[10px] font-bold uppercase tracking-widest text-tan">
+            <span class="eyebrow">
               0{{ idx + 1 }}
             </span>
             <h3 class="text-lg font-bold text-charcoal mt-2 mb-2">
               {{ p.title }}
             </h3>
-            <p class="text-sm text-muted leading-relaxed">
+            <p class="text-body-sm">
               {{ p.body }}
             </p>
           </article>
@@ -192,17 +186,16 @@ useSeoMeta({
       </div>
     </section>
 
-    <!-- How the engine thinks -->
-    <section class="mb-16 sm:mb-24 rounded-3xl border border-border bg-white/60 backdrop-blur-sm overflow-hidden">
+    <section class="section-block engine-panel">
       <div class="grid md:grid-cols-2">
         <div class="p-6 sm:p-10 border-b md:border-b-0 md:border-r border-border">
-          <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-tan mb-3">
+          <p class="eyebrow-wide mb-3">
             Under the hood
           </p>
-          <h2 class="text-2xl sm:text-3xl font-bold text-espresso tracking-tight mb-4">
+          <h2 class="text-2xl sm:text-3xl heading-display mb-4">
             A branching quiz, then hard gates
           </h2>
-          <p class="text-muted leading-relaxed mb-6">
+          <p class="text-body mb-6">
             Pick permissive and you’re done in three beats. Choose copyleft and we unlock scope and network — because
             “share-alike” without those questions is a coin flip in a dark room.
           </p>
@@ -224,7 +217,7 @@ useSeoMeta({
               <h3 class="font-bold text-charcoal mb-1">
                 {{ t.title }}
               </h3>
-              <p class="text-sm text-muted leading-relaxed">
+              <p class="text-body-sm">
                 {{ t.detail }}
               </p>
             </div>
@@ -233,17 +226,16 @@ useSeoMeta({
       </div>
     </section>
 
-    <!-- Quote / privacy -->
-    <section class="mb-16 sm:mb-24 relative">
+    <section class="section-block relative">
       <blockquote class="max-w-3xl mx-auto text-center px-2">
-        <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-espresso tracking-tight leading-snug mb-6">
+        <p class="text-2xl sm:text-3xl md:text-4xl heading-display leading-snug mb-6">
           “Your answers stay where your code lives — <span class="italic text-muted font-normal">on your machine.</span>”
         </p>
-        <footer class="text-[10px] font-bold uppercase tracking-[0.2em] text-muted">
+        <footer class="eyebrow-muted tracking-[0.2em]">
           Privacy-first by architecture · see
           <NuxtLink
               to="/privacy-policy"
-              class="text-charcoal underline decoration-sand underline-offset-4 hover:decoration-tan"
+              class="link-brand"
           >
             Privacy Policy
           </NuxtLink>
@@ -251,14 +243,13 @@ useSeoMeta({
       </blockquote>
     </section>
 
-    <!-- Maker -->
     <section class="mb-16 sm:mb-20 grid md:grid-cols-5 gap-8 items-stretch">
-      <div class="md:col-span-3 rounded-3xl border border-border bg-charcoal text-cream p-6 sm:p-10 relative overflow-hidden">
+      <div class="md:col-span-3 panel-dark p-6 sm:p-10">
         <div
             class="pointer-events-none absolute -bottom-10 -right-10 w-40 h-40 rounded-full border border-white/10"
             aria-hidden="true"
         />
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-tan mb-3">
+        <p class="eyebrow-wide mb-3">
           The human
         </p>
         <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
@@ -271,7 +262,7 @@ useSeoMeta({
         <div class="flex flex-wrap gap-4">
           <a
               :href="`mailto:${email}`"
-              class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-cream/90 hover:text-white transition-colors"
+              class="inline-flex items-center gap-2 eyebrow text-cream/90 hover:text-white transition-colors"
           >
             <Icon
                 name="mdi:envelope"
@@ -283,7 +274,7 @@ useSeoMeta({
               :href="config.public.links.github"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-cream/90 hover:text-white transition-colors"
+              class="inline-flex items-center gap-2 eyebrow text-cream/90 hover:text-white transition-colors"
           >
             <Icon
                 name="mdi:github"
@@ -297,10 +288,10 @@ useSeoMeta({
       <div class="md:col-span-2 flex flex-col gap-4">
         <div class="flex-1 rounded-3xl border border-border bg-cream-dark p-6 flex flex-col justify-between">
           <div>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-tan mb-2">
+            <p class="eyebrow mb-2">
               Support
             </p>
-            <p class="text-sm text-muted leading-relaxed mb-4">
+            <p class="text-body-sm mb-4">
               Hosting and caffeine are not free. If the wizard saved you an hour, a coffee keeps the lights on.
             </p>
           </div>
@@ -308,7 +299,7 @@ useSeoMeta({
               :href="config.public.links.paypal"
               target="_blank"
               rel="noopener noreferrer"
-              class="btn px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wide inline-flex items-center justify-center gap-2 w-full sm:w-auto"
+              class="btn btn-sm btn-block"
           >
             <Icon
                 name="mdi:paypal"
@@ -317,15 +308,15 @@ useSeoMeta({
             Donate via PayPal
           </a>
         </div>
-        <div class="rounded-3xl border border-border bg-white/70 p-6">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-tan mb-2">
+        <div class="panel-glass rounded-3xl p-6">
+          <p class="eyebrow mb-2">
             Fine print (friendly)
           </p>
-          <p class="text-sm text-muted leading-relaxed">
+          <p class="text-body-sm">
             Recommendations are <strong class="text-charcoal">not legal advice</strong>. Read the
             <NuxtLink
                 to="/terms-of-service"
-                class="font-semibold text-charcoal underline decoration-sand underline-offset-2 hover:decoration-tan"
+                class="link-brand"
             >
               Terms
             </NuxtLink>
@@ -335,17 +326,16 @@ useSeoMeta({
       </div>
     </section>
 
-    <!-- Closing CTA -->
     <section class="text-center border-t border-border pt-12">
-      <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-tan mb-3">
+      <p class="eyebrow-wide tracking-[0.25em] mb-3">
         Ready when you are
       </p>
-      <h2 class="text-3xl sm:text-4xl font-bold text-espresso tracking-tight mb-6">
+      <h2 class="text-3xl sm:text-4xl heading-display mb-6">
         What license do <span class="italic text-muted font-normal">you</span> need?
       </h2>
       <NuxtLink
           to="/"
-          class="btn px-10 py-4 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
+          class="btn"
       >
         Open the wizard
       </NuxtLink>

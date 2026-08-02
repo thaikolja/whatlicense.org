@@ -1,42 +1,41 @@
 <template>
   <div class="w-full min-w-0">
-    <!-- Screen-level transition: intro ↔ quiz ↔ empty result -->
     <Transition
         name="screen"
         mode="out-in"
     >
       <LazyIntroScreen
-        v-if="currentScreen === 'intro'"
-        key="intro"
-        @start="onStart"
+          v-if="currentScreen === 'intro'"
+          key="intro"
+          @start="onStart"
       />
 
       <LazyQuizWizard
           v-else-if="currentScreen === 'quiz' && currentQuestion"
           key="quiz"
-        :question="currentQuestion"
-        :current-step="currentStep"
-        :total-steps="totalSteps"
-        :answers="answers"
-        :can-advance="canAdvance"
-        @select="selectOption"
-        @next="handleNext"
-        @prev="prevStep"
+          :question="currentQuestion"
+          :current-step="currentStep"
+          :total-steps="totalSteps"
+          :answers="answers"
+          :can-advance="canAdvance"
+          @select="selectOption"
+          @next="handleNext"
+          @prev="prevStep"
       />
 
       <div
           v-else-if="currentScreen === 'result' && matching"
           key="matching"
-          class="text-center pt-16 sm:pt-24 pb-16 px-2"
+          class="state-center px-2"
       >
         <div
-            class="inline-block w-10 h-10 border-4 border-tan border-t-transparent rounded-full animate-spin mb-6"
+            class="spinner mb-6"
             aria-hidden="true"
         />
         <h1 class="text-2xl sm:text-4xl text-espresso mb-4">
           Finding the perfect license...
         </h1>
-        <p class="text-muted mb-8 text-sm sm:text-base">
+        <p class="text-body mb-8 text-sm sm:text-base">
           Please wait while we match your answers.
         </p>
       </div>
@@ -44,12 +43,12 @@
       <div
           v-else-if="currentScreen === 'result' && !matching && noMatch"
           key="no-match"
-          class="text-center pt-16 sm:pt-24 pb-16 max-w-xl mx-auto px-2"
+          class="state-center max-w-xl mx-auto px-2"
       >
         <h1 class="text-2xl sm:text-4xl text-espresso mb-4">
           {{ catalogEmpty ? 'Could not load licenses' : 'No clear match' }}
         </h1>
-        <p class="text-muted mb-8 text-sm sm:text-base leading-relaxed">
+        <p class="text-body mb-8 text-sm sm:text-base">
           <template v-if="catalogEmpty">
             We could not load the license catalog. Check your connection and try again.
           </template>
@@ -60,9 +59,9 @@
           </template>
         </p>
         <button
-          type="button"
-          class="btn px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold uppercase tracking-wide text-sm min-h-11"
-          @click="onStart"
+            type="button"
+            class="btn"
+            @click="onStart"
         >
           Start over
         </button>
@@ -107,7 +106,6 @@ const onStart = () => {
   startWizard()
 }
 
-// ... run during setup so SSG/CSR share the same useAsyncData payload
 await fetchLicenses()
 
 const handleNext = async () => {
@@ -116,7 +114,6 @@ const handleNext = async () => {
     matching.value = true
     noMatch.value = false
 
-    // ... tiny beat so the matching UI paints before navigation
     await new Promise(r => setTimeout(r, 80))
 
     const matchedLicense = matchLicense(collectedTags.value)

@@ -1,15 +1,15 @@
 <template>
-  <main class="w-full max-w-6xl mx-auto flex-1 flex flex-col z-10 pb-12 animate-fade-up">
-    <!-- Top Title -->
+  <main class="container-wide flex-1 flex flex-col z-10 pb-12 animate-fade-up">
     <header class="text-center pt-16 pb-16 max-w-3xl mx-auto">
-      <p class="text-sm tracking-widest uppercase font-bold text-tan mb-4">Your Perfect Match</p>
-      <h1 class="text-6xl md:text-8xl mb-8 text-espresso font-bold tracking-tighter">{{ license.spdx }}</h1>
-      <p class="text-xl text-muted leading-relaxed mb-8">
+      <p class="eyebrow-sm mb-4">Your Perfect Match</p>
+      <h1 class="text-6xl md:text-8xl mb-8 text-espresso font-bold tracking-tighter">
+        {{ license.spdx }}
+      </h1>
+      <p class="text-xl text-body mb-8">
         {{ license.whyThisLicense }}
       </p>
 
-      <!-- Monetization: Subtle Donation Request -->
-      <aside class="inline-flex flex-col sm:flex-row items-center gap-4 bg-cream-dark/50 border border-border rounded-2xl p-4 transition-colors hover:bg-cream-dark">
+      <aside class="donation-banner">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
             <span class="text-xl">☕</span>
@@ -22,39 +22,40 @@
         <a
             :href="config.public.links.paypal"
             target="_blank"
-            class="shrink-0 bg-tan hover:bg-tan/90 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+            rel="noopener noreferrer"
+            class="btn-donate"
         >
           Donate via PayPal
         </a>
       </aside>
     </header>
 
-    <!-- Overview Section -->
     <section aria-labelledby="overview-heading">
       <h2
           id="overview-heading"
           class="sr-only"
-      >License Overview
+      >
+        License Overview
       </h2>
       <LicenseOverview :license="license" />
     </section>
 
-    <!-- File Header Section -->
     <section aria-labelledby="header-generator-heading">
       <h2
           id="header-generator-heading"
           class="sr-only"
-      >File Header Generator
+      >
+        File Header Generator
       </h2>
       <LazyFileHeaderGenerator :license="license" />
     </section>
 
-    <!-- Full Text Section -->
     <section aria-labelledby="full-text-heading">
       <h2
           id="full-text-heading"
           class="sr-only"
-      >Full License Text
+      >
+        Full License Text
       </h2>
       <LazyFullLicenseText :license="license" />
     </section>
