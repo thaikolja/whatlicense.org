@@ -7,20 +7,12 @@
 
       <header>
         <div class="badge">
-          <svg
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-          >
-            <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
-          Proudly programmed <strong>without</strong> AI
+          <Icon
+              name="mdi:heart"
+              size="24"
+              class="text-red-500/80 mr-2"
+          />
+          Proudly programmed without AI
         </div>
 
         <h1 class="animate-fade-up delay-100 text-4xl sm:text-6xl md:text-8xl mb-6 sm:mb-8 text-espresso leading-[1.1] tracking-tight px-1">
