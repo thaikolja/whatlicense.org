@@ -1,5 +1,5 @@
-Contact: mailto:info@whatlicense.org
-Encryption: https://whatlicense.org/pgp-key.txt
-Expires: 2027-05-10T00:00:00.000Z
-Preferred-Languages: en
-Canonical: https://whatlicense.org/.well-known/security.txt
+Contact:               mailto:info@whatlicense.org
+Encryption:            https://whatlicense.org/pgp-key.txt
+Expires:               2027-05-10T00:00:00.000Z
+Preferred-Languages:   en
+Canonical:             https://whatlicense.org/security.txt

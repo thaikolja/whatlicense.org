@@ -6,8 +6,6 @@
 
 **Released:** 2026-04-27
 
-*Changelogs for previous, non-stable versions can be found in the GitLab repository…*
-
 ### Added
 
 - Initial release of whatlicense.org.

@@ -2,18 +2,33 @@ import { ref, computed }                   from 'vue'
 import { QUIZ_QUESTIONS }                  from '~/data/questions'
 import type { WizardScreen, LicenseTrait } from '~/types'
 
-export function useWizard() {
+export interface UseWizardOptions {
+  /** Overrides runtimeConfig.public.debugAutoSelect (useful in tests). */
+  debugAutoSelect?: boolean
+}
+
+export function useWizard(options: UseWizardOptions = {}) {
   const currentScreen = ref<WizardScreen>('intro')
   const currentStep   = ref(0)
   const answers       = ref<number[]>([])
 
-  const config = useRuntimeConfig()
+  const resolveDebugAutoSelect = (): boolean => {
+    if (typeof options.debugAutoSelect === 'boolean') {
+      return options.debugAutoSelect
+    }
+    try {
+      // Nuxt auto-import — may be unavailable outside Nuxt runtime
+      return Boolean(useRuntimeConfig().public?.debugAutoSelect)
+    } catch {
+      return false
+    }
+  }
 
   const startWizard = () => {
     currentScreen.value = 'quiz'
     currentStep.value   = 0
 
-    if (config.public.debugAutoSelect) {
+    if (resolveDebugAutoSelect()) {
       // Pre-select the first option for all questions
       answers.value = new Array(QUIZ_QUESTIONS.length).fill(0)
     } else {

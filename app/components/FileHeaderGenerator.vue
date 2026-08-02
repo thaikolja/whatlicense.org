@@ -156,20 +156,30 @@
     const code = generatedHeaderCode.value
     const lang = formState.value.language
 
-    // Determine hljs language
-    let hljsLang = 'plaintext'
-    if (lang==='javascript' || lang==='typescript') hljsLang = 'javascript'
-    else if (lang==='php') hljsLang = 'php'
-    else if (lang==='python') hljsLang = 'python'
-    else if (lang==='ruby') hljsLang = 'ruby'
-    else if (lang==='html') hljsLang = 'xml'
-    else if (lang==='css') hljsLang = 'css'
+    // Map UI languages to registered highlight.js grammars
+    let hljsLang: string | null = null
+    if (lang === 'javascript' || lang === 'typescript') hljsLang = 'javascript'
+    else if (lang === 'php') hljsLang = 'php'
+    else if (lang === 'python') hljsLang = 'python'
+    else if (lang === 'ruby') hljsLang = 'ruby'
+    else if (lang === 'html') hljsLang = 'xml'
+    else if (lang === 'css') hljsLang = 'css'
+    // shell (and any future unmapped language): no grammar registered — escape plain text
 
-    const highlighted = hljs.highlight(code, { language: hljsLang }).value
+    let highlighted: string
+    if (hljsLang && hljs.getLanguage(hljsLang)) {
+      highlighted = hljs.highlight(code, { language: hljsLang }).value
+    } else {
+      highlighted = code
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+    }
 
     // Custom validation for @tags
     const customKeys = formState.value.customProperties.map(p => p.key)
     return validateHtmlLines(highlighted, customKeys)
   })
+
 
 </script>

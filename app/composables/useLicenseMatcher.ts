@@ -1,12 +1,21 @@
-import { ref, computed }              from 'vue'
+import { ref } from 'vue'
 import type { License, LicenseTrait } from '~/types'
 
-export function useLicenseMatcher() {
+export interface UseLicenseMatcherOptions {
+  /** Inject licenses loader (tests / non-Nuxt). Default uses Nuxt Content. */
+  fetchAll?: () => Promise<License[]>
+}
+
+export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
   const allLicenses = ref<License[]>([])
 
   const fetchLicenses = async () => {
-    // using queryCollection from nuxt/content
     try {
+      if (options.fetchAll) {
+        allLicenses.value = await options.fetchAll()
+        return
+      }
+      // using queryCollection from nuxt/content
       const { data } = await useAsyncData('licenses', () => queryCollection('licenses').all())
       if (data.value) {
         allLicenses.value = data.value as unknown as License[]

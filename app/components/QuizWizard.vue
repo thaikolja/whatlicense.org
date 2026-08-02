@@ -19,24 +19,35 @@
     </div>
 
     <div class="flex justify-between items-center animate-fade-up delay-300 border-t border-border pt-8">
-      <UButton
-          v-if="currentStep > 0" @click="$emit('prev')" variant="outline" color="gray" class="px-8 py-3 rounded-full border border-border text-muted font-bold hover:bg-white transition-colors uppercase tracking-wide text-sm">
+      <Button
+          v-if="currentStep > 0"
+          variant="outline"
+          size="default"
+          type="button"
+          @click="$emit('prev')"
+      >
         Back
-      </UButton>
+      </Button>
       <div v-else class="flex-1"></div>
 
       <div class="flex-1"></div>
 
-      <UButton
-          @click="$emit('next')" :disabled="!canAdvance" class="btn px-10 py-4 rounded-full font-bold uppercase tracking-wide text-sm disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal hover:bg-espresso text-white">
+      <Button
+          variant="default"
+          size="lg"
+          type="button"
+          :disabled="!canAdvance"
+          @click="$emit('next')"
+      >
         Next Step
-      </UButton>
+      </Button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import type { QuizQuestion } from '~/types'
+  import { Button } from '~/components/ui/button'
 
   defineProps<{
     question: QuizQuestion

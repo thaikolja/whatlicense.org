@@ -26,48 +26,16 @@
 </template>
 
 <script setup lang="ts">
+  import { computed } from 'vue'
   import type { License } from '~/types'
+  import { licenseBodyToPlainText } from '~/utils/licenseText'
 
   const props = defineProps<{
     license: License
   }>()
 
-  // Helper to extract text from Nuxt Content body AST
-  const extractText = (node: any): string => {
-    if (!node) return ''
-    if (typeof node==='string') return node
-
-    let text = ''
-
-    // Handle arrays of nodes
-    if (Array.isArray(node)) {
-      return node.map(extractText).join('')
-    }
-
-    // Handle text nodes
-    if (node.type==='text') {
-      return node.value || ''
-    }
-
-    // Handle element nodes (p, h1, etc.)
-    if (node.children) {
-      text = node.children.map(extractText).join('')
-      // Add double newlines after paragraphs and headers for better formatting
-      if ([ 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li' ].includes(node.tag)) {
-        text += '\n\n'
-      }
-    }
-
-    return text
-  }
-
   const plainText = computed(() => {
-    const body = (props.license as any).body
-    if (!body) return ''
-    // If it's already a string (unlikely in v3)
-    if (typeof body==='string') return body
-    // Otherwise walk the AST
-    return extractText(body.children || body).trim()
+    return licenseBodyToPlainText((props.license as { body?: unknown }).body)
   })
 </script>
 <style scoped>

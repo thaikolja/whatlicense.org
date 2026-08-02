@@ -10,6 +10,11 @@ dist/
 .wrangler/
 wrangler.toml
 
+# Other package managers (project uses Bun + bun.lock only)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # Other directories
 .content/
 .app/
@@ -19,6 +24,9 @@ wrangler.toml
 
 # Ignored structure
 .data/
+
+# Test coverage
+coverage/
 
 # Ignore AI traces
 .claude/

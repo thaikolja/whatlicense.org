@@ -31,7 +31,9 @@ The matching logic lives in `app/composables/useLicenseMatcher.ts`. It uses a sc
 
 ## Local Setup
 
+Use **Bun** only (`packageManager` in `package.json`, lockfile is `bun.lock`).
+
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```

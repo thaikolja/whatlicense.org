@@ -1,15 +1,19 @@
 /**
  * Global stylesheet for whatlicense.org.
  *
- * @description  Imports Tailwind CSS directives, defines custom design tokens
- *               via the `@theme` directive (Tailwind v4), and declares all
- *               component-level styles ported from the static HTML template.
+ * Tailwind v4 + brand tokens + shadcn-vue semantic theme (mapped to brand).
+ * Brand utility colors (muted, border, accent) keep pre-migration meanings
+ * so existing templates stay visually identical.
  */
 
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn-vue/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* ------------------------------------------------------------------ */
-/*  Design tokens (Tailwind v4 @theme)                                 */
+/*  Design tokens (Tailwind v4 @theme) — brand                         */
 /* ------------------------------------------------------------------ */
 @theme {
   /* Brand palette */
@@ -22,18 +26,122 @@
   --color-charcoal:   #433a31;
   --color-espresso:   #26211c;
 
-  /* Semantic aliases */
+  /* Semantic aliases used throughout templates (must not be clobbered) */
   --color-surface:    #fdfaf6;
   --color-border:     #ebdccc;
   --color-muted:      #827263;
   --color-accent:     #b59b84;
 
-  /* Typography */
+  /* Typography — keep Karla / Playfair (not Geist) */
   --font-sans:        "Karla", ui-sans-serif, system-ui, sans-serif;
   --font-serif:       "Playfair Display", ui-serif, Georgia, serif;
+  --font-heading:     var(--font-serif);
 
   /* Animations */
   --animate-fade-up:  fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  /* shadcn semantic → Tailwind color utilities (non-conflicting names) */
+  --color-background:            var(--background);
+  --color-foreground:            var(--foreground);
+  --color-card:                  var(--card);
+  --color-card-foreground:       var(--card-foreground);
+  --color-popover:               var(--popover);
+  --color-popover-foreground:    var(--popover-foreground);
+  --color-primary:               var(--primary);
+  --color-primary-foreground:    var(--primary-foreground);
+  --color-secondary:             var(--secondary);
+  --color-secondary-foreground:  var(--secondary-foreground);
+  --color-muted-foreground:      var(--muted-foreground);
+  --color-accent-foreground:     var(--accent-foreground);
+  --color-destructive:           var(--destructive);
+  --color-input:                 var(--input);
+  --color-ring:                  var(--ring);
+  --color-chart-1:               var(--chart-1);
+  --color-chart-2:               var(--chart-2);
+  --color-chart-3:               var(--chart-3);
+  --color-chart-4:               var(--chart-4);
+  --color-chart-5:               var(--chart-5);
+  --color-sidebar:               var(--sidebar);
+  --color-sidebar-foreground:    var(--sidebar-foreground);
+  --color-sidebar-primary:       var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:        var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border:        var(--sidebar-border);
+  --color-sidebar-ring:          var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ------------------------------------------------------------------ */
+/*  shadcn CSS variables — brand-mapped                                */
+/* ------------------------------------------------------------------ */
+:root {
+  --background:            #fdfaf6; /* cream */
+  --foreground:            #433a31; /* charcoal */
+  --card:                  #ffffff;
+  --card-foreground:       #433a31;
+  --popover:               #ffffff;
+  --popover-foreground:    #433a31;
+  --primary:               #433a31; /* charcoal CTAs */
+  --primary-foreground:    #ffffff;
+  --secondary:             #f9f5f0; /* cream-dark */
+  --secondary-foreground:  #433a31;
+  /* surface for shadcn hover states; brand text uses --color-muted above */
+  --muted:                 #f9f5f0;
+  --muted-foreground:      #827263; /* bark */
+  --accent:                #b59b84; /* tan */
+  --accent-foreground:     #ffffff;
+  --destructive:           #dc2626;
+  --border:                #ebdccc; /* sand */
+  --input:                 #ebdccc;
+  --ring:                  #b59b84; /* tan focus */
+  --chart-1:               #b59b84;
+  --chart-2:               #827263;
+  --chart-3:               #615447;
+  --chart-4:               #433a31;
+  --chart-5:               #26211c;
+  --radius:                0.75rem;
+  --sidebar:               #fdfaf6;
+  --sidebar-foreground:    #433a31;
+  --sidebar-primary:       #433a31;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent:        #f9f5f0;
+  --sidebar-accent-foreground: #433a31;
+  --sidebar-border:        #ebdccc;
+  --sidebar-ring:          #b59b84;
+}
+
+.dark {
+  --background:            #26211c;
+  --foreground:            #fdfaf6;
+  --card:                  #433a31;
+  --card-foreground:       #fdfaf6;
+  --popover:               #433a31;
+  --popover-foreground:    #fdfaf6;
+  --primary:               #fdfaf6;
+  --primary-foreground:    #26211c;
+  --secondary:             #433a31;
+  --secondary-foreground:  #fdfaf6;
+  --muted:                 #433a31;
+  --muted-foreground:      #b59b84;
+  --accent:                #b59b84;
+  --accent-foreground:     #26211c;
+  --destructive:           #f87171;
+  --border:                #615447;
+  --input:                 #615447;
+  --ring:                  #b59b84;
+  --sidebar:               #26211c;
+  --sidebar-foreground:    #fdfaf6;
+  --sidebar-primary:       #b59b84;
+  --sidebar-primary-foreground: #26211c;
+  --sidebar-accent:        #433a31;
+  --sidebar-accent-foreground: #fdfaf6;
+  --sidebar-border:        #615447;
+  --sidebar-ring:          #b59b84;
 }
 
 @keyframes fade-up {
@@ -50,15 +158,21 @@
 /* ------------------------------------------------------------------ */
 /*  Base styles                                                        */
 /* ------------------------------------------------------------------ */
-body {
-  font-family:      var(--font-sans);
-  background-color: var(--color-cream);
-  color:            var(--color-charcoal);
-  overflow-x:       hidden;
-}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
 
-h1, h2, h3, .serif {
-  font-family: var(--font-serif);
+  body {
+    font-family:      var(--font-sans);
+    background-color: var(--color-cream);
+    color:            var(--color-charcoal);
+    overflow-x:       hidden;
+  }
+
+  h1, h2, h3, .serif {
+    font-family: var(--font-serif);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -322,7 +436,7 @@ h1, h2, h3, .serif {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Footer                                                            */
+/*  Footer                                                             */
 /* ------------------------------------------------------------------ */
 footer {
   a {

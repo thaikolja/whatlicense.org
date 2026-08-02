@@ -1,6 +1,6 @@
-import { ref, computed }                                  from 'vue'
-import type { HeaderFormState, CommentLanguage, License } from '~/types'
-import { formatComment }                                  from '~/utils/commentStyles'
+import { ref, computed, toValue, type MaybeRefOrGetter } from 'vue'
+import type { HeaderFormState, License }                from '~/types'
+import { formatComment }                                from '~/utils/commentStyles'
 
 export function useHeaderGenerator(license: MaybeRefOrGetter<License | null>) {
   const formState = ref<HeaderFormState>({

@@ -123,6 +123,8 @@ export interface License {
   readonly limitations: readonly ConditionItem[]
   /** Multi-line boilerplate for file-header comments. */
   readonly headerStatement: string
+  /** Relative popularity used as matcher tie-breaker (higher wins). */
+  readonly popularity?: number
 }
 
 /* ------------------------------------------------------------------ */

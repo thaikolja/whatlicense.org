@@ -3,13 +3,14 @@
 /**
  * Nuxt 4 configuration for whatlicense.org.
  *
- * @description  Registers all required modules (Tailwind, Google Fonts, SEO,
- *               ESLint, Content) and defines global application metadata.
+ * @description  Registers modules (shadcn-nuxt, Icon, Fonts, SEO, ESLint,
+ *               Content), Tailwind via Vite, and global app metadata.
  * @see          https://nuxt.com/docs/api/configuration/nuxt-config
  */
 import { readdirSync }   from 'fs'
 import { join }          from 'path'
 import { fileURLToPath } from 'url'
+import tailwindcss       from '@tailwindcss/vite'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -19,12 +20,39 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   modules: [
-    '@nuxt/ui',
+    '@nuxt/icon',
+    'shadcn-nuxt',
     '@nuxt/fonts',
     '@nuxtjs/seo',
     '@nuxt/eslint',
     '@nuxt/content'
   ],
+
+  shadcn: {
+    prefix:       '',
+    componentDir: './app/components/ui'
+  },
+
+  /**
+   * Fully local icons — no Iconify API / remote server bundle.
+   * Static Cloudflare Pages has no icon API endpoint, so all icons
+   * used in the app are embedded in the client bundle from @iconify-json/*.
+   */
+  icon: {
+    provider:      'none',
+    fallbackToApi: false,
+    serverBundle:  false,
+    clientBundle:  {
+      scan:        true,
+      sizeLimitKb: 256,
+      icons:       [
+        'mdi:paypal',
+        'mdi:github',
+        'mdi:twitter',
+        'mdi:envelope'
+      ]
+    }
+  },
 
   /* ------------------------------------------------------------------ */
   /*  CSS                                                                */
@@ -67,7 +95,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT==='true',
+      debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT === 'true',
       links:           {
         paypal:    'https://paypal.me/thaikolja/10',
         termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
@@ -79,6 +107,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    plugins: [
+      tailwindcss()
+    ],
     build:        {
       sourcemap:     false,
       minify:        'terser',
