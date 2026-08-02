@@ -38,7 +38,8 @@ describe('app.vue shell', () => {
     expect(wrapper.text()).toContain('GitHub')
     expect(wrapper.text()).toMatch(/©\s*\d{4}\s*whatlicense\.org/)
 
-    // ... footer legal routes (internal, not #)
+    // ... About + legal routes are internal app pages
+    expect(wrapper.html()).toContain('/about')
     expect(wrapper.html()).toContain('/privacy-policy')
     expect(wrapper.html()).toContain('/terms-of-service')
     expect(wrapper.html()).not.toContain('href="#"')

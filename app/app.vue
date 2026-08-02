@@ -26,19 +26,21 @@ const icons  = ref<IconLink[]>([
 const footerLinks = ref<FooterLink[]>([
   {
     title:    'Privacy Policy',
-    name:     'Privacy',
+    name: 'Privacy Policy',
     link:     '/privacy-policy',
+    icon: 'mdi:shield-lock-outline',
     external: false
   },
   {
     title:    'Terms of Service',
-    name:     'Terms',
+    name: 'Terms of Service',
     link:     '/terms-of-service',
+    icon: 'mdi:file-document-outline',
     external: false
   },
   {
     title:    'Support the project',
-    name:     'Support',
+    name: 'Donate via PayPal',
     link:     config.public?.links?.paypal ?? '',
     icon:     'mdi:paypal',
     external: true
@@ -86,13 +88,13 @@ const footerLinks = ref<FooterLink[]>([
       <!-- Navigation & Socials -->
       <div class="flex items-center gap-4 sm:gap-6">
         <div class="hidden md:flex items-center gap-6 mr-4 border-r border-border pr-6">
-          <a
-              :href="config.public.links.termsFeed"
-              target="_blank"
+          <NuxtLink
+              to="/about"
+              title="About whatlicense.org"
               class="text-[10px] font-bold uppercase tracking-widest text-muted hover:text-charcoal transition-colors"
           >
             About
-          </a>
+          </NuxtLink>
         </div>
 
         <div class="flex items-center gap-8">

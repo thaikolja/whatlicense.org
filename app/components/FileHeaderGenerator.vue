@@ -5,12 +5,12 @@
       <h3 class="text-muted text-lg">Personalize your license headers before copying them to your files.</h3>
     </div>
 
-    <div class="card overflow-hidden !p-0">
+    <div class="card overflow-hidden p-0!">
       <div class="grid lg:grid-cols-12 gap-6 w-full p-6">
         <!-- Editor Left Side -->
         <form
-            @submit.prevent
             class="lg:col-span-5 bg-cream-dark p-6 rounded-2xl border border-border flex flex-col w-full h-full"
+            @submit.prevent
         >
           <header class="flex items-center justify-between mb-6">
             <div class="text-sm tracking-widest uppercase font-bold text-tan">Project Details</div>
@@ -26,7 +26,7 @@
                 v-model="formState.projectName"
                 placeholder="e.g. My Awesome Library"
                 class="input-field"
-            />
+            >
             </div>
             <div>
               <label
@@ -37,7 +37,7 @@
                 v-model="formState.description"
                 placeholder="A short description"
                 class="input-field"
-            />
+            >
             </div>
             <div>
               <label
@@ -48,7 +48,7 @@
                 v-model="formState.authorName"
                 placeholder="Your Name or Company"
                 class="input-field"
-            />
+            >
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
@@ -61,7 +61,7 @@
                   type="email"
                   placeholder="hello@example.com"
                   class="input-field"
-              />
+              >
               </div>
               <div>
                 <label
@@ -72,15 +72,15 @@
                   v-model="formState.website"
                   placeholder="https://..."
                   class="input-field"
-              />
+              >
               </div>
             </div>
           </fieldset>
 
           <div class="mt-8 pt-8 border-t border-border">
             <button
-                @click="isModalOpen = true"
                 class="btn-dashed bg-white"
+                @click="isModalOpen = true"
             >
               <svg
                   class="w-4 h-4"
@@ -115,20 +115,23 @@
             </div>
 
             <!-- Monetization: Subtle Affiliate Link -->
-            <aside class="bg-white border border-border rounded-xl p-4 transition-colors hover:border-tan group">
+            <aside class="bg-white border border-border rounded-xl p-4 ">
               <div class="flex items-center gap-2 mb-1">
                 <span class="text-[9px] font-bold uppercase tracking-widest text-tan">Sponsored</span>
               </div>
-              <p class="text-sm font-bold text-charcoal mb-1">Need a Privacy Policy?</p>
-              <p class="text-xs text-muted mb-3 leading-relaxed">Most modern websites and apps require a compliant
-                privacy policy by law.
+              <p class="text-sm  text-charcoal mb-1 font-black">
+                Keep open-source projects like this one alive
               </p>
+              <p class="text-xs text-muted mb-3 leading-relaxed">
+                Find this tool useful? Consider supporting it with a donation
+              </p>
+              <span class="transition-colors hover:border-tan group">
               <a
-                  :href="config.public.links.termsFeed"
+                  href="https://paypal.me/thaikolja/10"
                   target="_blank"
                   class="text-xs font-bold text-charcoal group-hover:text-tan transition-colors flex items-center gap-1"
               >
-                Generate one with TermsFeed
+                Support my work with a donation
                 <svg
                     class="w-3 h-3 transition-transform group-hover:translate-x-1"
                     fill="none"
@@ -143,12 +146,13 @@
                   />
                 </svg>
               </a>
+              </span>
             </aside>
           </div>
         </form>
 
         <!-- Live Preview Right Side -->
-        <section class="lg:col-span-7 bg-espresso p-6 rounded-2xl flex flex-col overflow-hidden min-h-0 relative group min-h-[400px]">
+        <section class="lg:col-span-7 bg-espresso p-6 rounded-2xl flex flex-col overflow-hidden min-h-0 relative group">
           <header class="flex items-center justify-between mb-6 shrink-0 relative z-10">
             <div class="flex items-center gap-4">
               <select
@@ -159,9 +163,8 @@
                     v-for="[value, label] in Object.entries(LANGUAGE_LABELS)"
                     :key="value"
                     :value="value"
-                >{{
-                    label
-                  }}
+                >
+                  {{ label }}
                 </option>
               </select>
               <div class="text-sm tracking-widest uppercase font-bold text-tan/70 hidden sm:block">Preview</div>
@@ -171,14 +174,16 @@
               <!-- No Comments Toggle -->
               <div class="flex items-center gap-2">
                 <label class="cursor-pointer group flex items-center gap-2">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-tan hover:text-white transition-colors">No Comments</span>
+                  <span
+                      class="text-xs font-bold uppercase tracking-widest text-tan hover:text-white transition-colors"
+                  >No Comments</span>
                   <div class="relative inline-flex items-center">
                     <input
-                        type="checkbox"
                         v-model="formState.excludeComments"
+                        type="checkbox"
                         class="sr-only peer"
                     >
-                    <div class="w-8 h-4 bg-bark rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-tan"></div>
+                    <div class="w-8 h-4 bg-bark rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all" />
                   </div>
                 </label>
               </div>
@@ -195,7 +200,7 @@
             <pre
                 class="font-mono text-sm leading-relaxed text-cream/90 m-0 w-full whitespace-pre pointer-events-auto h-full"
                 v-html="validatedHighlightedCode"
-            ></pre>
+            />
           </div>
         </section>
       </div>
@@ -224,6 +229,10 @@ import xml                              from 'highlight.js/lib/languages/xml'
 import css                              from 'highlight.js/lib/languages/css'
 
 import 'highlight.js/styles/atom-one-dark.css'
+import type { License, CustomProperty } from '~/types'
+import { LANGUAGE_LABELS }              from '~/utils/commentStyles'
+import { useHeaderGenerator }           from '~/composables/useHeaderGenerator'
+import { useHeaderValidator }           from '~/composables/useHeaderValidator'
 
 // Register languages
 hljs.registerLanguage('javascript', javascript)
@@ -232,10 +241,6 @@ hljs.registerLanguage('php', php)
 hljs.registerLanguage('ruby', ruby)
 hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('css', css)
-import type { License, CustomProperty } from '~/types'
-import { LANGUAGE_LABELS }              from '~/utils/commentStyles'
-import { useHeaderGenerator }           from '~/composables/useHeaderGenerator'
-import { useHeaderValidator }           from '~/composables/useHeaderValidator'
 
 const props = defineProps<{
   license: License
@@ -249,8 +254,6 @@ const { validateHtmlLines }              = useHeaderValidator()
 const updateProperties = (props: CustomProperty[]) => {
   formState.value.customProperties = props
 }
-
-const config = useRuntimeConfig()
 
 const validatedHighlightedCode = computed(() => {
   const code = generatedHeaderCode.value
