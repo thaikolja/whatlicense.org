@@ -112,8 +112,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'select', idx: number): void
-  (e: 'next'): void
-  (e: 'prev'): void
+  (e: 'next' | 'prev'): void
 }>()
 
 const stepKey = computed(() => `${props.question.id}-${props.currentStep}`)

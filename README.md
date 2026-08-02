@@ -159,6 +159,21 @@ bun run generate
 # publish the contents of dist/ with your host of choice
 ```
 
+### CI/CD
+
+Both GitHub Actions (`.github/workflows/ci.yml`) and GitLab CI (`.gitlab-ci.yml`) run the same gate on every push /
+merge
+request:
+
+1. `bun install --frozen-lockfile`
+2. `bun run lint`
+3. `bun run test`
+4. `bun run generate`
+
+On `main`, both then offer a **manual deploy to Cloudflare Pages** (`pages deploy dist --project-name whatlicense-org`).
+It activates only when the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets/CI variables are configured
+(GitHub: Actions secrets; GitLab: protected masked CI/CD variables); otherwise the deploy job is skipped or hidden.
+
 ## Project layout
 
 | Path                                   | Purpose                                                 |

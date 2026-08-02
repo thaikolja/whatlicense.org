@@ -159,40 +159,47 @@
 import { ref, computed }      from 'vue'
 import type { ConditionItem } from '~/types'
 
+type ThemeColor = 'green' | 'blue' | 'red'
+type ThemeClasses = {
+  bg: string
+  border: string
+  text: string
+  textMuted: string
+  btn: string
+}
+
 const props = defineProps<{
   category: 'Permissions' | 'Conditions' | 'Limitations'
   items: readonly ConditionItem[]
-  colorTheme: 'green' | 'blue' | 'red'
+  colorTheme: ThemeColor
 }>()
 
 const isFlipped = ref(false)
 
-const themeClasses = computed(() => {
-  switch (props.colorTheme) {
-    case 'green':
-      return {
-        bg:        'bg-[#f0fdf4]',
-        border:    'border-[#bbf7d0]',
-        text:      'text-[#166534]',
-        textMuted: 'text-[#166534]/80',
-        btn:       'text-[#166534]/70 hover:text-[#166534]'
-      }
-    case 'blue':
-      return {
-        bg:        'bg-[#eff6ff]',
-        border:    'border-[#bfdbfe]',
-        text:      'text-[#1e40af]',
-        textMuted: 'text-[#1e40af]/80',
-        btn:       'text-[#1e40af]/70 hover:text-[#1e40af]'
-      }
-    case 'red':
-      return {
-        bg:        'bg-[#fef2f2]',
-        border:    'border-[#fecaca]',
-        text:      'text-[#991b1b]',
-        textMuted: 'text-[#991b1b]/80',
-        btn:       'text-[#991b1b]/70 hover:text-[#991b1b]'
-      }
+//exhaustive lookup instead of a switch so computed always returns a value
+const THEME_CLASSES: Record<ThemeColor, ThemeClasses> = {
+  green: {
+    bg:        'bg-[#f0fdf4]',
+    border:    'border-[#bbf7d0]',
+    text:      'text-[#166534]',
+    textMuted: 'text-[#166534]/80',
+    btn:       'text-[#166534]/70 hover:text-[#166534]'
+  },
+  blue:  {
+    bg:        'bg-[#eff6ff]',
+    border:    'border-[#bfdbfe]',
+    text:      'text-[#1e40af]',
+    textMuted: 'text-[#1e40af]/80',
+    btn:       'text-[#1e40af]/70 hover:text-[#1e40af]'
+  },
+  red:   {
+    bg:        'bg-[#fef2f2]',
+    border:    'border-[#fecaca]',
+    text:      'text-[#991b1b]',
+    textMuted: 'text-[#991b1b]/80',
+    btn:       'text-[#991b1b]/70 hover:text-[#991b1b]'
   }
-})
+}
+
+const themeClasses = computed(() => THEME_CLASSES[props.colorTheme])
 </script>

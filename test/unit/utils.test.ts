@@ -19,8 +19,9 @@ describe('cn', () => {
     expect(cn('px-2', 'px-4')).toBe('px-4')
   })
 
-  //ignores falsy values
+  //ignores falsy values (evaluated at runtime, not a constant)
   it('ignores falsy values', () => {
-    expect(cn('base', false && 'x', undefined, 'end')).toBe('base end')
+    const falsy: string | false = false
+    expect(cn('base', falsy && 'x', undefined, 'end')).toBe('base end')
   })
 })

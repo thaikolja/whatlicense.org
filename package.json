@@ -9,6 +9,7 @@
     "generate":      "nuxt generate",
     "preview":       "nuxt preview",
     "postinstall":   "nuxt prepare",
+    "lint": "eslint .",
     "deploy":        "wrangler pages deploy dist",
     "test":          "node ./node_modules/vitest/vitest.mjs run",
     "test:watch":    "node ./node_modules/vitest/vitest.mjs",

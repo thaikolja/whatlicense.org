@@ -69,8 +69,7 @@ export function useSiteLinks(): SiteLinks {
     const config = useRuntimeConfig()
     publicLinks = (config.public?.links ?? {}) as Partial<SiteLinks>
   } catch {
-    // outside Nuxt — pure defaults
-    publicLinks = {}
+    //outside Nuxt — keep default empty links
   }
 
   return {

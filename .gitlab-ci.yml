@@ -1,0 +1,50 @@
+# GitLab CI/CD for whatlicense.org
+#
+# Mirrors the GitHub Actions workflow (AGENTS.md): lint → test → static build,
+# plus an optional manual deploy to Cloudflare Pages when the secrets are set.
+#
+# Needed CI/CD variables (protected, masked):
+#   CLOUDFLARE_API_TOKEN   — Cloudflare API token with Pages edit scope
+#   CLOUDFLARE_ACCOUNT_ID  — Cloudflare account ID
+
+stages:
+  - verify
+  - deploy
+
+variables:
+  BUN_VERSION: "1.3.14"
+
+default:
+  image: node:22-bookworm
+  cache:
+    key:
+      files:
+        - bun.lock
+    paths:
+      - node_modules/
+      - .nuxt/
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq curl unzip >/dev/null
+    - curl -fsSL https://bun.sh/install | BUN_INSTALL="$HOME/.bun" bash -s "bun-v${BUN_VERSION}" >/dev/null
+    - export PATH="$HOME/.bun/bin:$PATH"
+    - bun --version
+
+verify:
+  stage: verify
+  script:
+    - bun install --frozen-lockfile
+    - bun run lint
+    - bun run test
+    - bun run generate
+
+deploy:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" && $CLOUDFLARE_API_TOKEN && $CLOUDFLARE_ACCOUNT_ID
+      when: manual
+  environment:
+    name: production
+  script:
+    - bun install --frozen-lockfile
+    - bun run generate
+    - bunx wrangler pages deploy dist --project-name whatlicense-org
