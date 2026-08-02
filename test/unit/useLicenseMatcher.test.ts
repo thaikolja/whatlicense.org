@@ -36,6 +36,7 @@ describe('useLicenseMatcher', () => {
 
     const match = matchLicense([
       'copyleft',
+      'strong-copyleft',
       'commercial-ok',
       'patent-grant',
       'comprehensive',
@@ -43,6 +44,7 @@ describe('useLicenseMatcher', () => {
     ])
     expect(match?.spdx).toBe('AGPL-3.0-or-later')
   })
+
 
   it('penalizes non-commercial licenses when user wants commercial use', () => {
     const { allLicenses, matchLicense } = useLicenseMatcher()
@@ -74,7 +76,7 @@ describe('useLicenseMatcher', () => {
     expect(match?.spdx).toBe('MIT')
   })
 
-  it('treats missing traits as empty and still returns a candidate', () => {
+  it('returns null when the only license fails hard gates', () => {
     const { allLicenses, matchLicense } = useLicenseMatcher()
     const emptyTraitsLicense = {
       ...FIXTURE_LICENSES[0],
@@ -84,9 +86,10 @@ describe('useLicenseMatcher', () => {
 
     allLicenses.value = [ emptyTraitsLicense ]
 
-    const match = matchLicense([ 'permissive' ])
-    expect(match?.spdx).toBe('EMPTY')
+    // No traits → not permissive under gates → no match
+    expect(matchLicense([ 'permissive' ])).toBeNull()
   })
+
 
   it('prefers Apache when patent grant is requested with permissive tags', () => {
     const { allLicenses, matchLicense } = useLicenseMatcher()
@@ -177,5 +180,19 @@ describe('useLicenseMatcher', () => {
     await fetchLicenses()
     expect(allLicenses.value).toEqual([])
   })
+
+  it('returns null when hard gates eliminate every license', () => {
+    const { allLicenses, matchLicense } = useLicenseMatcher()
+    allLicenses.value                   = FIXTURE_LICENSES
+
+    // Weak + network: no fixture has both
+    expect(matchLicense([
+      'weak-copyleft',
+      'commercial-ok',
+      'patent-grant',
+      'network-copyleft'
+    ])).toBeNull()
+  })
 })
+
 

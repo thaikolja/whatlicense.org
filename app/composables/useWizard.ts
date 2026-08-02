@@ -1,5 +1,9 @@
-import { ref, computed }                   from 'vue'
-import { QUIZ_QUESTIONS }                  from '~/data/questions'
+import { ref, computed } from 'vue'
+import {
+  QUIZ_QUESTIONS,
+  getActiveQuestions,
+  collectTagsFromAnswers
+}                        from '~/data/questions'
 import type { WizardScreen, LicenseTrait } from '~/types'
 
 export interface UseWizardOptions {
@@ -9,39 +13,71 @@ export interface UseWizardOptions {
 
 export function useWizard(options: UseWizardOptions = {}) {
   const currentScreen = ref<WizardScreen>('intro')
-  const currentStep   = ref(0)
-  const answers       = ref<number[]>([])
+  const currentStep = ref(0)
+  /** Answers aligned with the active question sequence. */
+  const answers     = ref<number[]>([])
 
   const resolveDebugAutoSelect = (): boolean => {
     if (typeof options.debugAutoSelect === 'boolean') {
       return options.debugAutoSelect
     }
     try {
-      // Nuxt auto-import — may be unavailable outside Nuxt runtime
       return Boolean(useRuntimeConfig().public?.debugAutoSelect)
     } catch {
       return false
     }
   }
 
+  /**
+   * Active questions depend on answers so far (copyleft unlocks scope + network).
+   */
+  const activeQuestions = computed(() => getActiveQuestions(QUIZ_QUESTIONS, answers.value))
+
+  const totalSteps = computed(() => activeQuestions.value.length)
+
+  const currentQuestion = computed(() => activeQuestions.value[currentStep.value])
+
+  const canAdvance = computed(() => answers.value[currentStep.value] !== undefined)
+
+  const collectedTags = computed<LicenseTrait[]>(() =>
+      collectTagsFromAnswers(activeQuestions.value, answers.value)
+  )
+
   const startWizard = () => {
     currentScreen.value = 'quiz'
-    currentStep.value   = 0
+    currentStep.value = 0
 
     if (resolveDebugAutoSelect()) {
-      // Pre-select the first option for all questions
-      answers.value = new Array(QUIZ_QUESTIONS.length).fill(0)
+      // Walk active path selecting option 0 each time (may unlock copyleft steps)
+      answers.value = []
+      let guard     = 0
+      while (guard++ < 10) {
+        const active = getActiveQuestions(QUIZ_QUESTIONS, answers.value)
+        if (answers.value.length >= active.length) break
+        answers.value = [ ...answers.value, 0 ]
+      }
+      currentStep.value = 0
     } else {
       answers.value = []
     }
   }
 
   const selectOption = (optionIndex: number) => {
-    answers.value[currentStep.value] = optionIndex
+    // Same option again after Back — keep later answers; only re-select changes truncate
+    if (answers.value[currentStep.value] === optionIndex) {
+      return
+    }
+    const next              = answers.value.slice(0, currentStep.value)
+    next[currentStep.value] = optionIndex
+    // Drop answers after this step (branch may change)
+    answers.value           = next
   }
 
   const nextStep = () => {
-    if (currentStep.value < QUIZ_QUESTIONS.length - 1) {
+    const active = getActiveQuestions(QUIZ_QUESTIONS, answers.value)
+    if (currentStep.value < active.length - 1) {
+      // Do not slice answers here — selectOption already truncates when the user
+      // re-selects. Truncating on every Next would wipe later steps after Back→Next.
       currentStep.value++
     } else {
       currentScreen.value = 'result'
@@ -58,26 +94,9 @@ export function useWizard(options: UseWizardOptions = {}) {
 
   const resetWizard = () => {
     currentScreen.value = 'intro'
-    currentStep.value   = 0
-    answers.value       = []
+    currentStep.value = 0
+    answers.value     = []
   }
-
-  const totalSteps = QUIZ_QUESTIONS.length
-
-  const currentQuestion = computed(() => QUIZ_QUESTIONS[currentStep.value])
-
-  const canAdvance = computed(() => answers.value[currentStep.value]!==undefined)
-
-  const collectedTags = computed<LicenseTrait[]>(() => {
-    const tags: LicenseTrait[] = []
-    answers.value.forEach((answerIndex, questionIndex) => {
-      const option = QUIZ_QUESTIONS[questionIndex].options[answerIndex]
-      if (option && option.tags) {
-        tags.push(...option.tags)
-      }
-    })
-    return tags
-  })
 
   return {
     currentScreen,
@@ -91,6 +110,7 @@ export function useWizard(options: UseWizardOptions = {}) {
     totalSteps,
     currentQuestion,
     canAdvance,
-    collectedTags
+    collectedTags,
+    activeQuestions
   }
 }

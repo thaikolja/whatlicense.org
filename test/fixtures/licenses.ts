@@ -30,13 +30,18 @@ export const FIXTURE_LICENSES: License[] = [
   }),
   makeLicense({
     spdx:       'GPL-3.0-or-later',
-    traits:     [ 'copyleft', 'commercial-ok', 'no-patent', 'comprehensive', 'no-network' ],
+    traits:     [ 'copyleft', 'strong-copyleft', 'commercial-ok', 'patent-grant', 'comprehensive', 'no-network' ],
+    popularity: 95
+  }),
+  makeLicense({
+    spdx:   'AGPL-3.0-or-later',
+    traits: [ 'copyleft', 'strong-copyleft', 'commercial-ok', 'patent-grant', 'comprehensive', 'network-copyleft' ],
     popularity: 70
   }),
   makeLicense({
-    spdx:       'AGPL-3.0-or-later',
-    traits:     [ 'copyleft', 'commercial-ok', 'patent-grant', 'comprehensive', 'network-copyleft' ],
-    popularity: 40
+    spdx:       'MPL-2.0',
+    traits:     [ 'weak-copyleft', 'commercial-ok', 'patent-grant', 'comprehensive', 'no-network' ],
+    popularity: 75
   }),
   makeLicense({
     spdx:       'CC-BY-NC-4.0',

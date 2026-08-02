@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { useWizard } from '../../app/composables/useWizard'
-import { QUIZ_QUESTIONS } from '../../app/data/questions'
 
 describe('useWizard', () => {
   it('starts on intro with empty answers', () => {
@@ -9,26 +8,67 @@ describe('useWizard', () => {
     expect(wizard.currentScreen.value).toBe('intro')
     expect(wizard.currentStep.value).toBe(0)
     expect(wizard.answers.value).toEqual([])
-    expect(wizard.totalSteps).toBe(QUIZ_QUESTIONS.length)
+    // Before answering share, only 3 base questions are active
+    expect(wizard.totalSteps.value).toBe(3)
     expect(wizard.canAdvance.value).toBe(false)
   })
 
-  it('moves intro → quiz → through steps → result', () => {
+  it('moves intro → quiz → through steps → result (permissive path, 3 steps)', () => {
     const wizard = useWizard()
 
     wizard.startWizard()
     expect(wizard.currentScreen.value).toBe('quiz')
     expect(wizard.answers.value).toEqual([])
 
-    for (let i = 0; i < QUIZ_QUESTIONS.length; i++) {
-      expect(wizard.canAdvance.value).toBe(false)
+    // Q1 permissive
+    wizard.selectOption(1)
+    expect(wizard.totalSteps.value).toBe(3)
+    wizard.nextStep()
+
+    // Q2 commercial
+    wizard.selectOption(0)
+    wizard.nextStep()
+
+    // Q3 patents
+    wizard.selectOption(1)
+    wizard.nextStep()
+
+    expect(wizard.currentScreen.value).toBe('result')
+  })
+
+  it('unlocks scope and network when copyleft is chosen (5 steps)', () => {
+    const wizard = useWizard()
+    wizard.startWizard()
+
+    wizard.selectOption(0) // copyleft
+    expect(wizard.totalSteps.value).toBe(5)
+
+    for (let i = 0; i < 5; i++) {
+      wizard.currentStep.value = i
       wizard.selectOption(0)
-      expect(wizard.canAdvance.value).toBe(true)
       wizard.nextStep()
     }
 
     expect(wizard.currentScreen.value).toBe('result')
+    // Strong path keeps family + strength tags
+    expect(wizard.collectedTags.value).toContain('copyleft')
+    expect(wizard.collectedTags.value).toContain('strong-copyleft')
+    expect(wizard.collectedTags.value).toContain('network-copyleft')
   })
+
+  it('weak path collected tags drop bare copyleft', () => {
+    const wizard = useWizard()
+    wizard.startWizard()
+    const choices = [ 0, 0, 0, 1, 1 ] // copyleft, commercial, patents, weak, no-network
+    for (let i = 0; i < choices.length; i++) {
+      wizard.currentStep.value = i
+      wizard.selectOption(choices[i]!)
+      if (i < choices.length - 1) wizard.nextStep()
+    }
+    expect(wizard.collectedTags.value).toContain('weak-copyleft')
+    expect(wizard.collectedTags.value).not.toContain('copyleft')
+  })
+
 
   it('prevStep returns to intro from first quiz step', () => {
     const wizard = useWizard()
@@ -63,24 +103,28 @@ describe('useWizard', () => {
     const wizard = useWizard()
     wizard.startWizard()
 
-    for (let i = 0; i < QUIZ_QUESTIONS.length; i++) {
-      wizard.currentStep.value = i
-      wizard.selectOption(0)
-    }
+    // permissive path
+    wizard.selectOption(1)
+    wizard.nextStep()
+    wizard.selectOption(0)
+    wizard.nextStep()
+    wizard.selectOption(1)
 
     const tags = wizard.collectedTags.value
-    expect(tags).toContain('copyleft')
+    expect(tags).toContain('permissive')
     expect(tags).toContain('commercial-ok')
-    expect(tags.length).toBeGreaterThan(QUIZ_QUESTIONS.length - 1)
+    expect(tags).toContain('no-patent')
+    expect(tags).not.toContain('copyleft')
+    expect(tags).not.toContain('strong-copyleft')
   })
 
   it('auto-selects first options when debugAutoSelect is true', () => {
     const wizard = useWizard({ debugAutoSelect: true })
     wizard.startWizard()
 
-    expect(wizard.answers.value).toEqual(
-      new Array(QUIZ_QUESTIONS.length).fill(0)
-    )
+    // Option 0 on share = copyleft → 5 steps filled with 0
+    expect(wizard.answers.value).toEqual([ 0, 0, 0, 0, 0 ])
+    expect(wizard.totalSteps.value).toBe(5)
   })
 
   it('leaves answers empty when debugAutoSelect is false', () => {
@@ -88,4 +132,55 @@ describe('useWizard', () => {
     wizard.startWizard()
     expect(wizard.answers.value).toEqual([])
   })
+
+  it('changing share answer drops later answers', () => {
+    const wizard = useWizard()
+    wizard.startWizard()
+    wizard.selectOption(0) // copyleft
+    wizard.nextStep()
+    wizard.selectOption(0)
+    wizard.nextStep()
+    wizard.selectOption(0)
+    expect(wizard.answers.value.length).toBe(3)
+
+    wizard.currentStep.value = 0
+    wizard.selectOption(1) // switch to permissive
+    expect(wizard.answers.value).toEqual([ 1 ])
+    expect(wizard.totalSteps.value).toBe(3)
+  })
+
+  it('Back then Next preserves later answers when selection is unchanged', () => {
+    const wizard = useWizard()
+    wizard.startWizard()
+    for (let i = 0; i < 5; i++) {
+      wizard.currentStep.value = i
+      wizard.selectOption(0)
+      if (i < 4) wizard.nextStep()
+    }
+    expect(wizard.answers.value).toEqual([ 0, 0, 0, 0, 0 ])
+
+    wizard.prevStep()
+    wizard.prevStep()
+    expect(wizard.currentStep.value).toBe(2)
+    expect(wizard.answers.value).toEqual([ 0, 0, 0, 0, 0 ])
+
+    wizard.nextStep()
+    expect(wizard.currentStep.value).toBe(3)
+    expect(wizard.answers.value).toEqual([ 0, 0, 0, 0, 0 ])
+  })
+
+  it('re-selecting the same option after Back keeps later answers', () => {
+    const wizard = useWizard()
+    wizard.startWizard()
+    for (let i = 0; i < 5; i++) {
+      wizard.currentStep.value = i
+      wizard.selectOption(0)
+      if (i < 4) wizard.nextStep()
+    }
+    wizard.currentStep.value = 1
+    wizard.selectOption(0) // same as already selected
+    expect(wizard.answers.value).toEqual([ 0, 0, 0, 0, 0 ])
+  })
 })
+
+

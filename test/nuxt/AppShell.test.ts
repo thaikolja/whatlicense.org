@@ -29,10 +29,14 @@ describe('app.vue shell', () => {
     expect(wrapper.text()).toContain('GitHub')
     expect(wrapper.text()).toMatch(/©\s*\d{4}\s*whatlicense\.org/)
 
-    // Social icons rendered
+    // Social icons rendered (header)
     expect(wrapper.html()).toContain('mdi:paypal')
     expect(wrapper.html()).toContain('mdi:github')
-    expect(wrapper.html()).toContain('mdi:twitter')
     expect(wrapper.html()).toContain('mdi:envelope')
+    // Email must use links.email (mailto:…), never mailto:undefined
+    expect(wrapper.html()).toContain('mailto:kolja.nolte@gmail.com')
+    expect(wrapper.html()).not.toContain('mailto:undefined')
   })
 })
+
+

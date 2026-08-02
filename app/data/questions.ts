@@ -1,27 +1,22 @@
 /**
  * Quiz question definitions for the license wizard.
  *
- * @description  Each question presents two mutually-exclusive options. Every
- *               option carries {@link LicenseTrait} tags that feed into the
- *               scoring algorithm in {@link useLicenseMatcher}.
- *
- *               The wizard uses 5 questions to differentiate ~25 licenses:
- *               1. Sharing philosophy (copyleft vs permissive)
- *               2. Commercial use (allow vs restrict)
- *               3. Patent protection (include vs skip)
- *               4. Copyleft strength (strong vs weak/file-level)
- *               5. Network/SaaS coverage (AGPL-style vs standard)
+ * Flow:
+ * 1. Sharing philosophy (copyleft vs permissive)
+ * 2. Commercial use
+ * 3. Patent protection
+ * 4. Copyleft strength — only if copyleft was chosen
+ * 5. Network/SaaS — only if copyleft was chosen
  */
 import type { QuizQuestion } from '~/types'
 
 /**
- * Ordered array of quiz questions presented to the user.
- *
- * @remarks The order matters — questions are shown sequentially and the
- *          progress bar length is derived from `QUIZ_QUESTIONS.length`.
+ * Ordered catalog of quiz questions. Use {@link getActiveQuestions} for the
+ * branch-aware sequence shown to the user.
  */
 export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
   {
+    id:       'share',
     question: 'What\'s your stance on sharing?',
     description: 'Choose how you want others to treat modifications of your code.',
     options:  [
@@ -40,6 +35,7 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
     ]
   },
   {
+    id:       'commercial',
     question: 'Commercial Usage',
     description: 'Should companies be allowed to profit off your code?',
     options:  [
@@ -58,6 +54,7 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
     ]
   },
   {
+    id:       'patents',
     question: 'Patent Protection',
     description: 'Do you need explicit patent clauses to protect your users?',
     options:  [
@@ -76,27 +73,31 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
     ]
   },
   {
-    question: 'Copyleft Scope',
-    description: 'If someone uses your code, how far should the sharing requirement reach?',
-    options:  [
+    id:               'scope',
+    requiresCopyleft: true,
+    question:         'Copyleft Scope',
+    description:      'Because you chose share-alike: how far should the sharing requirement reach?',
+    options:          [
       {
         title: 'Entire project',
-        desc:  'The whole program that includes your code must be open-sourced. Maximum protection.',
+        desc:  'The whole program that includes your code must be open-sourced. Maximum protection (strong copyleft).',
         example: 'A company builds a huge app and includes your library. The ENTIRE app must be released under the same open-source license — not just the part that uses your code.',
-        tags:  [ 'copyleft' ]
+        tags:  [ 'strong-copyleft' ]
       },
       {
         title: 'Only modified files',
-        desc:  'Only the files they actually changed need to stay open. The rest of their project can be proprietary.',
+        desc:  'Only the files they actually changed need to stay open. The rest of their project can be proprietary (weak / file-level copyleft).',
         example: 'A company fixes a bug in your library file. They only need to share that fix. Their larger commercial app can stay closed-source.',
         tags:  [ 'weak-copyleft' ]
       }
     ]
   },
   {
-    question: 'Network / SaaS Use',
-    description: 'Should running your code on a server (without distributing it) trigger sharing requirements?',
-    options:  [
+    id:               'network',
+    requiresCopyleft: true,
+    question:         'Network / SaaS Use',
+    description:      'Should running your code on a server (without distributing it) trigger sharing requirements?',
+    options:          [
       {
         title: 'Close the SaaS loophole',
         desc:  'If someone runs a modified version on a server, they must publish the source code too.',
@@ -112,3 +113,69 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
     ]
   }
 ] as const
+
+/**
+ * Whether the user selected the copyleft option on the share question.
+ * `answers` is indexed by position in the **active** question list when built
+ * incrementally; for full catalogs pass answers aligned with {@link QUIZ_QUESTIONS}
+ * or use {@link collectTagsFromAnswers} with active questions.
+ */
+export function choseCopyleft(
+    questions: readonly QuizQuestion[],
+    answers: readonly number[]
+): boolean {
+  const shareIdx = questions.findIndex(q => q.id === 'share')
+  if (shareIdx < 0) return false
+  const answer = answers[shareIdx]
+  if (answer === undefined) return false
+  return questions[shareIdx].options[answer]?.tags.includes('copyleft') ?? false
+}
+
+/**
+ * Questions visible given answers so far (answers align with returned sequence).
+ */
+export function getActiveQuestions(
+    allQuestions: readonly QuizQuestion[] = QUIZ_QUESTIONS,
+    answers: readonly number[]            = []
+): QuizQuestion[] {
+  const active: QuizQuestion[] = []
+
+  for (const q of allQuestions) {
+    if (q.requiresCopyleft) {
+      // Need a decided copyleft choice on share among questions already active
+      if (!choseCopyleft(active, answers.slice(0, active.length))) {
+        continue
+      }
+    }
+    active.push(q)
+  }
+
+  return active
+}
+
+/**
+ * Collect deduped trait tags from answers aligned with the given question list.
+ * Normalizes family tags so weak-copyleft does not keep bare `copyleft`
+ * (avoids self-contradiction against TRAIT_MISMATCHES and strong GPL matches).
+ */
+export function collectTagsFromAnswers(
+    questions: readonly QuizQuestion[],
+    answers: readonly number[]
+): import('~/types').LicenseTrait[] {
+  const tags: import('~/types').LicenseTrait[] = []
+  answers.forEach((answerIndex, questionIndex) => {
+    const option = questions[questionIndex]?.options[answerIndex]
+    if (option?.tags) {
+      tags.push(...option.tags)
+    }
+  })
+
+  const unique = [ ...new Set(tags) ]
+
+  // Weak path: Q1 still emits `copyleft`; drop it so weak is the sole family tag.
+  if (unique.includes('weak-copyleft')) {
+    return unique.filter(t => t !== 'copyleft')
+  }
+
+  return unique
+}

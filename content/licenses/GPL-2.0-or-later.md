@@ -4,7 +4,7 @@ name: GNU General Public License v2.0
 subtitle: A strong copyleft license that guarantees freedom to share and change.
 whyThisLicense: Since you want to ensure any modifications to your code remain open-source, but you are completely fine with companies using it for commercial purposes, the GPL-2.0 is your perfect match. It guarantees freedom for end users while letting your project spread widely.
 url: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-traits: [copyleft, commercial-ok, no-patent, comprehensive, no-network]
+traits: [copyleft, strong-copyleft, commercial-ok, no-patent, comprehensive, no-network]
 popularity: 80
 permissions:
   - label: Commercial use

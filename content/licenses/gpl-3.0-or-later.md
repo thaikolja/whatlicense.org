@@ -4,7 +4,7 @@ name: GNU General Public License v3.0
 subtitle: The most popular strong copyleft license with modern patent protections.
 whyThisLicense: You want to ensure that any derivative works are also open source, and you want strong protections against patent litigation. GPLv3 is the industry standard for copyleft.
 url: https://www.gnu.org/licenses/gpl-3.0.html
-traits: [copyleft, commercial-ok, patent-grant, comprehensive, no-network]
+traits: [copyleft, strong-copyleft, commercial-ok, patent-grant, comprehensive, no-network]
 popularity: 95
 permissions:
   - label: Commercial use

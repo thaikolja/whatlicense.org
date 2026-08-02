@@ -85,21 +85,29 @@ Path alias: `~/` and `@/` → `app/` (Nuxt).
 
 ## Architecture (wizard)
 
-1. **`useWizard`** — screen state (`intro` | `quiz` | `result`), step index, answers.  
-2. **`QUIZ_QUESTIONS`** (`app/data/questions.ts`) — 5 binary questions; each option adds `LicenseTrait` tags.  
-3. **`useLicenseMatcher`** — loads licenses via `queryCollection('licenses').all()`, scores by trait overlap + weights, contradiction penalties, `popularity` tie-break.  
+1. **`useWizard`** — screen state, **branching** active questions, answers, `collectedTags`.
+2. **`QUIZ_QUESTIONS`** (`app/data/questions.ts`) — catalog with `id` + optional `requiresCopyleft`.
+    - Always: share → commercial → patents
+    - If share = copyleft: + scope (strong/weak) + network
+    - Helpers: `getActiveQuestions`, `collectTagsFromAnswers`
+3. **`matchLicense`** (`app/utils/matchLicense.ts`) — pure gates + weighted score + popularity tie-break.  
+   Composable `useLicenseMatcher` loads content then calls pure matcher.
 4. **Result UI** — `ResultDashboard`, `LicenseOverview`, `FullLicenseText`, `FileHeaderGenerator`.  
-5. **Header generator** — `useHeaderGenerator` + `useHeaderValidator` + `commentStyles`; languages: php, js/ts, python, ruby, html, css, shell.
+5. **Header generator** — `useHeaderGenerator` + `useHeaderValidator` + `commentStyles`.
 
-Matching is pure client logic. Prefer extending traits/weights in the matcher rather than ad-hoc branching.
+**Alignment rule:** Scope/network questions must not run for permissive users. Q4 must tag `strong-copyleft` /
+`weak-copyleft` (not re-tag `copyleft`). Golden tests: `test/unit/wizardAlignment.test.ts`.
 
 ### Trait tags (`LicenseTrait`)
 
 Defined in `app/types/index.ts`:
 
-`copyleft` | `weak-copyleft` | `permissive` | `commercial-ok` | `non-commercial` | `patent-grant` | `no-patent` | `simple` | `comprehensive` | `network-copyleft` | `no-network` | `public-domain`
+`copyleft` | `strong-copyleft` | `weak-copyleft` | `permissive` | `commercial-ok` | `non-commercial` | `patent-grant` |
+`no-patent` | `simple` | `comprehensive` | `network-copyleft` | `no-network` | `public-domain`
 
-User tags and license `traits` must stay aligned with this union.
+- Strong GPL family: `copyleft` + `strong-copyleft`
+- Weak (MPL/LGPL/…): `weak-copyleft` only
+- User tags and license `traits` must stay aligned with this union.
 
 ## Adding or editing a license
 

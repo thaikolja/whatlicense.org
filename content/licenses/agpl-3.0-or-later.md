@@ -4,7 +4,7 @@ name: GNU Affero General Public License v3.0
 subtitle: The strongest copyleft license, designed to close the SaaS loophole.
 whyThisLicense: You want to ensure that even if someone runs your code on a server without distributing it (SaaS), they must still share their modifications with the community.
 url: https://www.gnu.org/licenses/agpl-3.0.html
-traits: [copyleft, commercial-ok, patent-grant, comprehensive, network-copyleft]
+traits: [copyleft, strong-copyleft, commercial-ok, patent-grant, comprehensive, network-copyleft]
 popularity: 70
 permissions:
   - label: Commercial use

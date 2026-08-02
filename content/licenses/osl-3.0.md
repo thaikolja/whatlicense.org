@@ -4,7 +4,7 @@ name: Open Software License 3.0
 subtitle: A copyleft license with explicit patent and network provisions.
 whyThisLicense: You want a strong copyleft license that is legally sophisticated and handles both patents and network use clearly.
 url: https://opensource.org/licenses/OSL-3.0
-traits: [copyleft, commercial-ok, patent-grant, comprehensive, network-copyleft]
+traits: [copyleft, strong-copyleft, commercial-ok, patent-grant, comprehensive, network-copyleft]
 popularity: 20
 permissions:
   - label: Commercial use

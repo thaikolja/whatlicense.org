@@ -46,12 +46,19 @@ export interface QuizOption {
  * user's selection before advancing.
  */
 export interface QuizQuestion {
+  /** Stable id for branching and tests (e.g. "share", "scope"). */
+  readonly id: string
   /** Main question heading (e.g. "What's your stance on sharing?"). */
   readonly question: string
   /** Supporting description displayed below the heading. */
   readonly description: string
   /** Exactly two mutually-exclusive options. */
   readonly options: readonly [ QuizOption, QuizOption ]
+  /**
+   * When true, this step is only shown if the user chose copyleft in "share".
+   * Scope and network questions use this.
+   */
+  readonly requiresCopyleft?: boolean
 }
 
 /* ------------------------------------------------------------------ */
@@ -66,6 +73,7 @@ export interface QuizQuestion {
  */
 export type LicenseTrait =
     | 'copyleft'
+    | 'strong-copyleft'
     | 'weak-copyleft'
     | 'permissive'
     | 'commercial-ok'
