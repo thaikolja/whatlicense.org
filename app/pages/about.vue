@@ -76,9 +76,9 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="w-full max-w-5xl mx-auto py-6 sm:py-10 pb-20">
+  <div class="w-full max-w-5xl mx-auto py-4 sm:py-10 pb-16 sm:pb-20 min-w-0">
     <!-- Hero -->
-    <section class="relative mb-16 sm:mb-24 animate-fade-up">
+    <section class="relative mb-12 sm:mb-24 animate-fade-up">
       <div
           class="pointer-events-none absolute -top-8 right-0 w-48 h-48 border border-sand rounded-full opacity-40 -z-10 hidden sm:block"
           aria-hidden="true"
@@ -88,23 +88,23 @@ useSeoMeta({
           aria-hidden="true"
       />
 
-      <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-tan mb-4">
+      <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-tan mb-3 sm:mb-4">
         About the project
       </p>
-      <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold text-espresso tracking-tight leading-[1.05] mb-6 max-w-3xl">
+      <h1 class="text-3xl sm:text-5xl md:text-7xl font-bold text-espresso tracking-tight leading-[1.08] mb-5 sm:mb-6 max-w-3xl">
         Licenses are poetry <span class="italic text-muted font-normal">with teeth.</span>
       </h1>
-      <p class="text-lg sm:text-xl text-muted max-w-2xl leading-relaxed mb-8">
+      <p class="text-base sm:text-xl text-muted max-w-2xl leading-relaxed mb-6 sm:mb-8">
         <strong class="text-charcoal">whatlicense.org</strong> is a small, stubborn tool for developers who want a clear
         answer to a messy question: <em class="text-charcoal not-italic font-semibold">what open-source license do I
         actually need?</em> No account. No jargon gauntlet. Just a branching quiz, a honest matcher, and a header you
         can paste before coffee cools.
       </p>
 
-      <div class="flex flex-wrap items-center gap-4">
+      <div class="flex flex-wrap items-center gap-3 sm:gap-4">
         <NuxtLink
             to="/"
-            class="btn px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
+            class="btn px-6 sm:px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2 min-h-11"
         >
           Start the wizard <span aria-hidden="true">→</span>
         </NuxtLink>
@@ -136,7 +136,7 @@ useSeoMeta({
         <div
             v-for="(item, i) in constellation"
             :key="item.spdx"
-            class="group relative rounded-2xl border border-border bg-white/70 backdrop-blur-sm p-4 sm:p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1"
+            class="group relative rounded-2xl border border-border bg-white/70 backdrop-blur-sm p-3.5 sm:p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 min-w-0"
             :class="[item.rotate, i % 2 === 1 ? 'md:translate-y-3' : '']"
         >
           <p class="font-mono text-sm sm:text-base font-bold text-charcoal tracking-tight mb-1">

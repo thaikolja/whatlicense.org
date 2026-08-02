@@ -1,7 +1,7 @@
 /**
  * Unit: golden matrix — answers must match licenses.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import fs                                                             from 'node:fs'
@@ -13,13 +13,13 @@ import { matchLicense }                                               from '../.
 
 /** Parse license traits from content frontmatter (Node, no Nuxt). */
 function loadLicensesFromContent(): License[] {
-  // ... real markdown catalog on disk
+  //real markdown catalog on disk
   const dir = path.resolve(process.cwd(), 'content/licenses')
   return fs.readdirSync(dir)
-  // ... only license pages
+  //only license pages
   .filter(f => f.endsWith('.md'))
   .map((file) => {
-    // ... crude frontmatter scrape (good enough for traits + popularity)
+    //crude frontmatter scrape (good enough for traits + popularity)
     const text       = fs.readFileSync(path.join(dir, file), 'utf8')
     const spdx       = text.match(/^spdx:\s*(.+)$/m)?.[1]?.trim() || file
     const popularity = Number(text.match(/^popularity:\s*(\d+)/m)?.[1] || 0)
@@ -28,7 +28,7 @@ function loadLicensesFromContent(): License[] {
     .split(',')
     .map(s => s.trim())
     .filter(Boolean) as LicenseTrait[]
-    // ... stub the rest of License so matchLicense is happy
+    //stub the rest of License so matchLicense is happy
     return {
       id:              file,
       spdx,
@@ -52,34 +52,34 @@ function loadLicensesFromContent(): License[] {
  */
 function tagsForPath(optionById: Record<string, 0 | 1>): LicenseTrait[] {
   const answers: number[] = []
-  // ... walk active questions and fill answers in order
+  //walk active questions and fill answers in order
   for (let guard = 0; guard < 10; guard++) {
     const active = getActiveQuestions(QUIZ_QUESTIONS, answers)
     if (answers.length >= active.length) break
     const q      = active[answers.length]
     const choice = optionById[q.id]
     if (choice === undefined) {
-      // ... fail loud if the path map is incomplete
+      //fail loud if the path map is incomplete
       throw new Error(`Missing answer for question ${q.id}`)
     }
     answers.push(choice)
   }
-  // ... tags from the final branch-aware list
+  //tags from the final branch-aware list
   const active = getActiveQuestions(QUIZ_QUESTIONS, answers)
   return collectTagsFromAnswers(active, answers)
 }
 
 /** Run path → tags → matchLicense; return SPDX or null. */
 function winner(optionById: Record<string, 0 | 1>): string | null {
-  // ... load real catalog each call (cheap enough for unit tests)
+  //load real catalog each call (cheap enough for unit tests)
   const licenses = loadLicensesFromContent()
   const tags     = tagsForPath(optionById)
   return matchLicense(tags, licenses).license?.spdx ?? null
 }
 
-// ... test suite for 'wizard answer alignment (golden matrix)'
+//test suite for 'wizard answer alignment (golden matrix)'
 describe('wizard answer alignment (golden matrix)', () => {
-  // ... permissive + commercial + simple → MIT
+  //permissive + commercial + simple → MIT
   it('permissive + commercial + simple → MIT', () => {
     expect(winner({
       share:      1,
@@ -88,7 +88,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     })).toBe('MIT')
   })
 
-  // ... permissive + commercial + patents → Apache-2.0
+  //permissive + commercial + patents → Apache-2.0
   it('permissive + commercial + patents → Apache-2.0', () => {
     expect(winner({
       share:      1,
@@ -97,7 +97,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     })).toBe('Apache-2.0')
   })
 
-  // ... strong copyleft + commercial + patents + no network → GPL-3.0-or-later
+  //strong copyleft + commercial + patents + no network → GPL-3.0-or-later
   it('strong copyleft + commercial + patents + no network → GPL-3.0-or-later', () => {
     expect(winner({
       share:      0,
@@ -108,7 +108,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     })).toBe('GPL-3.0-or-later')
   })
 
-  // ... strong copyleft + commercial + simple + no network → GPL-2.0-or-later
+  //strong copyleft + commercial + simple + no network → GPL-2.0-or-later
   it('strong copyleft + commercial + simple + no network → GPL-2.0-or-later', () => {
     expect(winner({
       share:      0,
@@ -119,7 +119,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     })).toBe('GPL-2.0-or-later')
   })
 
-  // ... strong copyleft + patents + network → AGPL-3.0-or-later
+  //strong copyleft + patents + network → AGPL-3.0-or-later
   it('strong copyleft + patents + network → AGPL-3.0-or-later', () => {
     expect(winner({
       share:      0,
@@ -130,7 +130,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     })).toBe('AGPL-3.0-or-later')
   })
 
-  // ... weak copyleft + patents + no network → MPL-2.0 (or other weak+patent)
+  //weak copyleft + patents + no network → MPL-2.0 (or other weak+patent)
   it('weak copyleft + patents + no network → MPL-2.0 (or other weak+patent)', () => {
     const spdx = winner({
       share:      0,
@@ -142,7 +142,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     expect([ 'MPL-2.0', 'LGPL-3.0-or-later', 'EPL-2.0', 'CDDL-1.0' ]).toContain(spdx)
   })
 
-  // ... weak copyleft + simple + no network → LGPL-2.1-or-later family
+  //weak copyleft + simple + no network → LGPL-2.1-or-later family
   it('weak copyleft + simple + no network → LGPL-2.1-or-later family', () => {
     const spdx = winner({
       share:      0,
@@ -157,7 +157,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     expect(spdx).not.toMatch(/^AGPL/)
   })
 
-  // ... non-commercial → CC-BY-NC-4.0
+  //non-commercial → CC-BY-NC-4.0
   it('non-commercial → CC-BY-NC-4.0', () => {
     expect(winner({
       share:      1,
@@ -166,7 +166,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     })).toBe('CC-BY-NC-4.0')
   })
 
-  // ... permissive path never returns AGPL/GPL
+  //permissive path never returns AGPL/GPL
   it('permissive path never returns AGPL/GPL', () => {
     for (const patents of [ 0, 1 ] as const) {
       for (const commercial of [ 0, 1 ] as const) {
@@ -182,7 +182,7 @@ describe('wizard answer alignment (golden matrix)', () => {
   })
 
 
-  // ... getActiveQuestions: permissive has 3 steps; copyleft has 5
+  //getActiveQuestions: permissive has 3 steps; copyleft has 5
   it('getActiveQuestions: permissive has 3 steps; copyleft has 5', () => {
     expect(getActiveQuestions(QUIZ_QUESTIONS, []).map(q => q.id)).toEqual([
       'share', 'commercial', 'patents'
@@ -197,7 +197,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     ])
   })
 
-  // ... weak copyleft + network has no catalog match (never invent AGPL)
+  //weak copyleft + network has no catalog match (never invent AGPL)
   it('weak copyleft + network has no catalog match (never invent AGPL)', () => {
     const spdx = winner({
       share:      0,
@@ -209,7 +209,7 @@ describe('wizard answer alignment (golden matrix)', () => {
     expect(spdx).toBeNull()
   })
 
-  // ... copyleft + non-commercial has no catalog match (never invent GPL)
+  //copyleft + non-commercial has no catalog match (never invent GPL)
   it('copyleft + non-commercial has no catalog match (never invent GPL)', () => {
     const spdx = winner({
       share:      0,
@@ -222,7 +222,7 @@ describe('wizard answer alignment (golden matrix)', () => {
   })
 
 
-  // ... weak path tags drop bare copyleft
+  //weak path tags drop bare copyleft
   it('weak path tags drop bare copyleft', () => {
     const tags = tagsForPath({
       share:      0,

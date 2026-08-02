@@ -40,4 +40,13 @@ describe('QuizOptionCard', () => {
     await wrapper.trigger('click')
     expect(wrapper.emitted('select')).toHaveLength(1)
   })
+
+  // ... is a real button for a11y
+  it('renders as a button with aria-pressed', async () => {
+    const wrapper = await mountSuspended(QuizOptionCard, {
+      props: { option, selected: false }
+    })
+    expect(wrapper.element.tagName).toBe('BUTTON')
+    expect(wrapper.attributes('aria-pressed')).toBe('false')
+  })
 })

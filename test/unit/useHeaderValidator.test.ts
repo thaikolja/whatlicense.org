@@ -1,17 +1,17 @@
 /**
  * Unit: invalid @tag highlighting.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import { describe, expect, it } from 'vitest'
 import { useHeaderValidator } from '../../app/composables/useHeaderValidator'
 
-// ... test suite for 'useHeaderValidator'
+//test suite for 'useHeaderValidator'
 describe('useHeaderValidator', () => {
   const { validateHtmlLines } = useHeaderValidator()
 
-  // ... leaves valid annotations untouched
+  //leaves valid annotations untouched
   it('leaves valid annotations untouched', () => {
     const html = [
       '/**',
@@ -23,7 +23,7 @@ describe('useHeaderValidator', () => {
     expect(validateHtmlLines(html, [])).toBe(html)
   })
 
-  // ... marks unknown annotations with error-line spans
+  //marks unknown annotations with error-line spans
   it('marks unknown annotations with error-line spans', () => {
     const html = ' * @unknownTag value'
     const result = validateHtmlLines(html, [])
@@ -32,7 +32,7 @@ describe('useHeaderValidator', () => {
     expect(result).toContain('@unknownTag')
   })
 
-  // ... accepts custom property keys as valid annotations
+  //accepts custom property keys as valid annotations
   it('accepts custom property keys as valid annotations', () => {
     const html = ' * @myCustom 1.0.0'
     const result = validateHtmlLines(html, [ 'myCustom' ])
@@ -41,7 +41,7 @@ describe('useHeaderValidator', () => {
     expect(result).toBe(html)
   })
 
-  // ... validates each line independently
+  //validates each line independently
   it('validates each line independently', () => {
     const html = [
       ' * @author Ada',

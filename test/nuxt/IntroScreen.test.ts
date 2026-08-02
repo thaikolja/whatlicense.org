@@ -1,16 +1,16 @@
 /**
  * Nuxt: intro screen copy + start emit.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import IntroScreen from '~/components/IntroScreen.vue'
 
-// ... test suite for 'IntroScreen'
+//test suite for 'IntroScreen'
 describe('IntroScreen', () => {
-  // ... renders headline and emits start
+  //renders headline and emits start
   it('renders headline and emits start', async () => {
     const wrapper = await mountSuspended(IntroScreen)
 

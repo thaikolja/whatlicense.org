@@ -16,6 +16,19 @@ import tailwindcss       from '@tailwindcss/vite'
 // ... resolve project root for prerender route scanning
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
+// ... every license markdown → static /licenses/<slug>
+const licenseRoutes = readdirSync(join(__dirname, 'content', 'licenses'))
+.filter(f => f.endsWith('.md'))
+.map(f => `/licenses/${f.replace(/\.md$/, '')}`)
+
+// ... static marketing / legal pages (must be in HTML export)
+const staticRoutes = [
+  '/',
+  '/about',
+  '/privacy-policy',
+  '/terms-of-service'
+]
+
 export default defineNuxtConfig({
   // ... pin runtime behavior to this date
   compatibilityDate: '2025-07-15',
@@ -53,12 +66,14 @@ export default defineNuxtConfig({
       // ... also scan source for icon names
       scan:        true,
       sizeLimitKb: 256,
-      // ... explicit list so header/footer icons always ship
+      // ... explicit list so header/footer/about icons always ship (SSG has no API)
       icons: [
         'mdi:paypal',
         'mdi:github',
         'mdi:twitter',
-        'mdi:envelope'
+        'mdi:envelope',
+        'mdi:shield-lock-outline',
+        'mdi:file-document-outline'
       ]
     }
   },
@@ -104,11 +119,10 @@ export default defineNuxtConfig({
       // ... debug: auto-pick option 0 for every quiz step
       debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT === 'true',
       links:           {
-        paypal:    'https://paypal.me/thaikolja/10',
-        termsFeed: 'https://www.termsfeed.com/?ref=whatlicense',
-        github:    'https://github.com/thaikolja/whatlicense.org',
-        twitter:   'https://twitter.com/whatlicenseorg',
-        email:     'mailto:kolja.nolte@gmail.com'
+        paypal:  process.env.NUXT_PUBLIC_PAYPAL_URL ?? '',
+        github:  'https://github.com/thaikolja/whatlicense.org',
+        twitter: '#',
+        email:   process.env.NUXT_PUBLIC_EMAIL_ADDRESS ?? ''
       }
     }
   },
@@ -159,12 +173,19 @@ export default defineNuxtConfig({
     // ... default deploy target is Cloudflare Pages static
     preset:    'cloudflare_pages_static',
     prerender: {
-      // ... also crawl links discovered from pages
+      // ... also crawl NuxtLinks discovered from pages
       crawlLinks: true,
-      // ... explicit /licenses/<slug> for every markdown file
-      routes: readdirSync(join(__dirname, 'content', 'licenses'))
-              .filter(f => f.endsWith('.md'))
-              .map(f => `/licenses/${f.replace(/\.md$/, '')}`)
+      // ... fail the build if a linked route 404s at generate time
+      failOnError: true,
+      // ... homepage, legal/about, and every license slug as HTML
+      routes: [ ...staticRoutes, ...licenseRoutes ]
+    }
+  },
+
+  // ... route rules keep static pages cache-friendly on CDNs
+  routeRules: {
+    '/**': {
+      prerender: true
     }
   }
 })

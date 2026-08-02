@@ -1,7 +1,7 @@
 /**
  * Nuxt: file header customizer preview + languages.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import { describe, expect, it, vi, beforeEach } from 'vitest'
@@ -16,9 +16,9 @@ const license = makeLicense({
   headerStatement: 'Released under the MIT License.'
 })
 
-// ... test suite for 'FileHeaderGenerator'
+//test suite for 'FileHeaderGenerator'
 describe('FileHeaderGenerator', () => {
-  // ... setup before each case
+  //setup before each case
   beforeEach(() => {
     Object.defineProperty(globalThis, 'isSecureContext', {
       value:        true,
@@ -30,7 +30,7 @@ describe('FileHeaderGenerator', () => {
     })
   })
 
-  // ... renders customizer chrome and live preview
+  //renders customizer chrome and live preview
   it('renders customizer chrome and live preview', async () => {
     const wrapper = await mountSuspended(FileHeaderGenerator, {
       props: { license },
@@ -48,7 +48,7 @@ describe('FileHeaderGenerator', () => {
     expect(wrapper.find('pre').exists()).toBe(true)
   })
 
-  // ... updates preview when project name and language change
+  //updates preview when project name and language change
   it('updates preview when project name and language change', async () => {
     const wrapper = await mountSuspended(FileHeaderGenerator, {
       props: { license },
@@ -74,7 +74,7 @@ describe('FileHeaderGenerator', () => {
     expect(preHtml.includes('CoolLib') || preHtml.includes('CoolLib')).toBe(true)
   })
 
-  // ... toggles exclude comments
+  //toggles exclude comments
   it('toggles exclude comments', async () => {
     const wrapper = await mountSuspended(FileHeaderGenerator, {
       props: { license },
@@ -97,7 +97,7 @@ describe('FileHeaderGenerator', () => {
     expect(text).toContain('X')
   })
 
-  // ... opens custom properties modal control
+  //opens custom properties modal control
   it('opens custom properties modal control', async () => {
     const wrapper = await mountSuspended(FileHeaderGenerator, {
       props: { license },
@@ -118,7 +118,7 @@ describe('FileHeaderGenerator', () => {
     expect(wrapper.find('.modal-stub').exists()).toBe(true)
   })
 
-  // ... highlights every supported language and applies custom properties
+  //highlights every supported language and applies custom properties
   it('highlights every supported language and applies custom properties', async () => {
     const wrapper = await mountSuspended(FileHeaderGenerator, {
       props: { license },

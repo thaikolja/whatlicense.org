@@ -5,9 +5,9 @@ import { describe, expect, it } from 'vitest'
 import { mountSuspended }       from '@nuxt/test-utils/runtime'
 import AboutPage                from '~/pages/about.vue'
 
-// ... test suite for About page
+//test suite for About page
 describe('About page', () => {
-  // ... renders manifesto, privacy angle, and wizard CTA
+  //renders manifesto, privacy angle, and wizard CTA
   it('renders creative about content and key CTAs', async () => {
     const wrapper = await mountSuspended(AboutPage)
 

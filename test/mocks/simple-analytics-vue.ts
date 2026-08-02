@@ -5,6 +5,6 @@
 export default {
   /** Vue plugin install — intentionally does nothing. */
   install() {
-    // ... no-op: we don’t want analytics network calls in tests
+    //no-op: we don’t want analytics network calls in tests
   }
 }

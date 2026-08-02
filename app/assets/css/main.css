@@ -244,14 +244,37 @@
 .opt-card {
   border:     1px solid var(--color-sand);
   background: var(--color-cream-dark);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:                  border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                               box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                               transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                               background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   cursor:     pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action:                manipulation;
 }
 
-.opt-card:hover {
+.opt-card:hover:not(:disabled):not(.opt-card--disabled) {
   border-color: var(--color-tan);
   box-shadow:   0 12px 40px -12px rgba(181, 155, 132, 0.3);
   transform:    translateY(-4px);
+}
+
+.opt-card:focus-visible {
+  outline:        2px solid var(--color-tan);
+  outline-offset: 3px;
+}
+
+.opt-card--disabled {
+  cursor:  wait;
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opt-card,
+  .opt-card:hover {
+    transition: none;
+    transform:  none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -278,7 +301,7 @@
 }
 
 .opt-card.selected {
-  @apply border-charcoal bg-white shadow-[0_12px_40px_-12px_rgba(67,58,49,0.2)] -translate-y-1;
+  @apply border-charcoal bg-white shadow-[0_12px_40px_-12px_rgba(67,58,49,0.2)] -translate-y-0.5 sm:-translate-y-1;
 }
 
 /* ------------------------------------------------------------------ */

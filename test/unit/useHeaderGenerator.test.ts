@@ -1,7 +1,7 @@
 /**
  * Unit: file header line generation.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import { describe, expect, it } from 'vitest'
@@ -15,9 +15,9 @@ const mit = makeLicense({
   headerStatement: 'Released under the MIT License.\nSee: https://opensource.org/licenses/MIT'
 })
 
-// ... test suite for 'useHeaderGenerator'
+//test suite for 'useHeaderGenerator'
 describe('useHeaderGenerator', () => {
-  // ... builds raw lines from form fields and license statement
+  //builds raw lines from form fields and license statement
   it('builds raw lines from form fields and license statement', () => {
     const license = ref(mit)
     const { formState, generateRawLines } = useHeaderGenerator(license)
@@ -45,7 +45,7 @@ describe('useHeaderGenerator', () => {
     expect(lines.some(l => l.includes('ignored'))).toBe(false)
   })
 
-  // ... omits email wrapper when email is empty
+  //omits email wrapper when email is empty
   it('omits email wrapper when email is empty', () => {
     const { formState, generateRawLines } = useHeaderGenerator(ref(mit))
     formState.value.authorName = 'Ada'
@@ -55,7 +55,7 @@ describe('useHeaderGenerator', () => {
     expect(lines.some(l => l.includes('<'))).toBe(false)
   })
 
-  // ... wraps output in language comments by default
+  //wraps output in language comments by default
   it('wraps output in language comments by default', () => {
     const { formState, generatedHeaderCode } = useHeaderGenerator(ref(mit))
     formState.value.projectName = 'MyLib'
@@ -65,7 +65,7 @@ describe('useHeaderGenerator', () => {
     expect(generatedHeaderCode.value).toContain('MyLib')
   })
 
-  // ... returns raw lines when excludeComments is true
+  //returns raw lines when excludeComments is true
   it('returns raw lines when excludeComments is true', () => {
     const { formState, generatedHeaderCode } = useHeaderGenerator(ref(mit))
     formState.value.projectName = 'MyLib'
@@ -76,7 +76,7 @@ describe('useHeaderGenerator', () => {
     expect(generatedHeaderCode.value).not.toMatch(/^\/\*\*/ )
   })
 
-  // ... uses python hash comments when language is python
+  //uses python hash comments when language is python
   it('uses python hash comments when language is python', () => {
     const { formState, generatedHeaderCode } = useHeaderGenerator(ref(mit))
     formState.value.projectName = 'MyLib'
@@ -85,7 +85,7 @@ describe('useHeaderGenerator', () => {
     expect(generatedHeaderCode.value.startsWith('#')).toBe(true)
   })
 
-  // ... handles null license without header statement
+  //handles null license without header statement
   it('handles null license without header statement', () => {
     const { formState, generateRawLines } = useHeaderGenerator(ref(null))
     formState.value.projectName = 'OnlyName'
@@ -93,7 +93,7 @@ describe('useHeaderGenerator', () => {
     expect(generateRawLines(null)).toEqual([ 'OnlyName', '' ])
   })
 
-  // ... skips custom properties with empty keys but keeps keys with empty values
+  //skips custom properties with empty keys but keeps keys with empty values
   it('skips custom properties with empty keys but keeps keys with empty values', () => {
     const { formState, generateRawLines } = useHeaderGenerator(ref(null))
     formState.value.customProperties = [

@@ -16,15 +16,15 @@ defineProps<{
 </script>
 
 <template>
-  <article class="w-full max-w-3xl mx-auto py-8 sm:py-12 animate-fade-up">
-    <header class="mb-10 border-b border-border pb-8">
+  <article class="w-full max-w-3xl mx-auto py-6 sm:py-12 animate-fade-up min-w-0">
+    <header class="mb-8 sm:mb-10 border-b border-border pb-6 sm:pb-8">
       <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-tan mb-3">
         Legal
       </p>
-      <h1 class="text-4xl sm:text-5xl font-bold text-espresso tracking-tight mb-3">
+      <h1 class="text-3xl sm:text-5xl font-bold text-espresso tracking-tight mb-3">
         {{ title }}
       </h1>
-      <p class="text-lg text-muted leading-relaxed mb-4">
+      <p class="text-base sm:text-lg text-muted leading-relaxed mb-4">
         {{ subtitle }}
       </p>
       <p class="text-xs font-bold uppercase tracking-widest text-muted/80">

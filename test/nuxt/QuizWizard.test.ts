@@ -1,10 +1,7 @@
 /**
- * Nuxt: quiz wizard progress + next/back.
- *
- * Casual notes use // ... above important lines in app code;
- * tests stay readable with a file-level JSDoc only where dense.
+ * Nuxt: quiz wizard progress + next/back + auto-advance.
  */
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import QuizWizard from '~/components/QuizWizard.vue'
 import { QUIZ_QUESTIONS } from '~/data/questions'
@@ -12,6 +9,14 @@ import { QUIZ_QUESTIONS } from '~/data/questions'
 // ... test suite for 'QuizWizard'
 describe('QuizWizard', () => {
   const question = QUIZ_QUESTIONS[0]
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   // ... renders question text and both options
   it('renders question text and both options', async () => {
@@ -32,8 +37,30 @@ describe('QuizWizard', () => {
     expect(wrapper.text()).toContain('Next Step')
   })
 
-  // ... emits select and next
-  it('emits select and next', async () => {
+  // ... emits select then auto-emits next after the transition delay
+  it('emits select and auto-advances next after selecting an option', async () => {
+    const wrapper = await mountSuspended(QuizWizard, {
+      props: {
+        question,
+        currentStep: 0,
+        totalSteps:  QUIZ_QUESTIONS.length,
+        answers: [],
+        canAdvance:  true
+      }
+    })
+
+    const cards = wrapper.findAll('.opt-card')
+    expect(cards.length).toBe(2)
+    await cards[0].trigger('click')
+    expect(wrapper.emitted('select')?.[0]).toEqual([ 0 ])
+    expect(wrapper.emitted('next')).toBeFalsy()
+
+    await vi.advanceTimersByTimeAsync(420)
+    expect(wrapper.emitted('next')).toHaveLength(1)
+  })
+
+  // ... Next button still works
+  it('emits next from the Next Step button', async () => {
     const wrapper = await mountSuspended(QuizWizard, {
       props: {
         question,
@@ -44,14 +71,11 @@ describe('QuizWizard', () => {
       }
     })
 
-    const cards = wrapper.findAll('.opt-card')
-    expect(cards.length).toBe(2)
-    await cards[0].trigger('click')
-    expect(wrapper.emitted('select')?.[0]).toEqual([ 0 ])
-
     const next = wrapper.findAll('button').find(b => b.text().includes('Next Step'))
     await next!.trigger('click')
-    expect(wrapper.emitted('next')).toHaveLength(1)
+    // rAF may be needed; flush timers
+    await vi.advanceTimersByTimeAsync(50)
+    expect(wrapper.emitted('next')?.length).toBeGreaterThanOrEqual(1)
   })
 
   // ... shows Back and emits prev when not on first step

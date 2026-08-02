@@ -19,23 +19,31 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
   const allLicenses = ref<License[]>([])
 
   /**
-   * Load all licenses (injected fetcher or queryCollection).
+   * Load all licenses (injected fetcher or Nuxt Content).
+   * Call from setup so useAsyncData participates in SSG payload.
    */
   const fetchLicenses = async () => {
     try {
       if (options.fetchAll) {
-        // test / custom path
+        // ... test / custom path
         allLicenses.value = await options.fetchAll()
         return
       }
-      // production: Nuxt Content collection
-      const { data } = await useAsyncData('licenses', () => queryCollection('licenses').all())
-      if (data.value) {
-        // Content pages aren’t typed as License — cast is intentional
+      // ... stable key → shared between generate + client hydration
+      const { data } = await useAsyncData(
+          'licenses-catalog',
+          () => queryCollection('licenses').all(),
+          {
+            // ... licenses rarely change per deploy; keep default server/cache behavior
+            default: () => []
+          }
+      )
+      if (data.value?.length) {
+        // ... Content pages aren’t typed as License — cast is intentional
         allLicenses.value = data.value as unknown as License[]
       }
     } catch (e) {
-      // keep empty catalog; UI can show “could not load”
+      // ... keep empty catalog; UI can show “could not load”
       console.error('Failed to load licenses', e)
     }
   }

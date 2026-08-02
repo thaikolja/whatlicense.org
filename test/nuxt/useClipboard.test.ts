@@ -1,26 +1,26 @@
 /**
  * Nuxt: clipboard secure path + fallbacks.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { useClipboard } from '~/composables/useClipboard'
 
-// ... test suite for 'useClipboard'
+//test suite for 'useClipboard'
 describe('useClipboard', () => {
-  // ... setup before each case
+  //setup before each case
   beforeEach(() => {
     vi.useFakeTimers()
   })
 
-  // ... cleanup after each case
+  //cleanup after each case
   afterEach(() => {
     vi.useRealTimers()
     vi.restoreAllMocks()
   })
 
-  // ... copies via navigator.clipboard in a secure context
+  //copies via navigator.clipboard in a secure context
   it('copies via navigator.clipboard in a secure context', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(globalThis, 'isSecureContext', {
@@ -42,7 +42,7 @@ describe('useClipboard', () => {
     expect(isCopied.value).toBe(false)
   })
 
-  // ... falls back to execCommand when clipboard API is unavailable
+  //falls back to execCommand when clipboard API is unavailable
   it('falls back to execCommand when clipboard API is unavailable', async () => {
     Object.defineProperty(globalThis, 'isSecureContext', {
       value:        false,
@@ -63,7 +63,7 @@ describe('useClipboard', () => {
     expect(isCopied.value).toBe(true)
   })
 
-  // ... swallows errors from the secure clipboard path
+  //swallows errors from the secure clipboard path
   it('swallows errors from the secure clipboard path', async () => {
     const writeText = vi.fn().mockRejectedValue(new Error('denied'))
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
@@ -83,7 +83,7 @@ describe('useClipboard', () => {
     expect(error).toHaveBeenCalled()
   })
 
-  // ... logs when fallback execCommand throws
+  //logs when fallback execCommand throws
   it('logs when fallback execCommand throws', async () => {
     Object.defineProperty(globalThis, 'isSecureContext', {
       value:        false,

@@ -6,9 +6,9 @@ import { mountSuspended }       from '@nuxt/test-utils/runtime'
 import PrivacyPolicy            from '~/pages/privacy-policy.vue'
 import TermsOfService           from '~/pages/terms-of-service.vue'
 
-// ... test suite for legal pages
+//test suite for legal pages
 describe('legal pages', () => {
-  // ... Privacy Policy shows project-specific privacy claims
+  //Privacy Policy shows project-specific privacy claims
   it('renders Privacy Policy with client-side matching claims', async () => {
     const wrapper = await mountSuspended(PrivacyPolicy)
 
@@ -19,7 +19,7 @@ describe('legal pages', () => {
     expect(wrapper.text()).toContain('Back to wizard')
   })
 
-  // ... Terms of Service disclaim legal advice
+  //Terms of Service disclaim legal advice
   it('renders Terms of Service with not-legal-advice disclaimer', async () => {
     const wrapper = await mountSuspended(TermsOfService)
 

@@ -1,7 +1,7 @@
 /**
  * Nuxt: full license text section + ContentRenderer stub.
  *
- * Casual notes use // ... above important lines in app code;
+ * Casual notes use //above important lines in app code;
  * tests stay readable with a file-level JSDoc only where dense.
  */
 import { describe, expect, it, vi, beforeEach } from 'vitest'
@@ -9,9 +9,9 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import FullLicenseText from '~/components/FullLicenseText.vue'
 import { makeLicense } from '../fixtures/licenses'
 
-// ... test suite for 'FullLicenseText'
+//test suite for 'FullLicenseText'
 describe('FullLicenseText', () => {
-  // ... setup before each case
+  //setup before each case
   beforeEach(() => {
     Object.defineProperty(globalThis, 'isSecureContext', {
       value:        true,
@@ -23,7 +23,7 @@ describe('FullLicenseText', () => {
     })
   })
 
-  // ... shows fallback when body is missing
+  //shows fallback when body is missing
   it('shows fallback when body is missing', async () => {
     const license = makeLicense({
       spdx:   'MIT',
@@ -44,7 +44,7 @@ describe('FullLicenseText', () => {
     expect(wrapper.text()).toContain('License text not found.')
   })
 
-  // ... renders ContentRenderer when body is present
+  //renders ContentRenderer when body is present
   it('renders ContentRenderer when body is present', async () => {
     const license = {
       ...makeLicense({
