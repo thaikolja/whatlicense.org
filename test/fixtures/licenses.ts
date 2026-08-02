@@ -73,5 +73,11 @@ export const FIXTURE_LICENSES: License[] = [
     spdx:       'ISC',
     traits:     [ 'permissive', 'commercial-ok', 'no-patent', 'simple', 'no-network' ],
     popularity: 50
+  }),
+  // public-domain style for freedom-branch tests
+  makeLicense({
+    spdx:       '0BSD',
+    traits:     [ 'public-domain', 'permissive', 'commercial-ok', 'no-patent', 'simple', 'no-network' ],
+    popularity: 40
   })
 ]

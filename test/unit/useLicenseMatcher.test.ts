@@ -89,9 +89,9 @@ describe('useLicenseMatcher', () => {
     expect(match?.spdx).toBe('MIT')
   })
 
-  //returns null when the only license fails hard gates
-  it('returns null when the only license fails hard gates', () => {
-    const { allLicenses, matchLicense } = useLicenseMatcher()
+  // approximate fallback when the only license fails hard gates
+  it('returns approximate match when the only license fails hard gates', () => {
+    const { allLicenses, matchResult } = useLicenseMatcher()
     const emptyTraitsLicense = {
       ...FIXTURE_LICENSES[0],
       spdx:   'EMPTY',
@@ -100,8 +100,10 @@ describe('useLicenseMatcher', () => {
 
     allLicenses.value = [ emptyTraitsLicense ]
 
-    // No traits → not permissive under gates → no match
-    expect(matchLicense([ 'permissive' ])).toBeNull()
+    // No traits → fails permissive gate → still recommend closest (only) license
+    const result = matchResult([ 'permissive' ])
+    expect(result.license?.spdx).toBe('EMPTY')
+    expect(result.isApproximate).toBe(true)
   })
 
 
@@ -201,18 +203,20 @@ describe('useLicenseMatcher', () => {
     expect(allLicenses.value).toEqual([])
   })
 
-  //returns null when hard gates eliminate every license
-  it('returns null when hard gates eliminate every license', () => {
-    const { allLicenses, matchLicense } = useLicenseMatcher()
-    allLicenses.value                   = FIXTURE_LICENSES
+  // approximate when hard gates eliminate every license
+  it('returns approximate match when hard gates eliminate every license', () => {
+    const { allLicenses, matchResult } = useLicenseMatcher()
+    allLicenses.value = FIXTURE_LICENSES
 
-    // Weak + network: no fixture has both
-    expect(matchLicense([
+    // Weak + network: no fixture has both — still recommend closest
+    const result = matchResult([
       'weak-copyleft',
       'commercial-ok',
       'patent-grant',
       'network-copyleft'
-    ])).toBeNull()
+    ])
+    expect(result.license).toBeTruthy()
+    expect(result.isApproximate).toBe(true)
   })
 })
 

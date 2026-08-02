@@ -16,7 +16,10 @@
     "test:unit":     "node ./node_modules/vitest/vitest.mjs run --project unit",
     "test:nuxt":     "node ./node_modules/vitest/vitest.mjs run --project nuxt",
     "test:e2e":      "node ./node_modules/vitest/vitest.mjs run --project e2e",
-    "test:coverage": "node ./node_modules/vitest/vitest.mjs run --coverage --project unit --project nuxt"
+    "test:coverage": "node ./node_modules/vitest/vitest.mjs run --coverage --project unit --project nuxt",
+    "test:wizard":   "node ./node_modules/vitest/vitest.mjs run test/unit/wizardAlignment.test.ts test/unit/wizardCorrectness.test.ts test/unit/contentIntegrity.test.ts",
+    "simulate:wizard": "node scripts/simulate-wizard.mjs",
+    "wizard:matrix": "bun scripts/wizard-path-matrix.mjs"
   },
   "dependencies":    {
     "@lucide/vue":              "^1.28.0",

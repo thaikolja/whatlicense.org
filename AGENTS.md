@@ -13,6 +13,16 @@ or null) plus a customizable file-header generator. All matching runs in the bro
 - **Author:** Kolja Nolte (`kolja.nolte@gmail.com`)  
 - **License:** MIT  
 
+## Rendering model: full SSG
+
+**Stay on static generation** (`nuxt generate` + Cloudflare Pages static).
+
+- Quiz matching is **client-side only** (privacy + product design).
+- License catalog is a fixed set of Markdown files — fully prerenderable.
+- There is **no** per-request personalization or auth.
+
+Do **not** switch the default site to SSR “for correctness.” Correctness is rules + content + tests, not the rendering mode. Hybrid APIs only if we add server-only features later.
+
 ## Tech stack
 
 | Layer                  | Choice                                                                                                                                |
@@ -94,19 +104,24 @@ Path alias: `~/` and `@/` → `app/` (Nuxt).
 
 1. **`useWizard`** — screen state, **branching** active questions, answers, `collectedTags`.  
    Re-picks truncate later answers; Back + same option must not wipe the path (do not slice on `nextStep`).
-2. **`QUIZ_QUESTIONS`** (`app/data/questions.ts`) — catalog with `id` + optional `requiresCopyleft`.
-    - Always: share → commercial → patents (**3 steps** on permissive)
-    - If share = copyleft: + scope (strong/weak) + network (**5 steps**)
-    - Helpers: `choseCopyleft`, `getActiveQuestions`, `collectTagsFromAnswers`
+2. **`QUIZ_QUESTIONS`** (`app/data/questions.ts`) — catalog with `id` + branch flags (only catalog-satisfiable paths).
+    - Always: share → commercial → patents
+    - Copyleft + commercial-ok: + scope; **network only if strong** (weak = 4 steps, strong = 5)
+    - Permissive + commercial-ok + **no patent-grant**: + freedom / public-domain (**4 steps**)
+    - Patent-grant on permissive commercial: freedom skipped (**3 steps** → Apache)
+    - Non-commercial: scope / network / freedom skipped (**3 steps** → CC-BY-NC)
+    - Helpers: `choseCopyleft`, `chosePermissive`, `choseNonCommercial`, `choseStrongCopyleft`, `chosePatentGrant`,
+      `getActiveQuestions`, `collectTagsFromAnswers`
 3. **`matchLicense`** (`app/utils/matchLicense.ts`) — pure gates + weighted score + popularity tie-break.  
-   Empty gate survivors → `{ license: null }` (never soft-pick a contradiction).  
-   Composable `useLicenseMatcher` loads content then calls the pure matcher (inject `fetchAll` in tests).
-4. **Result UI** — `ResultDashboard`, `LicenseOverview`, `FullLicenseText`, `FileHeaderGenerator`.
+   With a non-empty catalog **always** returns a `license` (gated winner, or `isApproximate: true` closest soft fit).  
+   Also returns **runners-up**, **emptyReasons**, **closest**. Composable `useLicenseMatcher` maps Content → pure matcher.
+4. **Result UI** — homepage always navigates to `/licenses/<slug>` when catalog loads; `ResultDashboard` shows approximate banner when needed.
 5. **Header generator** — `useHeaderGenerator` + `useHeaderValidator` + `commentStyles`.
 
-**Alignment rule:** Scope/network questions must not run for permissive users. Q4 must tag `strong-copyleft` /
-`weak-copyleft` (not re-tag bare `copyleft` as the only strength signal). Weak path **drops** bare `copyleft`
-from collected tags so scoring does not look like strong GPL. Golden tests: `test/unit/wizardAlignment.test.ts`.
+**Alignment rule:** Branch away unsatisfiable combos (weak+network, NC+copyleft scope, PD+patent-grant). Weak path **drops**
+bare `copyleft` and implies `no-network`. Every reachable path must hard-gate match (not approximate).  
+Tests: `wizardAlignment`, `wizardCorrectness`, `contentIntegrity` (13 exhaustive paths).  
+`bun run test:wizard` · `bun run wizard:matrix` (SQLite path → SPDX matrix in `tmp/`).
 
 ### Trait tags (`LicenseTrait`)
 
@@ -241,7 +256,8 @@ See also `CONTRIBUTING.md` (frontmatter examples may lag; **`content.config.ts` 
 | License frontmatter as string arrays  | Use `{ label, example }` objects per schema                   |
 | New license not prerendered           | File under `content/licenses/*.md`                            |
 | Trait typo                            | Must match `LicenseTrait` union exactly                       |
-| Soft-scoring after empty gates        | Return `null` — never invent AGPL/GPL for weak+network etc.   |
+| Soft-scoring after empty gates        | Prefer branching so wizard never asks dead ends; API fallback is `isApproximate` closest fit, not inventing a perfect match |
+| Weak+network or NC+copyleft in quiz   | Skip those questions — do not collect impossible tag combos   |
 | Wiping answers on `nextStep`          | Only truncate on option *change* in `selectOption`            |
 | Ignoring Bun lockfile                 | Prefer Bun; only commit `bun.lock`                            |
 | Deploy without generate               | Always `generate` so `dist/` is fresh                         |

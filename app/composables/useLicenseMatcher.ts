@@ -1,11 +1,15 @@
 /**
- * Nuxt-facing wrapper: load licenses, then run pure `matchLicense` scoring.
+ * Nuxt-facing wrapper: load licenses, then run pure matchLicense scoring.
  *
  * Pure gates/score live in `~/utils/matchLicense` for unit tests without Nuxt.
  */
 import { ref } from 'vue'
 import type { License, LicenseTrait } from '~/types'
-import { matchLicense as pureMatch } from '~/utils/matchLicense'
+import {
+  matchLicense as pureMatch,
+  type MatchResult
+} from '~/utils/matchLicense'
+import { contentPageToLicense } from '~/utils/mapLicense'
 
 /** Optional test hooks so unit tests don’t need Nuxt Content. */
 export interface UseLicenseMatcherOptions {
@@ -35,14 +39,13 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
       const { data } = await useAsyncData(
         'licenses-catalog',
         () => queryCollection('licenses').all(),
-        {
-          // empty array until Content resolves
-          default: () => []
-        }
+        { default: () => [] }
       )
       if (data.value?.length) {
-        // Content pages aren’t typed as License — cast is intentional
-        allLicenses.value = data.value as unknown as License[]
+        // map Content pages into typed License records
+        allLicenses.value = data.value.map(page =>
+          contentPageToLicense(page as Record<string, unknown>)
+        )
       }
     } catch (e) {
       // keep empty catalog; UI can show “could not load”
@@ -51,34 +54,45 @@ export function useLicenseMatcher(options: UseLicenseMatcherOptions = {}) {
   }
 
   /**
-   * Score tags against the loaded catalog; null if nothing honest matches.
+   * Full match result (best, runners-up, empty reasons, closest).
    */
-  const matchLicense = (userTags: LicenseTrait[]): License | null => {
+  const matchResult = (userTags: LicenseTrait[]): MatchResult => {
     if (!allLicenses.value.length) {
-      // nothing loaded yet (or load failed)
       console.warn('Matcher: No licenses loaded to match against.')
-      return null
+      return pureMatch(userTags, [])
     }
 
     if (import.meta.dev) {
-      // noisy but handy when tuning traits
       console.log('Matcher: User selected tags:', userTags)
     }
 
-    // pure gates + score live in matchLicense.ts
-    const { license, score } = pureMatch(userTags, allLicenses.value)
+    const result = pureMatch(userTags, allLicenses.value)
 
     if (import.meta.dev) {
-      console.log('Matcher: Best match found:', license?.spdx, 'score:', score)
+      console.log(
+        'Matcher: Best match:',
+        result.license?.spdx,
+        'score:',
+        result.score,
+        'runners-up:',
+        result.runnersUp.map(r => r.license.spdx)
+      )
     }
 
-    return license
+    return result
   }
 
-  // public API
+  /**
+   * Convenience: just the best license (or null).
+   */
+  const matchLicense = (userTags: LicenseTrait[]): License | null => {
+    return matchResult(userTags).license
+  }
+
   return {
     allLicenses,
     fetchLicenses,
-    matchLicense
+    matchLicense,
+    matchResult
   }
 }

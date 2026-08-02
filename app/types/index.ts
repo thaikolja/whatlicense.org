@@ -59,6 +59,24 @@ export interface QuizQuestion {
    * Scope and network questions use this.
    */
   readonly requiresCopyleft?: boolean
+  /**
+   * When true, only shown on the permissive branch (not copyleft).
+   * Freedom / public-domain question uses this.
+   */
+  readonly requiresPermissive?: boolean
+  /**
+   * When true, only after strong (project-wide) copyleft scope.
+   * Network/SaaS question — no weak+network license exists in the catalog.
+   */
+  readonly requiresStrongCopyleft?: boolean
+  /**
+   * When true, skip if the user chose non-commercial (e.g. public-domain Q).
+   */
+  readonly skipIfNonCommercial?: boolean
+  /**
+   * When true, skip if the user chose patent-grant (e.g. PD licenses have no patents).
+   */
+  readonly skipIfPatentGrant?: boolean
 }
 
 /* ------------------------------------------------------------------ */

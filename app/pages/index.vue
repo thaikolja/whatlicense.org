@@ -1,36 +1,36 @@
 <template>
   <div class="w-full min-w-0">
     <Transition
-        name="screen"
-        mode="out-in"
+      name="screen"
+      mode="out-in"
     >
       <LazyIntroScreen
-          v-if="currentScreen === 'intro'"
-          key="intro"
-          @start="onStart"
+        v-if="currentScreen === 'intro'"
+        key="intro"
+        @start="onStart"
       />
 
       <LazyQuizWizard
-          v-else-if="currentScreen === 'quiz' && currentQuestion"
-          key="quiz"
-          :question="currentQuestion"
-          :current-step="currentStep"
-          :total-steps="totalSteps"
-          :answers="answers"
-          :can-advance="canAdvance"
-          @select="selectOption"
-          @next="handleNext"
-          @prev="prevStep"
+        v-else-if="currentScreen === 'quiz' && currentQuestion"
+        key="quiz"
+        :question="currentQuestion"
+        :current-step="currentStep"
+        :total-steps="totalSteps"
+        :answers="answers"
+        :can-advance="canAdvance"
+        @select="selectOption"
+        @next="handleNext"
+        @prev="prevStep"
       />
 
       <div
-          v-else-if="currentScreen === 'result' && matching"
-          key="matching"
-          class="state-center px-2"
+        v-else-if="currentScreen === 'result' && matching"
+        key="matching"
+        class="state-center px-2"
       >
         <div
-            class="spinner mb-6"
-            aria-hidden="true"
+          class="spinner mb-6"
+          aria-hidden="true"
         />
         <h1 class="text-2xl sm:text-4xl text-espresso mb-4">
           Finding the perfect license...
@@ -41,27 +41,20 @@
       </div>
 
       <div
-          v-else-if="currentScreen === 'result' && !matching && noMatch"
-          key="no-match"
-          class="state-center max-w-xl mx-auto px-2"
+        v-else-if="currentScreen === 'result' && !matching && catalogEmpty"
+        key="catalog-empty"
+        class="state-center max-w-xl mx-auto px-2"
       >
         <h1 class="text-2xl sm:text-4xl text-espresso mb-4">
-          {{ catalogEmpty ? 'Could not load licenses' : 'No clear match' }}
+          Could not load licenses
         </h1>
         <p class="text-body mb-8 text-sm sm:text-base">
-          <template v-if="catalogEmpty">
-            We could not load the license catalog. Check your connection and try again.
-          </template>
-          <template v-else>
-            Your answers do not map cleanly to a single license in our catalog (for example weak copyleft with
-            network/SaaS requirements, or copyleft with non-commercial only). Try adjusting share-alike, commercial use,
-            or network options.
-          </template>
+          We could not load the license catalog. Check your connection and try again.
         </p>
         <button
-            type="button"
-            class="cta"
-            @click="onStart"
+          type="button"
+          class="cta"
+          @click="onStart"
         >
           Start over
         </button>
@@ -70,17 +63,14 @@
   </div>
 </template>
 
-<script
-    setup
-    lang="ts"
->
+<script setup lang="ts">
 /**
- * Homepage wizard — SSG renders intro; licenses hydrate from Content/useAsyncData.
+ * Homepage wizard — every completed path navigates to a license recommendation.
  */
 import { useWizard } from '~/composables/useWizard'
 import { useLicenseMatcher } from '~/composables/useLicenseMatcher'
+import { licenseToSlug } from '~/utils/licenseSlug'
 
-// branching quiz state (intro → quiz → result)
 const {
   currentScreen,
   currentStep,
@@ -95,76 +85,88 @@ const {
   collectedTags
 } = useWizard()
 
-// catalog + pure matcher
-const { allLicenses, fetchLicenses, matchLicense } = useLicenseMatcher()
+const { allLicenses, fetchLicenses, matchResult } = useLicenseMatcher()
 
-// brief “matching…” UI before navigateTo license page
 const matching = ref(false)
-// honest empty result when gates eliminate every license
-const noMatch = ref(false)
-// true when catalog failed to load (distinct empty-match copy)
 const catalogEmpty = computed(() => allLicenses.value.length === 0)
 
-/** Reset match UI and enter the quiz. */
 const onStart = () => {
   matching.value = false
-  noMatch.value = false
   startWizard()
 }
 
-// load Content catalog during setup (SSG payload + client hydration)
 await fetchLicenses()
 
 /**
- * Advance quiz; on final step run matcher and route to license page.
+ * Advance quiz; on final step always recommend a license (gated or approximate).
  */
 const handleNext = async () => {
-  // move step or flip to result screen
   nextStep()
-  if (currentScreen.value === 'result') {
-    // show spinner briefly so navigation doesn’t feel instant
-    matching.value = true
-    noMatch.value = false
+  if (currentScreen.value !== 'result') return
 
-    await new Promise(r => setTimeout(r, 80))
+  matching.value = true
+  await new Promise(r => setTimeout(r, 80))
 
-    // score collected tags against the catalog
-    const matchedLicense = matchLicense(collectedTags.value)
-    if (matchedLicense) {
-      // Content path or SPDX → URL slug
-      const path = (matchedLicense as { path?: string }).path || matchedLicense.id || ''
-      const slug = path.split('/').pop() || matchedLicense.spdx.toLowerCase()
-      // calc=1 triggers the short loading animation on the license page
-      await navigateTo(`/licenses/${slug}?calc=1`)
-    } else {
-      // honest empty — no contradicted soft pick
-      matching.value = false
-      noMatch.value = true
-    }
+  if (catalogEmpty.value) {
+    matching.value = false
+    return
   }
+
+  // always returns a license when catalog is loaded
+  const result = matchResult(collectedTags.value)
+  if (!result.license) {
+    matching.value = false
+    return
+  }
+
+  const slug = licenseToSlug(
+    result.license as { path?: string, id?: string, spdx?: string }
+  )
+  const reasons = encodeURIComponent(JSON.stringify(result.matchReasons.slice(0, 10)))
+  const runners = encodeURIComponent(
+    JSON.stringify(
+      result.runnersUp.map(r => ({
+        spdx:  r.license.spdx,
+        score: r.score,
+        slug:  licenseToSlug(r.license as { path?: string, id?: string, spdx?: string })
+      }))
+    )
+  )
+
+  await navigateTo({
+    path:  `/licenses/${slug}`,
+    query: {
+      calc:         '1',
+      score:        String(result.score),
+      reasons,
+      runners,
+      approximate:  result.isApproximate ? '1' : undefined
+    }
+  })
 }
 
 useSeoMeta({
   title: 'Find the Perfect License for Your Code',
   description:
-         'Answer a short branching quiz and get an open-source license recommendation plus a custom file header — private, in your browser.'
+    'Answer a short branching quiz and get an open-source license recommendation plus a custom file header — private, in your browser.'
 })
 </script>
 
 <style scoped>
 .screen-enter-active,
 .screen-leave-active {
-  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .screen-enter-from {
-  opacity:   0;
+  opacity: 0;
   transform: translateY(0.75rem);
 }
 
 .screen-leave-to {
-  opacity:   0;
+  opacity: 0;
   transform: translateY(-0.5rem);
 }
 

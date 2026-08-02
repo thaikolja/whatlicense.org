@@ -21,62 +21,71 @@ describe('useWizard', () => {
     expect(wizard.canAdvance.value).toBe(false)
   })
 
-  //moves intro → quiz → through steps → result (permissive path, 3 steps)
-  it('moves intro → quiz → through steps → result (permissive path, 3 steps)', () => {
+  //moves intro → quiz → through steps → result (permissive + notice = 4 steps)
+  it('moves intro → quiz → through steps → result (permissive path, 4 steps)', () => {
     const wizard = useWizard()
 
     wizard.startWizard()
     expect(wizard.currentScreen.value).toBe('quiz')
     expect(wizard.answers.value).toEqual([])
 
-    // Q1 permissive
+    // Q1 permissive → unlocks freedom branch length
     wizard.selectOption(1)
-    expect(wizard.totalSteps.value).toBe(3)
+    expect(wizard.totalSteps.value).toBe(4)
     wizard.nextStep()
 
-    // Q2 commercial
+    // Q2 commercial ok
     wizard.selectOption(0)
     wizard.nextStep()
 
-    // Q3 patents
+    // Q3 patents simple
+    wizard.selectOption(1)
+    wizard.nextStep()
+
+    // Q4 freedom: keep short notice
     wizard.selectOption(1)
     wizard.nextStep()
 
     expect(wizard.currentScreen.value).toBe('result')
   })
 
-  //unlocks scope and network when copyleft is chosen (5 steps)
-  it('unlocks scope and network when copyleft is chosen (5 steps)', () => {
+  // unlocks scope on copyleft; network only after strong (5 steps)
+  it('unlocks scope on copyleft; network after strong (5 steps)', () => {
     const wizard = useWizard()
     wizard.startWizard()
 
     wizard.selectOption(0) // copyleft
-    expect(wizard.totalSteps.value).toBe(5)
+    expect(wizard.totalSteps.value).toBe(4) // share + commercial + patents + scope
 
-    for (let i = 0; i < 5; i++) {
-      wizard.currentStep.value = i
-      wizard.selectOption(0)
+    // commercial ok, patents grant, strong scope
+    for (const choice of [ 0, 0, 0 ]) {
       wizard.nextStep()
+      wizard.selectOption(choice)
     }
+    expect(wizard.totalSteps.value).toBe(5) // network unlocked
+    wizard.nextStep()
+    wizard.selectOption(0) // network-copyleft
+    wizard.nextStep()
 
     expect(wizard.currentScreen.value).toBe('result')
-    // Strong path keeps family + strength tags
     expect(wizard.collectedTags.value).toContain('copyleft')
     expect(wizard.collectedTags.value).toContain('strong-copyleft')
     expect(wizard.collectedTags.value).toContain('network-copyleft')
   })
 
-  //weak path collected tags drop bare copyleft
+  // weak path collected tags drop bare copyleft (4 steps — no network)
   it('weak path collected tags drop bare copyleft', () => {
     const wizard = useWizard()
     wizard.startWizard()
-    const choices = [ 0, 0, 0, 1, 1 ] // copyleft, commercial, patents, weak, no-network
+    const choices = [ 0, 0, 0, 1 ] // copyleft, commercial, patents, weak
     for (let i = 0; i < choices.length; i++) {
       wizard.currentStep.value = i
       wizard.selectOption(choices[i]!)
       if (i < choices.length - 1) wizard.nextStep()
     }
+    expect(wizard.totalSteps.value).toBe(4)
     expect(wizard.collectedTags.value).toContain('weak-copyleft')
+    expect(wizard.collectedTags.value).toContain('no-network')
     expect(wizard.collectedTags.value).not.toContain('copyleft')
   })
 
@@ -164,7 +173,8 @@ describe('useWizard', () => {
     wizard.currentStep.value = 0
     wizard.selectOption(1) // switch to permissive
     expect(wizard.answers.value).toEqual([ 1 ])
-    expect(wizard.totalSteps.value).toBe(3)
+    // permissive unlocks freedom step → 4 active questions
+    expect(wizard.totalSteps.value).toBe(4)
   })
 
   //Back then Next preserves later answers when selection is unchanged
