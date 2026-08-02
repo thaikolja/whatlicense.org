@@ -1,3 +1,9 @@
+/**
+ * Nuxt: quiz option card select emit.
+ *
+ * Casual notes use // ... above important lines in app code;
+ * tests stay readable with a file-level JSDoc only where dense.
+ */
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import QuizOptionCard from '~/components/QuizOptionCard.vue'
@@ -10,7 +16,9 @@ const option: QuizOption = {
   tags:    [ 'permissive' ]
 }
 
+// ... test suite for 'QuizOptionCard'
 describe('QuizOptionCard', () => {
+  // ... renders option title, description, and example
   it('renders option title, description, and example', async () => {
     const wrapper = await mountSuspended(QuizOptionCard, {
       props: { option, selected: false }
@@ -22,6 +30,7 @@ describe('QuizOptionCard', () => {
     expect(wrapper.classes()).not.toContain('selected')
   })
 
+  // ... applies selected class and emits select on click
   it('applies selected class and emits select on click', async () => {
     const wrapper = await mountSuspended(QuizOptionCard, {
       props: { option, selected: true }

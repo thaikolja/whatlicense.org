@@ -1,13 +1,22 @@
+/**
+ * Nuxt: custom @property modal open/save/delete.
+ *
+ * Casual notes use // ... above important lines in app code;
+ * tests stay readable with a file-level JSDoc only where dense.
+ */
 import { describe, expect, it, afterEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { nextTick } from 'vue'
 import CustomPropertiesModal from '~/components/CustomPropertiesModal.vue'
 
+// ... test suite for 'CustomPropertiesModal'
 describe('CustomPropertiesModal', () => {
+  // ... cleanup after each case
   afterEach(() => {
     document.body.innerHTML = ''
   })
 
+  // ... is hidden when closed
   it('is hidden when closed', async () => {
     await mountSuspended(CustomPropertiesModal, {
       props: {
@@ -21,6 +30,7 @@ describe('CustomPropertiesModal', () => {
     expect(document.body.querySelector('.modal-container')).toBeNull()
   })
 
+  // ... opens, adds a property, and emits update on save
   it('opens, adds a property, and emits update on save', async () => {
     const wrapper = await mountSuspended(CustomPropertiesModal, {
       props: {
@@ -31,9 +41,11 @@ describe('CustomPropertiesModal', () => {
     })
 
     await nextTick()
+    // ... empty state copy
     expect(document.body.textContent).toContain('Custom Properties')
     expect(document.body.textContent).toContain('No custom properties yet.')
 
+    // ... add a blank row
     const addBtn = Array.from(document.body.querySelectorAll('button'))
       .find(b => b.textContent?.includes('Add Property'))
     addBtn?.click()
@@ -42,7 +54,7 @@ describe('CustomPropertiesModal', () => {
     const inputs = document.body.querySelectorAll('input')
     expect(inputs.length).toBeGreaterThanOrEqual(2)
 
-    // setValue via native input events
+    // ... fill key/value via native input events (Vue v-model)
     const keyInput = inputs[0] as HTMLInputElement
     const valInput = inputs[1] as HTMLInputElement
     keyInput.value = 'version'
@@ -51,6 +63,7 @@ describe('CustomPropertiesModal', () => {
     valInput.dispatchEvent(new Event('input'))
     await nextTick()
 
+    // ... save and assert the update payload
     const saveBtn = Array.from(document.body.querySelectorAll('button'))
       .find(b => b.textContent?.includes('Save Properties'))
     saveBtn?.click()
@@ -61,6 +74,7 @@ describe('CustomPropertiesModal', () => {
     ])
   })
 
+  // ... emits close when the close control is used
   it('emits close when the close control is used', async () => {
     const wrapper = await mountSuspended(CustomPropertiesModal, {
       props: {
@@ -78,6 +92,7 @@ describe('CustomPropertiesModal', () => {
     expect(wrapper.emitted('close')).toBeTruthy()
   })
 
+  // ... removes a property row
   it('removes a property row', async () => {
     await mountSuspended(CustomPropertiesModal, {
       props: {
@@ -110,6 +125,7 @@ describe('CustomPropertiesModal', () => {
     expect(document.body.querySelectorAll('.btn-delete').length).toBe(deletes.length - 1)
   })
 
+  // ... closes when backdrop is clicked
   it('closes when backdrop is clicked', async () => {
     const wrapper = await mountSuspended(CustomPropertiesModal, {
       props: {
@@ -128,6 +144,7 @@ describe('CustomPropertiesModal', () => {
     expect(wrapper.emitted('close')).toBeTruthy()
   })
 
+  // ... deep-copies properties when opening via isOpen watch
   it('deep-copies properties when opening via isOpen watch', async () => {
     const wrapper = await mountSuspended(CustomPropertiesModal, {
       props: {

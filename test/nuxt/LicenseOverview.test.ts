@@ -1,9 +1,17 @@
+/**
+ * Nuxt: permissions/conditions/limitations cards.
+ *
+ * Casual notes use // ... above important lines in app code;
+ * tests stay readable with a file-level JSDoc only where dense.
+ */
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import LicenseOverview from '~/components/LicenseOverview.vue'
 import { makeLicense } from '../fixtures/licenses'
 
+// ... test suite for 'LicenseOverview'
 describe('LicenseOverview', () => {
+  // ... renders three flip cards with license conditions
   it('renders three flip cards with license conditions', async () => {
     const license = makeLicense({
       spdx:   'MIT',

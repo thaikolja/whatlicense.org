@@ -3,22 +3,27 @@
 /**
  * Nuxt 4 configuration for whatlicense.org.
  *
- * @description  Registers modules (shadcn-nuxt, Icon, Fonts, SEO, ESLint,
- *               Content), Tailwind via Vite, and global app metadata.
- * @see          https://nuxt.com/docs/api/configuration/nuxt-config
+ * Modules (shadcn, Icon, Fonts, SEO, ESLint, Content), Tailwind via Vite,
+ * static Cloudflare Pages preset, and public runtime links.
+ *
+ * @see https://nuxt.com/docs/api/configuration/nuxt-config
  */
 import { readdirSync }   from 'fs'
 import { join }          from 'path'
 import { fileURLToPath } from 'url'
 import tailwindcss       from '@tailwindcss/vite'
 
+// ... resolve project root for prerender route scanning
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineNuxtConfig({
+  // ... pin runtime behavior to this date
   compatibilityDate: '2025-07-15',
 
+  // ... keep DevTools off in the default config
   devtools: { enabled: false },
 
+  // ... order mostly doesn’t matter; icon before shadcn is fine
   modules: [
     '@nuxt/icon',
     'shadcn-nuxt',
@@ -28,6 +33,7 @@ export default defineNuxtConfig({
     '@nuxt/content'
   ],
 
+  // ... where CLI-generated UI primitives live
   shadcn: {
     prefix:       '',
     componentDir: './app/components/ui'
@@ -39,13 +45,16 @@ export default defineNuxtConfig({
    * used in the app are embedded in the client bundle from @iconify-json/*.
    */
   icon: {
+    // ... never hit the public Iconify API
     provider:      'none',
     fallbackToApi: false,
     serverBundle:  false,
     clientBundle:  {
+      // ... also scan source for icon names
       scan:        true,
       sizeLimitKb: 256,
-      icons:       [
+      // ... explicit list so header/footer icons always ship
+      icons: [
         'mdi:paypal',
         'mdi:github',
         'mdi:twitter',
@@ -54,18 +63,15 @@ export default defineNuxtConfig({
     }
   },
 
-  /* ------------------------------------------------------------------ */
-  /*  CSS                                                                */
-  /* ------------------------------------------------------------------ */
+  // ... global CSS entry (Tailwind + brand tokens)
   css: [ '~/assets/css/main.css' ],
 
+  // ... OG image module stays off
   ogImage: {
     enabled: false
   },
 
-  /* ------------------------------------------------------------------ */
-  /*  SEO defaults                                                       */
-  /* ------------------------------------------------------------------ */
+  // ... site-wide SEO defaults
   site: {
     url:           'https://whatlicense.org',
     name:          'whatlicense.org',
@@ -73,28 +79,29 @@ export default defineNuxtConfig({
     defaultLocale: 'en'
   },
 
+  // ... document head defaults
   app: {
     head: {
       titleTemplate: '%s | whatlicense.org',
       title:         'Find the Perfect License for Your Code',
       htmlAttrs:     { lang: 'en' },
       meta:          [
+        // ... cream brand theme color
         { name: 'theme-color', content: '#fdfaf6' }
       ]
     }
   },
 
-
-  /* ------------------------------------------------------------------ */
-  /*  TypeScript                                                         */
-  /* ------------------------------------------------------------------ */
+  // ... strict TS without blocking builds on typecheck
   typescript: {
     strict:    true,
     typeCheck: false
   },
 
+  // ... public env + monetization / social links
   runtimeConfig: {
     public: {
+      // ... debug: auto-pick option 0 for every quiz step
       debugAutoSelect: process.env.NUXT_PUBLIC_DEBUG_AUTO_SELECT === 'true',
       links:           {
         paypal:    'https://paypal.me/thaikolja/10',
@@ -107,20 +114,24 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    // ... Tailwind v4 as a Vite plugin (no Nuxt UI)
     plugins: [
       tailwindcss()
     ],
-    build:        {
+    build:   {
+      // ... smaller prod bundles
       sourcemap:     false,
       minify:        'terser',
       terserOptions: {
         compress: {
+          // ... strip console noise in prod
           drop_console:  true,
           drop_debugger: true,
           pure_funcs:    [ 'console.log', 'console.info' ]
         }
       }
     },
+    // ... pre-bundle highlight.js langs used by the header preview
     optimizeDeps: {
       include: [
         'highlight.js/lib/core',
@@ -136,9 +147,7 @@ export default defineNuxtConfig({
   },
 
   content: {
-    /* database: {
-     type: 'sqlite'
-     }, */
+    // ... keep markdown highlight off; we use highlight.js in the UI
     build: {
       markdown: {
         highlight: false
@@ -147,12 +156,15 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // ... default deploy target is Cloudflare Pages static
     preset:    'cloudflare_pages_static',
     prerender: {
+      // ... also crawl links discovered from pages
       crawlLinks: true,
-      routes:     readdirSync(join(__dirname, 'content', 'licenses'))
-                  .filter(f => f.endsWith('.md'))
-                  .map(f => `/licenses/${f.replace(/\.md$/, '')}`)
+      // ... explicit /licenses/<slug> for every markdown file
+      routes: readdirSync(join(__dirname, 'content', 'licenses'))
+              .filter(f => f.endsWith('.md'))
+              .map(f => `/licenses/${f.replace(/\.md$/, '')}`)
     }
   }
 })

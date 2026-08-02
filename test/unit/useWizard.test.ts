@@ -1,7 +1,15 @@
+/**
+ * Unit: branching wizard navigation + tags.
+ *
+ * Casual notes use // ... above important lines in app code;
+ * tests stay readable with a file-level JSDoc only where dense.
+ */
 import { describe, expect, it } from 'vitest'
 import { useWizard } from '../../app/composables/useWizard'
 
+// ... test suite for 'useWizard'
 describe('useWizard', () => {
+  // ... starts on intro with empty answers
   it('starts on intro with empty answers', () => {
     const wizard = useWizard()
 
@@ -13,6 +21,7 @@ describe('useWizard', () => {
     expect(wizard.canAdvance.value).toBe(false)
   })
 
+  // ... moves intro → quiz → through steps → result (permissive path, 3 steps)
   it('moves intro → quiz → through steps → result (permissive path, 3 steps)', () => {
     const wizard = useWizard()
 
@@ -36,6 +45,7 @@ describe('useWizard', () => {
     expect(wizard.currentScreen.value).toBe('result')
   })
 
+  // ... unlocks scope and network when copyleft is chosen (5 steps)
   it('unlocks scope and network when copyleft is chosen (5 steps)', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -56,6 +66,7 @@ describe('useWizard', () => {
     expect(wizard.collectedTags.value).toContain('network-copyleft')
   })
 
+  // ... weak path collected tags drop bare copyleft
   it('weak path collected tags drop bare copyleft', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -70,6 +81,7 @@ describe('useWizard', () => {
   })
 
 
+  // ... prevStep returns to intro from first quiz step
   it('prevStep returns to intro from first quiz step', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -77,6 +89,7 @@ describe('useWizard', () => {
     expect(wizard.currentScreen.value).toBe('intro')
   })
 
+  // ... prevStep decrements step when not first
   it('prevStep decrements step when not first', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -87,6 +100,7 @@ describe('useWizard', () => {
     expect(wizard.currentStep.value).toBe(0)
   })
 
+  // ... resetWizard clears state
   it('resetWizard clears state', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -99,6 +113,7 @@ describe('useWizard', () => {
     expect(wizard.answers.value).toEqual([])
   })
 
+  // ... collectedTags flattens option tags from answers
   it('collectedTags flattens option tags from answers', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -118,6 +133,7 @@ describe('useWizard', () => {
     expect(tags).not.toContain('strong-copyleft')
   })
 
+  // ... auto-selects first options when debugAutoSelect is true
   it('auto-selects first options when debugAutoSelect is true', () => {
     const wizard = useWizard({ debugAutoSelect: true })
     wizard.startWizard()
@@ -127,12 +143,14 @@ describe('useWizard', () => {
     expect(wizard.totalSteps.value).toBe(5)
   })
 
+  // ... leaves answers empty when debugAutoSelect is false
   it('leaves answers empty when debugAutoSelect is false', () => {
     const wizard = useWizard({ debugAutoSelect: false })
     wizard.startWizard()
     expect(wizard.answers.value).toEqual([])
   })
 
+  // ... changing share answer drops later answers
   it('changing share answer drops later answers', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -149,6 +167,7 @@ describe('useWizard', () => {
     expect(wizard.totalSteps.value).toBe(3)
   })
 
+  // ... Back then Next preserves later answers when selection is unchanged
   it('Back then Next preserves later answers when selection is unchanged', () => {
     const wizard = useWizard()
     wizard.startWizard()
@@ -169,6 +188,7 @@ describe('useWizard', () => {
     expect(wizard.answers.value).toEqual([ 0, 0, 0, 0, 0 ])
   })
 
+  // ... re-selecting the same option after Back keeps later answers
   it('re-selecting the same option after Back keeps later answers', () => {
     const wizard = useWizard()
     wizard.startWizard()

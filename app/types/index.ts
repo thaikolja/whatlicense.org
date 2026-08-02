@@ -72,9 +72,9 @@ export interface QuizQuestion {
  * selected traits overlap with the license's own trait set.
  */
 export type LicenseTrait =
-    | 'copyleft'
-    | 'strong-copyleft'
-    | 'weak-copyleft'
+    | 'copyleft'           // ... Q1 share-alike family
+    | 'strong-copyleft'    // ... Q4 entire project (GPL-style)
+    | 'weak-copyleft'      // ... Q4 file-level (MPL/LGPL-style)
     | 'permissive'
     | 'commercial-ok'
     | 'non-commercial'
@@ -176,22 +176,30 @@ export interface HeaderFormState {
   excludeComments: boolean
 }
 
+/** Social / header icon button (PayPal, GitHub, etc.). */
 export interface IconLink {
+  /** Accessible label. */
   name: string
+  /** Iconify name, e.g. `mdi:github`. */
   icon: string
+  /** Destination URL. */
   link: string
 }
 
+/** Footer nav item (text + optional icon). */
 export interface FooterLink {
+  /** Link text. */
   name: string
+  /** Destination URL. */
   link: string
+  /** Optional Iconify name. */
   icon?: string
+  /** Tooltip / title attribute. */
   title: string
 }
 
 /* ------------------------------------------------------------------ */
 /*  Header Validation                                                  */
-
 /* ------------------------------------------------------------------ */
 
 /**

@@ -1,109 +1,71 @@
 /**
  * Comment style formatters for different programming languages.
  *
- * @description  Provides language-specific comment wrapping functions used by
- *               the file-header generator. Each formatter takes an array of
- *               raw content lines and returns a single formatted string with
- *               the appropriate comment syntax.
+ * Used by the file-header generator to wrap raw @tag lines in language-native
+ * comment syntax (/** * /, #, <!-- -->, etc.).
  */
 import type { CommentLanguage } from '~/types'
 
-/* ------------------------------------------------------------------ */
-/*  Formatter type                                                     */
-/* ------------------------------------------------------------------ */
-
-/**
- * A function that wraps raw content lines in language-specific comment syntax.
- *
- * @param lines - Array of raw content lines (without comment prefixes).
- * @returns      Fully formatted comment block as a single string.
- */
+/** A function that wraps raw content lines in language-specific comment syntax. */
 type CommentFormatter = (lines: readonly string[]) => string
 
-/* ------------------------------------------------------------------ */
-/*  Formatters                                                         */
-/* ------------------------------------------------------------------ */
-
-/**
- * C-style block comment (`/** ... * /`).
- * Used by PHP, JavaScript, TypeScript, Java, C, C++, C#, Go, Rust, Swift, Kotlin.
- */
+// ... C-style block comment (PHP / JS / TS etc.)
 const cStyleBlock: CommentFormatter = (lines) => {
+  // ... prefix every line with " * "
   const body = lines.map(line => ` * ${line}`).join('\n')
   return `/**\n${body}\n */`
 }
 
-/**
- * Hash-prefixed line comments (`# ...`).
- * Used by Python, Ruby, Shell, Perl, R, YAML.
- */
+// ... hash line comments (Python / Ruby / Shell)
 const hashLine: CommentFormatter = (lines) => {
+  // ... one # per line
   return lines.map(line => `# ${line}`).join('\n')
 }
 
-/**
- * HTML/XML comment block (`<!-- ... -->`).
- * Used by HTML, XML, SVG, Vue templates.
- */
+// ... HTML/XML comment block
 const htmlBlock: CommentFormatter = (lines) => {
+  // ... indent body a bit inside <!-- -->
   const body = lines.map(line => `  ${line}`).join('\n')
   return `<!--\n${body}\n-->`
 }
 
-/**
- * CSS block comment (`/* ... * /`).
- * Used by CSS, SCSS, Less.
- */
+// ... CSS block comment
 const cssBlock: CommentFormatter = (lines) => {
+  // ... same star-prefix vibe as C-style, without the second *
   const body = lines.map(line => ` * ${line}`).join('\n')
   return `/*\n${body}\n */`
 }
 
-/**
- * Shell-style hash comments with a shebang-aware header.
- * Used by Bash, Zsh, Shell scripts.
- */
+// ... shell is also hash-style (same as python/ruby for headers)
 const shellLine: CommentFormatter = (lines) => {
+  // ... identical to hashLine; kept separate for clarity in the map
   return lines.map(line => `# ${line}`).join('\n')
 }
 
-/* ------------------------------------------------------------------ */
-/*  Language → Formatter mapping                                       */
-/* ------------------------------------------------------------------ */
-
-/**
- * Maps each supported {@link CommentLanguage} to its formatter function.
- */
+/** Maps each supported language to its formatter. */
 const FORMATTERS: Record<CommentLanguage, CommentFormatter> = {
+  // ... C-family share /** */
   php:        cStyleBlock,
   javascript: cStyleBlock,
   typescript: cStyleBlock,
+  // ... # languages
   python:     hashLine,
   ruby:       hashLine,
+  shell:      shellLine,
+  // ... markup / stylesheets
   html:       htmlBlock,
-  css:        cssBlock,
-  shell:      shellLine
+  css:        cssBlock
 }
-
-/* ------------------------------------------------------------------ */
-/*  Public API                                                         */
-
-/* ------------------------------------------------------------------ */
 
 /**
  * Formats raw content lines into a comment block for the given language.
  *
  * @param language - Target programming language.
  * @param lines    - Raw content lines to wrap in comments.
- * @returns         Formatted comment block string.
- *
- * @example
- * ```ts
- * formatComment('php', ['My Project', '', '@author John'])
- * // => "/**\n * My Project\n *\n * @author John\n * /"
- * ```
+ * @returns        Formatted comment block string.
  */
 export function formatComment(language: CommentLanguage, lines: readonly string[]): string {
+  // ... pick formatter and run it
   const formatter = FORMATTERS[language]
   return formatter(lines)
 }
@@ -112,9 +74,10 @@ export function formatComment(language: CommentLanguage, lines: readonly string[
  * Returns the file extension typically associated with a language.
  *
  * @param language - The comment language identifier.
- * @returns         File extension including the dot (e.g. `.php`).
+ * @returns        File extension including the dot (e.g. `.php`).
  */
 export function getFileExtension(language: CommentLanguage): string {
+  // ... static map of language → extension
   const extensions: Record<CommentLanguage, string> = {
     php:        '.php',
     javascript: '.js',
@@ -128,9 +91,7 @@ export function getFileExtension(language: CommentLanguage): string {
   return extensions[language]
 }
 
-/**
- * Human-readable display labels for language selector dropdowns.
- */
+/** Human-readable labels for the language dropdown. */
 export const LANGUAGE_LABELS: Record<CommentLanguage, string> = {
   php:        'PHP',
   javascript: 'JavaScript',

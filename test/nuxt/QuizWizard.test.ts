@@ -1,11 +1,19 @@
+/**
+ * Nuxt: quiz wizard progress + next/back.
+ *
+ * Casual notes use // ... above important lines in app code;
+ * tests stay readable with a file-level JSDoc only where dense.
+ */
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import QuizWizard from '~/components/QuizWizard.vue'
 import { QUIZ_QUESTIONS } from '~/data/questions'
 
+// ... test suite for 'QuizWizard'
 describe('QuizWizard', () => {
   const question = QUIZ_QUESTIONS[0]
 
+  // ... renders question text and both options
   it('renders question text and both options', async () => {
     const wrapper = await mountSuspended(QuizWizard, {
       props: {
@@ -24,6 +32,7 @@ describe('QuizWizard', () => {
     expect(wrapper.text()).toContain('Next Step')
   })
 
+  // ... emits select and next
   it('emits select and next', async () => {
     const wrapper = await mountSuspended(QuizWizard, {
       props: {
@@ -45,6 +54,7 @@ describe('QuizWizard', () => {
     expect(wrapper.emitted('next')).toHaveLength(1)
   })
 
+  // ... shows Back and emits prev when not on first step
   it('shows Back and emits prev when not on first step', async () => {
     const wrapper = await mountSuspended(QuizWizard, {
       props: {
